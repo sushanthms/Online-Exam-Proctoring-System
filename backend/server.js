@@ -22,3 +22,7 @@ app.use('/api/exam', examRoutes);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+
+const faceLogRoutes = require("./routes/faceLog");
+
+app.use("/api", faceLogRoutes);
