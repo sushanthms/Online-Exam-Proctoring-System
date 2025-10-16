@@ -1,48 +1,72 @@
-/* General container */
-.container {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 25px;
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* =================== Global Styles =================== */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  min-height: 100vh;
 }
 
-/* Headings */
+/* Reusable container */
+.container {
+  max-width: 420px;
+  margin: 60px auto;
+  background: linear-gradient(145deg, #ffffff, #e3f2fd);
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.container:hover {
+  transform: scale(1.02);
+}
+
+/* =================== Headings =================== */
 h2 {
   text-align: center;
-  color: #333;
-  margin-bottom: 20px;
+  color: #0d47a1;
+  font-weight: bold;
+  margin-bottom: 25px;
 }
 
-/* Form inputs */
-input {
+/* =================== Form Inputs =================== */
+input, .input-field {
   width: 100%;
-  padding: 10px 12px;
-  margin: 8px 0;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 16px;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #90caf9;
+  font-size: 15px;
   box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
-/* Buttons */
-button {
+input:focus, .input-field:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 6px rgba(25, 118, 210, 0.3);
+}
+
+/* =================== Buttons =================== */
+button, .btn {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-top: 15px;
   border: none;
-  border-radius: 6px;
-  background-color: #4CAF50;
+  border-radius: 8px;
+  background-color: #1976d2;
   color: white;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-button:hover {
-  background-color: #45a049;
+button:hover, .btn:hover {
+  background-color: #0d47a1;
+  transform: scale(1.05);
 }
 
 button:disabled {
@@ -50,14 +74,18 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* Error / message */
+/* =================== Error & Messages =================== */
 p, .message, .error {
   text-align: center;
   margin-top: 10px;
-  color: #e53935; /* red for errors */
 }
 
-/* Link style for switching pages */
+.error {
+  color: #d32f2f;
+  font-weight: 500;
+}
+
+/* =================== Link Buttons =================== */
 .link-button {
   background: none;
   border: none;
@@ -66,53 +94,90 @@ p, .message, .error {
   padding: 0;
   font-size: 14px;
   text-decoration: underline;
+  transition: color 0.3s ease;
 }
 
 .link-button:hover {
   color: #0d47a1;
 }
 
-/* Exam page styling */
+/* =================== Exam Page Layout =================== */
+.exam-page {
+  max-width: 1000px;
+  margin: 40px auto;
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  padding: 30px;
+}
+
 .exam-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 25px;
+  flex-wrap: wrap;
 }
 
-.exam-body {
-  display: flex;
-  gap: 20px; /* space between exam and camera */
-  flex-wrap: wrap; /* wrap on smaller screens */
-}
-
-.exam-content {
-  flex: 2; /* take 2/3 of width */
-  padding: 15px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-.timer {
-  margin-bottom: 15px;
+.exam-header h2 {
+  color: #0d47a1;
   font-weight: bold;
 }
 
-.question {
-  margin-bottom: 15px;
+.timer {
+  font-size: 18px;
+  color: #1565c0;
+  background: #e3f2fd;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 500;
 }
 
+/* =================== Exam Body =================== */
+.exam-body {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.exam-content {
+  flex: 2;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.exam-content h3 {
+  color: #0d47a1;
+  margin-bottom: 10px;
+}
+
+.exam-content p {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* =================== Options =================== */
 .options {
   margin-top: 5px;
 }
 
 .option-label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   cursor: pointer;
+  font-size: 15px;
+  color: #222;
 }
 
+.option-label input {
+  margin-right: 8px;
+  transform: scale(1.1);
+}
+
+/* =================== Camera Section =================== */
 .camera-preview {
   flex: 1;
   display: flex;
@@ -128,3 +193,42 @@ p, .message, .error {
   border: 1px solid #ccc;
   margin-bottom: 10px;
 }
+
+.camera-preview p {
+  color: #0d47a1;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+/* =================== Submit Button =================== */
+.exam-content button {
+  background-color: #1976d2 !important;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.exam-content button:hover {
+  background-color: #0d47a1 !important;
+  transform: scale(1.05);
+}
+
+/* =================== Responsive =================== */
+@media (max-width: 768px) {
+  .exam-body {
+    flex-direction: column;
+  }
+
+  .exam-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
+/*Login Page*/
