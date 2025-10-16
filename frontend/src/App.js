@@ -5,11 +5,11 @@ import ExamPage from './components/ExamPage';
 import { setAuthToken } from './api';
 import './styles.css';
 
-
 function App() {
   const [user, setUser] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
 
+  // Load token from localStorage
   useEffect(() => {
     const t = localStorage.getItem('token');
     const name = localStorage.getItem('name');
@@ -19,38 +19,37 @@ function App() {
     }
   }, []);
 
-  if (user) {
-    return (
-      <ExamPage
-        user={user}
-        onLogout={() => {
-          localStorage.removeItem('token');
-          localStorage.removeItem('name');
-          setAuthToken(null);
-          setUser(null);
-        }}
-      />
-    );
-  }
-
-  return showRegister ? (
-    <RegisterPage onRegistered={() => setShowRegister(false)} />
-  ) : (
-    <div>
-      <LoginPage
-  onLogin={(token, name) => {
+  // Handle login
+  const handleLogin = (token, name) => {
     localStorage.setItem('token', token);
     localStorage.setItem('name', name);
     setAuthToken(token);
     setUser({ name });
-  }}
-  onShowRegister={() => setShowRegister(true)}
-/>
+  };
 
-      <p style={{ marginTop: 12 }}>
-        Don't have an account?{' '}
-        <button onClick={() => setShowRegister(true)}>Register</button>
-      </p>
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('name');
+    setAuthToken(null);
+    setUser(null);
+  };
+
+  // If logged in, show exam page
+  if (user) {
+    return <ExamPage user={user} onLogout={handleLogout} />;
+  }
+
+  // If not logged in, show login/register forms with fade animation
+  return (
+    <div className="app-container">
+      <div className={`form-container ${showRegister ? 'fade-in' : 'fade-out'}`}>
+        {showRegister ? (
+          <RegisterPage onRegistered={() => setShowRegister(false)} />
+        ) : (
+          <LoginPage onLogin={handleLogin} onShowRegister={() => setShowRegister(true)} />
+        )}
+      </div>
     </div>
   );
 }

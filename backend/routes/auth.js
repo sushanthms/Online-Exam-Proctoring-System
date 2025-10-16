@@ -6,7 +6,7 @@ const User = require('../models/User');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'verysecretkey';
 
-// Register (simple - in production do validation + email confirm)
+// Registering of new User
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -21,6 +21,7 @@ router.post('/register', async (req, res) => {
   } catch (err) { console.error(err); res.status(500).send({ message: 'server error' }); }
 });
 
+//Login code, compares whether entered data and stored data matches
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;

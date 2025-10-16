@@ -1,135 +1,95 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { examApi } from '../api';
-import ProctoringOverlay from './ProctoringOverlay';
-import '../styles.css'; // Make sure CSS is imported
+import React, { useEffect, useState, useRef } from "react";
+import "../styles.css";
 
 export default function ExamPage({ user, onLogout }) {
-  const [paper, setPaper] = useState(null);
-  const [answers, setAnswers] = useState([]);
-  const [status, setStatus] = useState('Initializing');
-  const [timeLeft, setTimeLeft] = useState(0);
-  const videoRef = useRef();
+  const [tabSwitchCount, setTabSwitchCount] = useState(0);
+  const [warningShown, setWarningShown] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes
+  const videoRef = useRef(null); // reference to video element
 
-  // fetch exam paper
+  // --- Camera setup ---
   useEffect(() => {
-    let mounted = true;
-    (async () => {
-      setStatus('Fetching exam...');
-      const data = await examApi.getPaper();
-      if (!mounted) return;
-      setPaper(data);
-      setTimeLeft(data.durationMins * 60);
-      setStatus('Ready');
-      setAnswers(data.questions.map(q => ({ id: q.id, selected: null })));
-    })();
-    return () => (mounted = false);
-  }, []);
-
-  // Timer countdown
-  useEffect(() => {
-    if (timeLeft <= 0) return;
-    const t = setInterval(() => setTimeLeft(t0 => Math.max(0, t0 - 1)), 1000);
-    return () => clearInterval(t);
-  }, [timeLeft]);
-
-  // Auto submit when time reaches 0
-  useEffect(() => {
-    if (timeLeft === 0 && paper) handleSubmit();
-  }, [timeLeft]);
-
-  // Tab switch detection
-  useEffect(() => {
-    function onBlur() {
-      setStatus('Tab switched');
-      examApi.sendProctorEvent({ type: 'tab-switch', data: {} });
-    }
-    function onFocus() {
-      setStatus('Focused');
-    }
-    window.addEventListener('blur', onBlur);
-    window.addEventListener('focus', onFocus);
-    return () => {
-      window.removeEventListener('blur', onBlur);
-      window.removeEventListener('focus', onFocus);
-    };
-  }, []);
-
-  // Webcam start
-  useEffect(() => {
-    async function startCam() {
+    async function startCamera() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-        if (videoRef.current) videoRef.current.srcObject = stream;
-        setStatus('Camera active');
-      } catch (e) {
-        setStatus('Camera error');
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+        }
+      } catch (err) {
+        console.error("Error accessing camera:", err);
       }
     }
-    startCam();
-    return () => {
-      if (videoRef.current && videoRef.current.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach(t => t.stop());
-      }
-    };
+    startCamera();
   }, []);
 
-  // Periodic proctor heartbeat
+  // --- Tab switch detection ---
   useEffect(() => {
-    const id = setInterval(async () => {
-      await examApi.sendProctorEvent({ type: 'heartbeat', data: { status } });
-    }, 15000);
-    return () => clearInterval(id);
-  }, [status]);
+    const handleVisibilityChange = () => {
+      if (document.hidden) setTabSwitchCount(prev => prev + 1);
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
 
-  if (!paper) return <div className="container"><h3>Loading exam...</h3></div>;
+  // --- Handle warning / auto-submit ---
+  useEffect(() => {
+    if (tabSwitchCount === 2 && !warningShown) {
+      alert("⚠️ Warning: You switched tabs! One more switch will auto-submit your exam.");
+      setWarningShown(true);
+    } else if (tabSwitchCount >= 3) {
+      alert("❌ You switched tabs too many times. Your exam will be auto-submitted now.");
+      handleAutoSubmit();
+    }
+  }, [tabSwitchCount]);
 
-  function selectOption(qid, idx) {
-    setAnswers(prev => prev.map(a => a.id === qid ? { ...a, selected: idx } : a));
-  }
+  // --- Timer countdown ---
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      handleAutoSubmit();
+      return;
+    }
+    const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [timeLeft]);
 
-  async function handleSubmit() {
-    setStatus('Submitting...');
-    const resp = await examApi.submit({ examId: paper.examId, answers });
-    setStatus(`Submitted. Score: ${resp.score}/${resp.total}`);
-  }
+  const formatTime = (seconds) => {
+    const min = Math.floor(seconds / 60);
+    const sec = seconds % 60;
+    return `${min}:${sec < 10 ? "0" : ""}${sec}`;
+  };
+
+  const handleAutoSubmit = () => {
+    alert("Your exam has been auto-submitted!");
+    window.location.href = "/";
+  };
 
   return (
-    <div className="container">
+    <div className="container exam-page">
       <div className="exam-header">
-        <h3>Exam: {paper.examId}</h3>
-        <div>
-          <span style={{ marginRight: 10 }}>Student: {user.name}</span>
-          <button className="btn" onClick={onLogout}>Logout</button>
-        </div>
+        <h2>Online Exam Portal</h2>
+        <div className="timer">⏱️ Time Left: {formatTime(timeLeft)}</div>
       </div>
 
       <div className="exam-body">
         <div className="exam-content">
-          <div className="timer">Time left: <strong>{Math.floor(timeLeft / 60)}:{('0'+timeLeft%60).slice(-2)}</strong></div>
-          {paper.questions.map((q, qi) => (
-            <div key={q.id} className="question">
-              <div><strong>Q{qi + 1}.</strong> {q.q}</div>
-              <div className="options">
-                {q.options.map((opt, oi) => (
-                  <label key={oi} className="option-label">
-                    <input
-                      type="radio"
-                      name={`q${q.id}`}
-                      checked={answers.find(a => a.id === q.id)?.selected === oi}
-                      onChange={() => selectOption(q.id, oi)}
-                    />
-                    {opt}
-                  </label>
-                ))}
-              </div>
+          <div className="question">
+            <h3>Question 1:</h3>
+            <p>What is the primary function of React.js?</p>
+            <div className="options">
+              <label className="option-label"><input type="radio" name="q1" /> Building APIs</label>
+              <label className="option-label"><input type="radio" name="q1" /> Managing Databases</label>
+              <label className="option-label"><input type="radio" name="q1" /> Building User Interfaces</label>
+              <label className="option-label"><input type="radio" name="q1" /> Hosting Websites</label>
             </div>
-          ))}
-          <button className="btn" style={{ marginTop: 12 }} onClick={handleSubmit}>Submit</button>
+          </div>
+
+          <button onClick={handleAutoSubmit}>Submit Exam</button>
         </div>
 
         <div className="camera-preview">
-          <video ref={videoRef} autoPlay muted playsInline />
-          <ProctoringOverlay status={status} />
+          <video ref={videoRef} autoPlay muted style={{ width: "300px", borderRadius: "8px" }}></video>
+          <p>Camera Monitoring Active 🎥</p>
         </div>
       </div>
     </div>
