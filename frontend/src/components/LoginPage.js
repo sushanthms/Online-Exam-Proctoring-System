@@ -9,19 +9,19 @@ export default function LoginPage({ onLogin, onShowRegister }) {
   const [err, setErr] = useState('');
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setErr('');
-    try {
-      const res = await authApi.login({ email, password });
-      const { token, name } = res.data;
-      onLogin(token, name);
-    } catch (err) {
-      setErr('Login failed. Please check your credentials or register.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  e.preventDefault();
+  setLoading(true);
+  setErr('');
+  try {
+    const res = await authApi.login({ email, password });
+    const { token, name, email: userEmail, _id } = res.data;
+    onLogin(token, name, userEmail, _id); // Pass all data
+  } catch (err) {
+    setErr('Login failed. Please check your credentials or register.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="container">
