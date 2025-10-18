@@ -1,56 +1,71 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import ExamPage from './components/ExamPage';
+import ResultPage from './components/ResultPage';
 import { setAuthToken } from './api';
 import './styles.css';
 
 function App() {
   const [user, setUser] = useState(null);
-  const [showRegister, setShowRegister] = useState(false);
 
   // Load token from localStorage
-  useEffect(() => {
-    const t = localStorage.getItem('token');
-    const name = localStorage.getItem('name');
-    if (t) {
-      setAuthToken(t);
-      setUser({ name });
-    }
-  }, []);
-
-  // Handle login
-  const handleLogin = (token, name) => {
-    localStorage.setItem('token', token);
-    localStorage.setItem('name', name);
-    setAuthToken(token);
-    setUser({ name });
-  };
-
-  // Handle logout
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('name');
-    setAuthToken(null);
-    setUser(null);
-  };
-
-  // If logged in, show exam page
-  if (user) {
-    return <ExamPage user={user} onLogout={handleLogout} />;
+ useEffect(() => {
+  const t = localStorage.getItem('token');
+  const userStr = localStorage.getItem('user');
+  if (t && userStr) {
+    setAuthToken(t);
+    setUser(JSON.parse(userStr));
   }
+}, []);
 
-  // If not logged in, show login/register forms with fade animation
+
+  const handleLogin = (token, name, email, _id) => {
+  localStorage.setItem('token', token);
+  localStorage.setItem('user', JSON.stringify({ name, email, _id }));
+  setAuthToken(token);
+  setUser({ name, email, _id });
+};
+
+  const handleLogout = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  setAuthToken(null);
+  setUser(null);
+};
+
   return (
-    <div className="app-container">
-      <div className={`form-container ${showRegister ? 'fade-in' : 'fade-out'}`}>
-        {showRegister ? (
-          <RegisterPage onRegistered={() => setShowRegister(false)} />
-        ) : (
-          <LoginPage onLogin={handleLogin} onShowRegister={() => setShowRegister(true)} />
-        )}
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        {/* Redirect to exam page if logged in */}
+        <Route
+  path="/"
+  element={
+    user ? (
+      <Navigate to="/exam" />
+    ) : (
+      <LoginPage 
+        onLogin={handleLogin} 
+        onShowRegister={() => window.location.href = '/register'} 
+      />
+    )
+  }
+/>
+        <Route
+          path="/register"
+          element={<RegisterPage onRegistered={() => {}} />}
+        />
+        <Route
+          path="/exam"
+          element={user ? <ExamPage user={user} onLogout={handleLogout} /> : <Navigate to="/" />}
+        />
+       <Route
+  path="/result/:submissionId"
+  element={user ? <ResultPage onLogout={handleLogout} /> : <Navigate to="/" />}
+/>
+      </Routes>
+    </Router>
   );
 }
 
