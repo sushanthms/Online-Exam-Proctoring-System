@@ -28,17 +28,104 @@ function auth(req, res, next) {
   }
 }
 
-// ========== GET EXAM PAPER ==========
+// ========== GET AVAILABLE EXAMS (for home page) ==========
+router.get("/available", auth, async (req, res) => {
+  try {
+    const exams = await ExamPaper.find().select('title questions durationMins');
+    
+    if (!exams || exams.length === 0) {
+      return res.json({
+        exams: [
+          {
+            _id: "EXAM001",
+            title: "Sample JavaScript Exam",
+            durationMins: 10,
+            questions: QUESTIONS
+          }
+        ]
+      });
+    }
+
+    const examList = exams.map(exam => ({
+      _id: exam._id,
+      title: exam.title,
+      durationMins: exam.durationMins || 30,
+      questions: exam.questions
+    }));
+
+    res.json({ exams: examList });
+  } catch (error) {
+    console.error("Error fetching available exams:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ========== GET SPECIFIC EXAM PAPER BY ID ==========
+router.get("/paper/:examId", auth, async (req, res) => {
+  try {
+    const { examId } = req.params;
+    console.log("Fetching exam with ID:", examId);
+    
+    let selectedExam;
+
+    if (examId === "EXAM001") {
+      selectedExam = {
+        _id: "EXAM001",
+        title: "Sample JavaScript Exam",
+        durationMins: 10,
+        questions: QUESTIONS.map((q) => ({
+          text: q.q,
+          options: q.options,
+          correctOption: q.ans,
+        })),
+      };
+    } else {
+      try {
+        selectedExam = await ExamPaper.findById(examId);
+      } catch (err) {
+        console.error("Error finding exam:", err);
+        return res.status(404).json({ error: "Exam not found" });
+      }
+    }
+
+    if (!selectedExam) {
+      return res.status(404).json({ error: "Exam not found" });
+    }
+
+    console.log("Exam found:", selectedExam.title);
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    const qcopy = JSON.parse(JSON.stringify(selectedExam.questions));
+    shuffle(qcopy);
+    qcopy.forEach((q) => shuffle(q.options));
+
+    res.json({
+      examId: selectedExam._id,
+      title: selectedExam.title,
+      durationMins: selectedExam.durationMins || 10,
+      questions: qcopy,
+    });
+  } catch (error) {
+    console.error("Error fetching exam paper:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ========== OLD PAPER ROUTE (Keep for backward compatibility or remove) ==========
 router.get("/paper", auth, async (req, res) => {
   try {
-    // Try to get exam from MongoDB
     const examPapers = await ExamPaper.find();
     let selectedExam;
 
     if (examPapers && examPapers.length > 0) {
-      selectedExam = examPapers[0]; // Use the first one for demo
+      selectedExam = examPapers[0];
     } else {
-      // Fallback to mock questions if DB empty
       selectedExam = {
         _id: "EXAM001",
         title: "Sample Exam",
@@ -51,7 +138,6 @@ router.get("/paper", auth, async (req, res) => {
       };
     }
 
-    // Shuffle questions & options
     function shuffle(arr) {
       for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -75,7 +161,6 @@ router.get("/paper", auth, async (req, res) => {
 });
 
 // ========== SUBMIT EXAM ==========
-// ========== SUBMIT EXAM ==========
 router.post("/submit", auth, async (req, res) => {
   try {
     console.log("Received submission:", req.body);
@@ -83,23 +168,13 @@ router.post("/submit", auth, async (req, res) => {
 
     const { userId, examId, answers } = req.body;
 
-    // Validate inputs
     if (!examId || !answers) {
       return res.status(400).json({ error: "Missing examId or answers" });
     }
 
-    // Find exam paper (handle both ObjectId and string IDs)
     let examPaper;
-    try {
-      examPaper = await ExamPaper.findById(examId);
-    } catch (err) {
-      // If examId is not a valid ObjectId, try finding by mock ID
-      examPaper = null;
-    }
-
-    if (!examPaper) {
-      // Use mock data if exam not found in DB
-      console.log("Using mock exam data");
+    
+    if (examId === "EXAM001") {
       examPaper = {
         _id: examId,
         questions: QUESTIONS.map(q => ({
@@ -108,9 +183,18 @@ router.post("/submit", auth, async (req, res) => {
           correctOption: q.ans
         }))
       };
+    } else {
+      try {
+        examPaper = await ExamPaper.findById(examId);
+      } catch (err) {
+        examPaper = null;
+      }
     }
 
-    // Calculate score
+    if (!examPaper) {
+      return res.status(404).json({ error: "Exam not found" });
+    }
+
     let score = 0;
     answers.forEach((answer, index) => {
       if (examPaper.questions[index] && answer === examPaper.questions[index].correctOption) {
@@ -120,11 +204,9 @@ router.post("/submit", auth, async (req, res) => {
 
     console.log("Calculated score:", score);
 
-    // Get user info
     const User = require("../models/User");
     const user = await User.findById(req.user.id);
 
-    // Create submission
     const submission = new Submission({
       userId: req.user.id,
       username: user ? user.name : "Unknown",
@@ -150,7 +232,6 @@ router.post("/submit", auth, async (req, res) => {
 });
 
 // ========== GET RESULT BY SUBMISSION ID ==========
-// ========== GET RESULT BY SUBMISSION ID ==========
 router.get("/result/:submissionId", auth, async (req, res) => {
   try {
     console.log("Fetching result for submission:", req.params.submissionId);
@@ -164,15 +245,25 @@ router.get("/result/:submissionId", auth, async (req, res) => {
 
     console.log("Submission found:", submission);
 
-    // Find exam paper (handle both ObjectId and string IDs)
     let examPaper;
-    try {
-      examPaper = await ExamPaper.findById(submission.examId);
-    } catch (err) {
-      examPaper = null;
+    
+    if (submission.examId === "EXAM001") {
+      examPaper = {
+        _id: submission.examId,
+        questions: QUESTIONS.map(q => ({
+          text: q.q,
+          options: q.options,
+          correctOption: q.ans
+        }))
+      };
+    } else {
+      try {
+        examPaper = await ExamPaper.findById(submission.examId);
+      } catch (err) {
+        examPaper = null;
+      }
     }
 
-    // If exam not in DB, use mock data
     if (!examPaper) {
       console.log("Using mock exam data for result");
       examPaper = {
@@ -208,7 +299,6 @@ router.post("/proctor-event", auth, async (req, res) => {
   try {
     const { examId, type, data } = req.body;
 
-    // Save multiple face events in DB
     if (type === "multiple-face") {
       await MultipleFaceLog.create({
         userId: req.user.id,
@@ -217,7 +307,6 @@ router.post("/proctor-event", auth, async (req, res) => {
       });
     }
 
-    // You can still keep logs in memory if needed
     logs.push({
       user: req.user.email,
       type,
@@ -233,8 +322,6 @@ router.post("/proctor-event", auth, async (req, res) => {
   }
 });
 
-
-// Get face detection logs for a specific user and exam
 router.get("/face-logs/:userId/:examId", auth, async (req, res) => {
   try {
     const { userId, examId } = req.params;
@@ -250,26 +337,27 @@ router.get("/face-logs/:userId/:examId", auth, async (req, res) => {
   }
 });
 
-
 router.get("/logs", auth, (req, res) => {
   res.send({ logs });
 });
 
-
-// GET submission by userId and examId
-router.get("/submission/:userId/:examId", auth, async (req, res) => {
+// ========== GET USER'S SUBMISSIONS ==========
+router.get("/my-submissions/:userId", auth, async (req, res) => {
   try {
-    const { userId, examId } = req.params;
-    const submission = await Submission.findOne({ userId, examId })
-      .sort({ submittedAt: -1 }); // Get most recent
-    
-    if (!submission) {
-      return res.status(404).json({ error: "Submission not found" });
+    const { userId } = req.params;
+
+    // Verify user is requesting their own data
+    if (req.user.id !== userId && req.user.role !== 'admin') {
+      return res.status(403).json({ error: "Unauthorized access" });
     }
 
-    res.json(submission);
+    const submissions = await Submission.find({ userId })
+      .sort({ submittedAt: -1 }) // Most recent first
+      .lean();
+
+    res.json({ submissions });
   } catch (err) {
-    console.error("Error fetching submission:", err);
+    console.error("Error fetching submissions:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
