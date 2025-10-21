@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles.css";
+import "./MyResultPage.css";
 
 export default function MyResultsPage({ user }) {
   const [submissions, setSubmissions] = useState([]);

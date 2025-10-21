@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import "./ResultPage.css";
+
 
 export default function ResultPage({ onLogout }) {
   const { submissionId } = useParams();
