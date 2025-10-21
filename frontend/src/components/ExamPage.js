@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import * as faceapi from "face-api.js";
 import { useNavigate, useParams } from "react-router-dom";
-import "../styles.css";
+import "./ExamPage.css";
 
 export default function ExamPage({ user, onLogout }) {
   const { examId } = useParams(); // Get examId from URL
