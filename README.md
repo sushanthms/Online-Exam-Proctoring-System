@@ -87,7 +87,7 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/sushanthms/online-exam-proctoring.git](https://github.com/sushanthms/Online-Exam-Proctoring-System)
+git clone (https://github.com/sushanthms/Online-Exam-Proctoring-System)
 cd online-exam-proctoring
 ```
 
