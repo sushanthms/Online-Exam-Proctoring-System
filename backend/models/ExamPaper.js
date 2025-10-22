@@ -3,12 +3,16 @@ const mongoose = require("mongoose");
 const questionSchema = new mongoose.Schema({
   text: String,
   options: [String],
-  correctOption: Number, // index of correct option
+  correctOption: Number,
 });
 
 const examPaperSchema = new mongoose.Schema({
   title: String,
   questions: [questionSchema],
+  durationMins: { type: Number, default: 30 },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  createdAt: { type: Date, default: Date.now },
+  isActive: { type: Boolean, default: true }
 });
 
 module.exports = mongoose.model("ExamPaper", examPaperSchema);
