@@ -87,7 +87,7 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/online-exam-proctoring.git
+git clone https://github.com/sushanthms/online-exam-proctoring.git
 cd online-exam-proctoring
 ```
 
@@ -111,7 +111,6 @@ Add the following to your `.env` file:
 PORT=4000
 MONGO_URI=mongodb://localhost:27017/proctordb
 JWT_SECRET=your_super_secret_jwt_key_here
-NODE_ENV=development
 ```
 
 ### 3. Frontend Setup
@@ -146,14 +145,6 @@ cd models
 # Required files:
 # - tiny_face_detector_model-weights_manifest.json
 # - tiny_face_detector_model-shard1
-```
-
-Or use this script:
-
-```bash
-# In frontend/public/models directory
-curl -L https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights/tiny_face_detector_model-weights_manifest.json -o tiny_face_detector_model-weights_manifest.json
-curl -L https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights/tiny_face_detector_model-shard1 -o tiny_face_detector_model-shard1
 ```
 
 ### 5. Start MongoDB
@@ -194,9 +185,13 @@ npm run dev
 cd frontend
 npm start
 ```
-
-The application will open at `http://localhost:3000`
-
+# Verify Setup
+1. The application will open at `http://localhost:3000`
+2. Open browser: http://localhost:3000
+3. You should see the login page
+4. Register a student account through the UI
+5. Login with admin credentials you just created
+6. Verify you can access admin dashboard
 ## ⚙️ Configuration
 
 ### Backend Configuration
@@ -207,7 +202,7 @@ The application will open at `http://localhost:3000`
 |----------|-------------|---------|
 | `PORT` | Server port | 4000 |
 | `MONGO_URI` | MongoDB connection string | mongodb://localhost:27017/proctordb |
-| `JWT_SECRET` | Secret key for JWT | verysecretkey |
+| `JWT_SECRET` | Secret key for JWT | yoursecretkey |
 | `NODE_ENV` | Environment mode | development |
 
 ### Frontend Configuration
@@ -457,29 +452,7 @@ db.users.insertOne({
 });
 ```
 
-## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-### Code Style
-- Use ES6+ syntax
-- Follow Airbnb style guide
-- Add comments for complex logic
-- Write meaningful commit messages
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👥 Authors
-
-- Your Name - *Initial work* - [YourGitHub](https://github.com/yourusername)
 
 ## 🙏 Acknowledgments
 
@@ -487,11 +460,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - MongoDB for database
 - React team for amazing library
 - Express.js community
-
-## 📧 Contact
-
-Project Link: [https://github.com/yourusername/online-exam-proctoring](https://github.com/yourusername/online-exam-proctoring)
-
----
-
-**Built with ❤️ by [Your Name]**
