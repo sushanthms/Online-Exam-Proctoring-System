@@ -1,56 +1,56 @@
-import React, { useState } from 'react';
-import { authApi } from '../api';
+import React, { useState } from "react";
+import { authApi } from "../api";
 
 export default function RegisterPage({ onRegistered }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("student"); // default role
+  const [secretKey, setSecretKey] = useState(""); // for admin
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
+    setMessage("");
     try {
-      const res = await authApi.register({ name, email, password });
-      setMessage(res.data.message); // "registered"
-      if (onRegistered) onRegistered(); // switch to login
+      // Send role and secretKey along with user info
+      const res = await authApi.register({ name, email, password, role, secretKey });
+      setMessage(res.data.message);
+      if (onRegistered) onRegistered();
     } catch (err) {
-      setMessage(err.response?.data?.message || 'Registration failed');
+      setMessage(err.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container">
-      <h2>Register as Student</h2>
+    <div className="register-container">
+      <h2>Register</h2>
       <form onSubmit={handleRegister}>
-        <input
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={{ width: '100%', padding: 8, marginTop: 6 }}
-        />
-        <input
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ width: '100%', padding: 8, marginTop: 6 }}
-        />
-        <input
-          placeholder="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ width: '100%', padding: 8, marginTop: 6 }}
-        />
-        <button type="submit" disabled={loading} style={{ marginTop: 10 }}>
-          {loading ? 'Registering...' : 'Register'}
-        </button>
+        <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+        <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+        
+        <select value={role} onChange={e => setRole(e.target.value)}>
+          <option value="student">Student</option>
+          <option value="admin">Admin</option>
+        </select>
+
+        {role === "admin" && (
+          <input
+            type="password"
+            placeholder="Admin Secret Key"
+            value={secretKey}
+            onChange={e => setSecretKey(e.target.value)}
+          />
+        )}
+
+        <button disabled={loading}>{loading ? "Registering..." : "Register"}</button>
       </form>
-      {message && <p style={{ marginTop: 10 }}>{message}</p>}
+      {message && <p>{message}</p>}
     </div>
   );
 }

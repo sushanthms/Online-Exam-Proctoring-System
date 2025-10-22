@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const ExamPaper = require("../models/ExamPaper");
 const Submission = require("../models/Submission");
+const { authenticate } = require('./auth'); // IMPORT FROM AUTH
 
 const JWT_SECRET = process.env.JWT_SECRET || "verysecretkey";
 
@@ -29,7 +30,7 @@ function auth(req, res, next) {
 }
 
 // ========== GET AVAILABLE EXAMS (for home page) ==========
-router.get("/available", auth, async (req, res) => {
+router.get("/available", authenticate, async (req, res) => {
   try {
     const exams = await ExamPaper.find().select('title questions durationMins');
     
@@ -61,7 +62,7 @@ router.get("/available", auth, async (req, res) => {
 });
 
 // ========== GET SPECIFIC EXAM PAPER BY ID ==========
-router.get("/paper/:examId", auth, async (req, res) => {
+router.get("/paper/:examId", authenticate, async (req, res) => {
   try {
     const { examId } = req.params;
     console.log("Fetching exam with ID:", examId);
@@ -118,7 +119,7 @@ router.get("/paper/:examId", auth, async (req, res) => {
 });
 
 // ========== OLD PAPER ROUTE (Keep for backward compatibility or remove) ==========
-router.get("/paper", auth, async (req, res) => {
+router.get("/paper", authenticate, async (req, res) => {
   try {
     const examPapers = await ExamPaper.find();
     let selectedExam;
@@ -161,7 +162,7 @@ router.get("/paper", auth, async (req, res) => {
 });
 
 // ========== SUBMIT EXAM ==========
-router.post("/submit", auth, async (req, res) => {
+router.post("/submit", authenticate, async (req, res) => {
   try {
     console.log("Received submission:", req.body);
     console.log("User from token:", req.user);
@@ -232,7 +233,7 @@ router.post("/submit", auth, async (req, res) => {
 });
 
 // ========== GET RESULT BY SUBMISSION ID ==========
-router.get("/result/:submissionId", auth, async (req, res) => {
+router.get("/result/:submissionId", authenticate, async (req, res) => {
   try {
     console.log("Fetching result for submission:", req.params.submissionId);
 
@@ -295,7 +296,7 @@ router.get("/result/:submissionId", auth, async (req, res) => {
 // ========== PROCTORING EVENTS ==========
 const MultipleFaceLog = require("../models/MultipleFaceLog");
 
-router.post("/proctor-event", auth, async (req, res) => {
+router.post("/proctor-event", authenticate, async (req, res) => {
   try {
     const { examId, type, data } = req.body;
 
@@ -322,7 +323,7 @@ router.post("/proctor-event", auth, async (req, res) => {
   }
 });
 
-router.get("/face-logs/:userId/:examId", auth, async (req, res) => {
+router.get("/face-logs/:userId/:examId", authenticate, async (req, res) => {
   try {
     const { userId, examId } = req.params;
 
@@ -337,12 +338,12 @@ router.get("/face-logs/:userId/:examId", auth, async (req, res) => {
   }
 });
 
-router.get("/logs", auth, (req, res) => {
+router.get("/logs", authenticate, (req, res) => {
   res.send({ logs });
 });
 
 // ========== GET USER'S SUBMISSIONS ==========
-router.get("/my-submissions/:userId", auth, async (req, res) => {
+router.get("/my-submissions/:userId", authenticate, async (req, res) => {
   try {
     const { userId } = req.params;
 
@@ -352,7 +353,7 @@ router.get("/my-submissions/:userId", auth, async (req, res) => {
     }
 
     const submissions = await Submission.find({ userId })
-      .sort({ submittedAt: -1 }) // Most recent first
+      .sort({ submittedAt: -1 })
       .lean();
 
     res.json({ submissions });

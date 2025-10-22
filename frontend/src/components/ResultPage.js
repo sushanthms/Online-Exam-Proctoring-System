@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./ResultPage.css";
 
-
 export default function ResultPage({ onLogout }) {
   const { submissionId } = useParams();
   const [result, setResult] = useState(null);
@@ -15,7 +14,6 @@ export default function ResultPage({ onLogout }) {
     const fetchResult = async () => {
       try {
         const token = localStorage.getItem("token");
-        
         if (!token) {
           setError("No authentication token found. Please login.");
           setLoading(false);
@@ -24,20 +22,18 @@ export default function ResultPage({ onLogout }) {
 
         // Fetch exam result
         const response = await fetch(
-          `http://localhost:4000/api/exam/result/${submissionId}`, 
+          `http://localhost:4000/api/exam/result/${submissionId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch result: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Failed to fetch result: ${response.status}`);
 
         const data = await response.json();
         setResult(data);
 
-        // Fetch face logs only if we have userId and examId
+        // Fetch face logs if userId and examId exist
         if (data.userId && data.examId) {
           try {
             const faceRes = await fetch(
@@ -51,7 +47,6 @@ export default function ResultPage({ onLogout }) {
             }
           } catch (faceError) {
             console.warn("Could not fetch face logs:", faceError);
-            // Don't fail the whole page if face logs fail
           }
         }
 
@@ -67,47 +62,27 @@ export default function ResultPage({ onLogout }) {
   }, [submissionId]);
 
   const handleLogoutAndGoHome = () => {
-    // Clear all authentication data
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('name');
-    
-    // Call parent logout function if provided
-    if (onLogout) {
-      onLogout();
-    }
-    
-    // Show logout message
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("name");
+
+    if (onLogout) onLogout();
     alert("✅ You have been logged out successfully!");
-    
-    // Navigate to login page
     navigate("/");
-    
-    // Force page reload to clear all state
     window.location.reload();
   };
 
-  // Loading state
+  // Loading
   if (loading) {
     return (
-      <div className="container" style={{ padding: "2rem", textAlign: "center" }}>
-        <h3>Loading your result...</h3>
-        <div style={{ marginTop: "1rem" }}>
-          <div style={{ 
-            border: "4px solid #f3f3f3",
-            borderTop: "4px solid #1976d2",
-            borderRadius: "50%",
-            width: "40px",
-            height: "40px",
-            animation: "spin 1s linear infinite",
-            margin: "0 auto"
-          }}></div>
-        </div>
+      <div className="result-loading">
+        <div className="loading-spinner"></div>
+        <h3>Loading your results...</h3>
       </div>
     );
   }
 
-  // Error state
+  // Error
   if (error) {
     return (
       <div className="container" style={{ padding: "2rem", textAlign: "center" }}>
@@ -132,115 +107,91 @@ export default function ResultPage({ onLogout }) {
     );
   }
 
+  // Success: Show Result
+  const percentage = ((result.score / result.totalQuestions) * 100).toFixed(1);
+  const isPassed = percentage >= 60;
+
   return (
-    <div className="result-container" style={{ padding: "2rem", maxWidth: "700px", margin: "auto" }}>
-      <h2 style={{ color: "#0d47a1", marginBottom: "1rem" }}>📊 Exam Result</h2>
-      
-      <div style={{ 
-        background: "#e3f2fd", 
-        padding: "1rem", 
-        borderRadius: "8px",
-        marginBottom: "2rem" 
-      }}>
-        <p style={{ fontSize: "1.2rem", margin: "0.5rem 0" }}>
-          <strong>Total Score:</strong> {result.score}/{result.totalQuestions}
-        </p>
-        <p style={{ fontSize: "1.1rem", margin: "0.5rem 0", color: "#1976d2" }}>
-          <strong>Percentage:</strong> {((result.score / result.totalQuestions) * 100).toFixed(1)}%
-        </p>
+    <div className="result-container">
+      <div className="result-header">
+        <h2>📊 Exam Results</h2>
       </div>
 
-      <h3 style={{ color: "#0d47a1", marginBottom: "1rem" }}>📝 Question Review</h3>
-      
-      {result.questions && result.questions.map((q, i) => {
-        const userAnswerIndex = result.answers[i];
-        const isCorrect = userAnswerIndex === q.correctOption;
-
-        return (
-          <div 
-            key={i} 
-            style={{ 
-              marginBottom: "1.5rem",
-              padding: "1rem",
-              background: isCorrect ? "#e8f5e9" : "#ffebee",
-              borderRadius: "8px",
-              border: `2px solid ${isCorrect ? "#4caf50" : "#f44336"}`
-            }}
-          >
-            <p style={{ fontWeight: "bold", marginBottom: "0.5rem" }}>
-              Q{i + 1}: {q.text}
-            </p>
-            
-            <p style={{ margin: "0.3rem 0" }}>
-              <strong>Your Answer:</strong> {
-                userAnswerIndex !== null && userAnswerIndex !== undefined 
-                  ? q.options[userAnswerIndex] 
-                  : "Not Answered"
-              }
-            </p>
-            
-            <p style={{ margin: "0.3rem 0" }}>
-              <strong>Correct Answer:</strong> {q.options[q.correctOption]}
-            </p>
-            
-            <p style={{ margin: "0.5rem 0 0 0" }}>
-              {isCorrect ? (
-                <span style={{ color: "green", fontWeight: "bold" }}>✅ Correct</span>
-              ) : (
-                <span style={{ color: "red", fontWeight: "bold" }}>❌ Wrong</span>
-              )}
-            </p>
-          </div>
-        );
-      })}
-
-      <div style={{ marginTop: "2rem", padding: "1rem", background: "#fff3e0", borderRadius: "8px" }}>
-        <h3 style={{ color: "#e65100", marginBottom: "1rem" }}>
-          👀 Proctoring Report - Multiple Face Detection
-        </h3>
-        
-        {faceLogs.length > 0 ? (
-          <div>
-            <p style={{ color: "#d84315", fontWeight: "bold" }}>
-              ⚠️ {faceLogs.length} incident(s) detected
-            </p>
-            <ul style={{ marginTop: "1rem" }}>
-              {faceLogs.map((log, index) => (
-                <li key={index} style={{ marginBottom: "0.5rem" }}>
-                  <strong>{new Date(log.timestamp).toLocaleString()}</strong>
-                  {log.details && ` - ${log.details}`}
-                  {log.facesDetected && ` (${log.facesDetected} faces)`}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <p style={{ color: "#2e7d32", fontWeight: "bold" }}>
-            ✅ No multiple face incidents detected - Great job!
-          </p>
-        )}
+      <div className="result-score-card">
+        <div className="result-score-display">
+          {result.score}/{result.totalQuestions}
+        </div>
+        <div className="result-score-detail">Questions Answered</div>
+        <div className="result-percentage">{percentage}%</div>
+        <div className={`result-pass-badge ${isPassed ? "passed" : "failed"}`}>
+          {isPassed ? "✅ Passed" : "❌ Failed"}
+        </div>
       </div>
 
-      <button
-        onClick={handleLogoutAndGoHome}
-        style={{
-          background: "#1976d2",
-          color: "white",
-          padding: "0.75rem 1.5rem",
-          border: "none",
-          borderRadius: "8px",
-          cursor: "pointer",
-          marginTop: "2rem",
-          fontSize: "1rem",
-          fontWeight: "bold",
-          width: "100%",
-          transition: "background 0.3s ease"
-        }}
-        onMouseEnter={(e) => e.target.style.background = "#0d47a1"}
-        onMouseLeave={(e) => e.target.style.background = "#1976d2"}
-      >
-        🔓 Logout & Return to Login
-      </button>
+      <div className="result-section">
+        <h3>📝 Question Review</h3>
+        {result.questions.map((q, i) => {
+          const userAnswerIndex = result.answers[i];
+          const isCorrect = userAnswerIndex === q.correctOption;
+
+          return (
+            <div
+              key={i}
+              className={`result-question-item ${isCorrect ? "correct" : "incorrect"}`}
+            >
+              <div className="result-question-number">Question {i + 1}</div>
+              <div className="result-question-text">{q.text}</div>
+
+              <div className="result-answer-row">
+                <div className="result-answer-item">
+                  <span className="result-answer-label">Your Answer:</span>
+                  <span
+                    className={`result-answer-value ${
+                      isCorrect ? "correct-answer" : "wrong-answer"
+                    }`}
+                  >
+                    {q.options[userAnswerIndex] || "Not Answered"}
+                  </span>
+                </div>
+
+                <div className="result-answer-item">
+                  <span className="result-answer-label">Correct Answer:</span>
+                  <span className="result-answer-value correct-answer">
+                    {q.options[q.correctOption]}
+                  </span>
+                </div>
+              </div>
+
+              <span className="result-status-icon">{isCorrect ? "✅" : "❌"}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      {faceLogs.length > 0 && (
+        <div className="result-proctoring-section">
+          <h3>👀 Proctoring Report</h3>
+          <ul className="result-face-logs-list">
+            {faceLogs.map((log, index) => (
+              <li key={index} className="result-face-log-item">
+                <span className="result-face-log-time">
+                  {new Date(log.timestamp).toLocaleString()}
+                </span>
+                {" - Multiple faces detected"}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="result-actions">
+        <button
+          onClick={handleLogoutAndGoHome}
+          className="result-btn result-btn-primary"
+        >
+          🔓 Logout & Return to Login
+        </button>
+      </div>
     </div>
   );
 }
