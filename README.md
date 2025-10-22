@@ -1,6 +1,8 @@
 # Online Exam Proctoring System
 A full-stack web application that allows secure online examinations with role-based access for Admin and Student users. The system includes features such as face detection, exam monitoring, automated evaluation, and result generation.
+
 # 💻 Tech Stack
+```
 | Component          | Technology                      |
 | ------------------ | ------------------------------- |
 | **Frontend**       | React.js, HTML, CSS, JavaScript |
@@ -9,25 +11,28 @@ A full-stack web application that allows secure online examinations with role-ba
 | **Authentication** | JWT (JSON Web Token)            |
 | **Face Detection** | face-api.js                     |
 | **Styling**        | CSS, Tailwind (optional)        |
-
+```
 ## ⚙️ Installation
-1️⃣ Clone the Repository
-git clone https://github.com/yourusername/online-exam-proctoring.git
+
+# 1️⃣ Clone the Repository
+git clone https://github.com/sushanthms/online-exam-proctoring.git
 cd online-exam-proctoring
-2️⃣ Install Dependencies
+
+# 2️⃣ Install Dependencies
 cd backend
 npm install
 cd ../frontend
 npm install
-3️⃣ Configure Environment Variables
+
+# 3️⃣ Configure Environment Variables
 
 Create a .env file inside the backend directory:
-
+```
 MONGO_URI = your_mongodb_connection_string
 JWT_SECRET = your_secret_key
 PORT = 5000
-
-4️⃣ Run the Project
+```
+# 4️⃣ Run the Project
 # Start backend
 cd backend
 npm start
