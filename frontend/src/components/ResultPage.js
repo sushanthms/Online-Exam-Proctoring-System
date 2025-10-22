@@ -10,6 +10,26 @@ export default function ResultPage({ onLogout }) {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // --- Handler: Go to Dashboard ---
+  const handleGoToDashboard = () => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData?.role === "student") navigate("/student/dashboard");
+    else if (userData?.role === "admin") navigate("/admin/dashboard");
+    else navigate("/");
+  };
+
+  // --- Handler: Logout ---
+  const handleLogoutAndGoHome = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("name");
+
+    if (onLogout) onLogout();
+    alert("✅ You have been logged out successfully!");
+    navigate("/");
+    window.location.reload();
+  };
+
   useEffect(() => {
     const fetchResult = async () => {
       try {
@@ -23,13 +43,10 @@ export default function ResultPage({ onLogout }) {
         // Fetch exam result
         const response = await fetch(
           `http://localhost:4000/api/exam/result/${submissionId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
+          { headers: { Authorization: `Bearer ${token}` } }
         );
 
         if (!response.ok) throw new Error(`Failed to fetch result: ${response.status}`);
-
         const data = await response.json();
         setResult(data);
 
@@ -61,18 +78,7 @@ export default function ResultPage({ onLogout }) {
     fetchResult();
   }, [submissionId]);
 
-  const handleLogoutAndGoHome = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("name");
-
-    if (onLogout) onLogout();
-    alert("✅ You have been logged out successfully!");
-    navigate("/");
-    window.location.reload();
-  };
-
-  // Loading
+  // --- Render loading ---
   if (loading) {
     return (
       <div className="result-loading">
@@ -82,7 +88,7 @@ export default function ResultPage({ onLogout }) {
     );
   }
 
-  // Error
+  // --- Render error ---
   if (error) {
     return (
       <div className="container" style={{ padding: "2rem", textAlign: "center" }}>
@@ -95,7 +101,7 @@ export default function ResultPage({ onLogout }) {
     );
   }
 
-  // No result found
+  // --- Render no result ---
   if (!result) {
     return (
       <div className="container" style={{ padding: "2rem", textAlign: "center" }}>
@@ -107,7 +113,7 @@ export default function ResultPage({ onLogout }) {
     );
   }
 
-  // Success: Show Result
+  // --- Render success ---
   const percentage = ((result.score / result.totalQuestions) * 100).toFixed(1);
   const isPassed = percentage >= 60;
 
@@ -185,6 +191,13 @@ export default function ResultPage({ onLogout }) {
       )}
 
       <div className="result-actions">
+        <button
+          onClick={handleGoToDashboard}
+          className="result-btn result-btn-secondary"
+        >
+          🏠 Return to Dashboard
+        </button>
+
         <button
           onClick={handleLogoutAndGoHome}
           className="result-btn result-btn-primary"
