@@ -259,6 +259,3 @@ export default function ExamCreator({ user }) {
     </div>
   );
 }
-
-// ExamCreator.css
-/* Add this to a new file: frontend/src/components/ExamCreator.css */

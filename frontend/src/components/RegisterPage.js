@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { authApi } from "../api";
+import "./RegisterPage.css";
 
 export default function RegisterPage({ onRegistered }) {
   const [name, setName] = useState("");
@@ -15,7 +16,6 @@ export default function RegisterPage({ onRegistered }) {
     setLoading(true);
     setMessage("");
     try {
-      // Send role and secretKey along with user info
       const res = await authApi.register({ name, email, password, role, secretKey });
       setMessage(res.data.message);
       if (onRegistered) onRegistered();
@@ -28,29 +28,61 @@ export default function RegisterPage({ onRegistered }) {
 
   return (
     <div className="register-container">
-      <h2>Register</h2>
-      <form onSubmit={handleRegister}>
-        <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
-        <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-        
-        <select value={role} onChange={e => setRole(e.target.value)}>
-          <option value="student">Student</option>
-          <option value="admin">Admin</option>
-        </select>
-
-        {role === "admin" && (
+      <div className="register-box">
+        <h2 className="register-header">Register</h2>
+        <form className="register-form" onSubmit={handleRegister}>
           <input
-            type="password"
-            placeholder="Admin Secret Key"
-            value={secretKey}
-            onChange={e => setSecretKey(e.target.value)}
+            className="register-input"
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            required
           />
-        )}
+          <input
+            className="register-input"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+          />
+          <input
+            className="register-input"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+          />
 
-        <button disabled={loading}>{loading ? "Registering..." : "Register"}</button>
-      </form>
-      {message && <p>{message}</p>}
+          <select
+            className="register-input"
+            value={role}
+            onChange={e => setRole(e.target.value)}
+          >
+            <option value="student">Student</option>
+            <option value="admin">Admin</option>
+          </select>
+
+          {role === "admin" && (
+            <input
+              className="register-input"
+              type="password"
+              placeholder="Admin Secret Key"
+              value={secretKey}
+              onChange={e => setSecretKey(e.target.value)}
+              required
+            />
+          )}
+
+          {message && <div className="register-error">{message}</div>}
+
+          <button className="register-btn" disabled={loading}>
+            {loading ? "Registering..." : "Register"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

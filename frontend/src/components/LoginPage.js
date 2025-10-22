@@ -18,7 +18,8 @@ export default function LoginPage({ onLogin }) {
       const res = await authApi.login({ email, password });
       const { token, user } = res.data;
       onLogin(token, user);
-      navigate("/student/dashboard");
+      if (user.role === "admin") navigate("/admin/dashboard");
+      else navigate("/student/dashboard");
     } catch (err) {
       setErr("Invalid credentials or user not registered.");
     } finally {
@@ -28,14 +29,38 @@ export default function LoginPage({ onLogin }) {
 
   return (
     <div className="login-container">
-      <h2>Online Exam — Login</h2>
-      <form onSubmit={handleLogin}>
-        <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-        {err && <p className="error-msg">{err}</p>}
-        <button disabled={loading}>{loading ? "Logging in..." : "Login"}</button>
-      </form>
-      <p>Don't have an account? <Link to="/register">Register here</Link></p>
+      <div className="login-box">
+        <div className="login-header">
+          <h2>Online Exam</h2>
+          <p>Login to continue</p>
+        </div>
+        <form className="login-form" onSubmit={handleLogin}>
+          <input
+            className="login-input"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            className="login-input"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          {err && <div className="login-error">{err}</div>}
+          <button className="login-btn" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
+        <div className="login-footer">
+          <p>
+            Don't have an account? <Link className="login-link" to="/register">Register here</Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

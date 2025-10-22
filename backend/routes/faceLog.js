@@ -20,3 +20,4 @@ router.post("/logMultipleFace", async (req, res) => {
 });
 
 module.exports = router;
+
