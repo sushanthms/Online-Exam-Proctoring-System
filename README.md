@@ -19,11 +19,12 @@ git clone https://github.com/sushanthms/online-exam-proctoring.git
 cd online-exam-proctoring
 
 # 2️⃣ Install Dependencies
+```
 cd backend
 npm install
 cd ../frontend
 npm install
-
+```
 # 3️⃣ Configure Environment Variables
 
 Create a .env file inside the backend directory:
@@ -34,13 +35,14 @@ PORT = 5000
 ```
 # 4️⃣ Run the Project
 # Start backend
+```
 cd backend
 npm start
 
 # Start frontend
 cd ../frontend
 npm start
-
+```
 # Project Structure
 ```
 Online Exam Proctoring System
