@@ -10,7 +10,7 @@ A full-stack web application that allows secure online examinations with role-ba
 | **Face Detection** | face-api.js                     |
 | **Styling**        | CSS, Tailwind (optional)        |
 
-# ⚙️ Installation
+## ⚙️ Installation
 1️⃣ Clone the Repository
 git clone https://github.com/yourusername/online-exam-proctoring.git
 cd online-exam-proctoring
@@ -36,6 +36,8 @@ npm start
 cd ../frontend
 npm start
 
+# Project Structure
+```
 Online Exam Proctoring System
 │
 ├── backend
@@ -102,3 +104,4 @@ Online Exam Proctoring System
 │   └── package.json
 │
 └── README.md
+```
