@@ -156,7 +156,7 @@ mongod
 # Or if using MongoDB as a service
 sudo service mongod start
 ```
-Or Using MongoDB Compass (Recommended)
+# Or Using MongoDB Compass (Recommended)
 
 If you are using MongoDB Compass, you don’t need to run mongod manually.
 
@@ -211,14 +211,14 @@ npm start
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `REACT_APP_API_BASE` | Backend API URL | http://localhost:4000/api |
+| `REACT_APP_API_BASE` | Backend API URL | localhost:4000/api |
 
 ## 📖 Usage
 
 ### Creating Test Accounts
 
 #### Option 1: Using Registration Page
-1. Go to `http://localhost:3000/register`
+1. Go to `localhost:3000/register`
 2. Fill in the form
 3. Select role (Student or Admin)
 4. Click "Create Account"
