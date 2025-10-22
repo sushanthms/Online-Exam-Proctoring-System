@@ -118,8 +118,25 @@ export default function MyResultsPage({ user }) {
           </div>
         ) : (
           <div className="my-results-submissions-list">
-            {/* Use all the class names from CSS */}
-          </div>
+  {submissions.map((sub) => (
+    <div
+      key={sub._id}
+      className="my-results-submission-card"
+      onClick={() => navigate(`/result/${sub._id}`)}
+    >
+      <div className="my-results-submission-title">{sub.examTitle}</div>
+      <div className="my-results-submission-info">
+        <span>Score: {sub.score}/{sub.answers.length}</span>
+        <span>
+          Date: {new Date(sub.submittedAt).toLocaleDateString()}{" "}
+          {new Date(sub.submittedAt).toLocaleTimeString()}
+        </span>
+      </div>
+      <div className="my-results-view-btn">View Details ➡️</div>
+    </div>
+  ))}
+</div>
+
         )}
       </div>
     </div>
