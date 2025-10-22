@@ -145,6 +145,13 @@ cd models
 # Required files:
 # - tiny_face_detector_model-weights_manifest.json
 # - tiny_face_detector_model-shard1
+# Navigate to your frontend folder first
+cd frontend
+
+# Install dependencies
+npm install face-api.js
+npm install react-router-dom
+
 ```
 
 ### 5. Start MongoDB
@@ -421,37 +428,6 @@ if (process.env.NODE_ENV === 'development') {
 - [ ] Admin can see violations
 - [ ] Admin can manage users
 - [ ] Unauthorized access blocked
-
-### Test Accounts Setup Script
-
-```javascript
-// Run in MongoDB shell
-use proctordb;
-
-// Clear existing test data (optional)
-db.users.deleteMany({ email: { $regex: /test\.com$/ } });
-
-// Create test admin
-db.users.insertOne({
-  name: "Test Admin",
-  email: "admin@test.com",
-  passwordHash: "$2b$10$YourHashHere", // Use bcrypt to hash "password123"
-  role: "admin",
-  isActive: true,
-  createdAt: new Date()
-});
-
-// Create test student
-db.users.insertOne({
-  name: "Test Student",
-  email: "student@test.com",
-  passwordHash: "$2b$10$YourHashHere", // Use bcrypt to hash "password123"
-  role: "student",
-  isActive: true,
-  createdAt: new Date()
-});
-```
-
 
 
 ## 🙏 Acknowledgments
