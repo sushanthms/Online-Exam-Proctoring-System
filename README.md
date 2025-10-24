@@ -11,35 +11,11 @@ A comprehensive web-based examination platform with real-time proctoring, role-b
 - **JWT Authentication**: Token-based authentication with role information
 
 ###  Student Features
-<<<<<<< HEAD
 - Exam Taking: Browse available exams, real-time timer with auto-submit, randomized questions and options, multiple-choice questions (MCQs)
-=======
-- **Exam Taking**:
-  - Browse available exams
-  - Real-time timer with auto-submit
-  - Randomized questions and options
-  - Multiple choice questions (MCQ)
-  
-- **Proctoring Monitoring**:
-  - Live webcam monitoring
-  - Face detection using face-api.js
-  - Tab switching detection (3 strikes = auto-submit)
-  - Multiple face detection alerts
-  - Automatic violation logging
->>>>>>> 751a02d9345a24b99370f6a7e4b5d33375f1a2a5
 
 - Proctoring Monitoring: Live webcam monitoring, tab switching alerts (3 strikes = auto-submit), multiple face detection alerts, continuous identity verification, automatic violation logging
 
-<<<<<<< HEAD
 - Results & Analytics: Instant score calculation, detailed answer review, personal exam history, performance statistics dashboard
-=======
-###  Admin Features
-- **Dashboard Overview**:
-  - System-wide statistics
-  - User count (students/admins)
-  - Total exams and submissions
-  - Recent activity monitoring
->>>>>>> 751a02d9345a24b99370f6a7e4b5d33375f1a2a5
 
 ###  Admin Features
 - Dashboard Overview: System statistics, user counts (students/admins), total exams and submissions
@@ -124,17 +100,23 @@ Add the following to your frontend `.env` file:
 REACT_APP_API_BASE=http://localhost:4000/api
 ```
 
-```
-cd frontend/public
-mkdir models
-cd models
-```
-# Download from: https://github.com/justadudewhohacks/face-api.js/tree/master/weights
-# Required files:
-# - tiny_face_detector_model-weights_manifest.json
-# - tiny_face_detector_model-shard1
-# Navigate to your frontend folder first
-cd frontend
+## Download Additional Model Files
+Add these models to `frontend/public/models/`:
+
+Download from: https://github.com/justadudewhohacks/face-api.js/tree/master/weights
+
+ **Required files:**
+ ```
+ - tiny_face_detector_model-weights_manifest.json
+ - tiny_face_detector_model-shard1
+ - face_landmark_68_model-weights_manifest.json  
+ - face_landmark_68_model-shard1                 
+ - face_recognition_model-weights_manifest.json  
+ - face_recognition_model-shard1               
+ - face_recognition_model-shard2                 
+ - ssd_mobilenetv1_model-weights_manifest.json   
+ - ssd_mobilenetv1_model-shard1/2/3             
+ ```
 
 # Install dependencies
 npm install face-api.js
@@ -172,8 +154,6 @@ Once connected, create or select your database (for example, proctordb).
 ```bash
 cd Backend
 npm start
-# or for development with auto-reload
-npm run dev
 ```
 
 **Terminal 2 - Frontend:**
@@ -188,11 +168,6 @@ npm start
 4. Register a student account through the UI
 5. Login with admin credentials you just created
 6. Verify you can access admin dashboard
-## ⚙️ Configuration
-
-### Backend Configuration
-
-
 
 ## 📖 Usage
 
@@ -222,40 +197,33 @@ db.users.insertOne({
 
 // Create Student
 db.users.insertOne({
-  name: "Student User",
-  email: "student@test.com",
-  passwordHash: "$2b$10$YourHashedPasswordHere",
-  role: "student",
-  isActive: true,
-  createdAt: new Date()
+  {
+  _id: ObjectId,
+  name: String,
+  email: String,
+  passwordHash: String,
+  role: String,
+  
+  
+  faceDescriptor: [Number], 
+  isFaceRegistered: Boolean,
+  faceRegisteredAt: Date,
+  
+  createdAt: Date,
+  lastLogin: Date,
+  isActive: Boolean
+}
 })
 ```
 
-### User Workflows
-
-#### Student Workflow
-1. **Login** → Redirected to Student Dashboard
-2. **View Available Exams** → Browse exam list
-3. **Start Exam** → Accept proctoring terms
-4. **Take Exam** → Answer questions with monitoring
-5. **Submit** → View results immediately
-6. **My Results** → View exam history
-
-#### Admin Workflow
-1. **Login** → Redirected to Admin Dashboard
-2. **View Statistics** → Overview of system
-3. **Create Exam** → Add questions and options
-4. **Monitor Submissions** → View all student submissions
-5. **Check Violations** → Review proctoring alerts
-6. **Manage Users** → Activate/deactivate accounts
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 online-exam-proctoring/
-├── Backend/
+├── backend/
 │   ├── models/
 │   │   ├── User.js                 # User model with roles
+|   |   ├── FaceVerificationLog.js  
 │   │   ├── ExamPaper.js            # Exam model
 │   │   ├── Submission.js           # Submission model
 │   │   └── MultipleFaceLog.js      # Proctoring logs
@@ -265,7 +233,8 @@ online-exam-proctoring/
 │   │   ├── admin.js                # Admin routes
 │   │   └── faceLog.js              # Face detection logs
 │   ├── package.json
-│   └── server.js                   # Express server
+│   |── server.js                   # Express server
+|   └── .env        
 │
 ├── frontend/
 │   ├── public/
@@ -281,6 +250,12 @@ online-exam-proctoring/
 │   │   │   ├── LoginPage.css
 │   │   │   ├── RegisterPage.js          # Registration
 │   │   │   ├── RegisterPage.css
+|   |   |   ├── FaceRegistration.js
+|   |   |   ├── FaceRegistration.css
+|   |   |   ├── HomePage.js
+|   |   |   ├── HomePage.css
+|   |   |   ├── Notofication.js
+|   |   |   ├── ProctoringOverlay.js
 │   │   │   ├── ExamPage.js              # Exam interface
 │   │   │   ├── ExamPage.css
 │   │   │   ├── ExamCreator.js           # Create exams
@@ -288,8 +263,12 @@ online-exam-proctoring/
 │   │   │   ├── ResultPage.js            # View results
 │   │   │   ├── ResultPage.css
 │   │   │   ├── MyResultsPage.js         # Exam history
+|   |   |   ├── SubmissionPage.js        
 │   │   │   └── MyResultsPage.css
-│   │   ├── App.js                       # Main app with routing
+│   │   ├──styles/
+|   |   |   ├──global.css
+|   |   |   └──variables.css
+|   |   ├── App.js                       # Main app with routing
 │   │   ├── api.js                       # API utilities
 │   │   ├── index.js                     # Entry point
 │   │   └── styles.css                   # Global styles
@@ -299,7 +278,7 @@ online-exam-proctoring/
 └── .gitignore
 ```
 
-## 🔒 Security Features
+## Security Features
 
 ### Authentication & Authorization
 - **JWT Tokens**: Secure token-based authentication
@@ -324,19 +303,13 @@ online-exam-proctoring/
 
 ### Common Issues
 
-#### MongoDB Connection Error
-```bash
-# Error: MongoNetworkError
-# Solution: Ensure MongoDB is running
-mongod --dbpath /path/to/data/directory
-```
 
 #### Face Detection Not Working
 ```bash
 # Error: Cannot load models
 # Solution: Verify models are in public/models/
 ls frontend/public/models/
-# Should see: tiny_face_detector_model-*
+# Should see: tiny_face_detector_models-*
 ```
 
 #### Camera Access Denied
@@ -344,13 +317,6 @@ ls frontend/public/models/
 # Error: NotAllowedError
 # Solution: Enable camera permissions in browser
 # Chrome: Settings → Privacy → Site Settings → Camera
-```
-
-#### CORS Error
-```javascript
-// Solution: Verify backend CORS is configured
-// In Backend/server.js:
-app.use(cors());
 ```
 
 #### JWT Token Invalid
@@ -371,20 +337,6 @@ netstat -ano | findstr :4000
 taskkill /PID <PID> /F
 ```
 
-### Debug Mode
-
-Enable debug logging:
-
-```javascript
-// Backend/server.js - Add after imports
-if (process.env.NODE_ENV === 'development') {
-  app.use((req, res, next) => {
-    console.log(`${req.method} ${req.path}`);
-    next();
-  });
-}
-```
-
 ##  Testing
 
 ### Manual Testing Checklist
@@ -402,7 +354,6 @@ if (process.env.NODE_ENV === 'development') {
 - [ ] Admin can see violations
 - [ ] Admin can manage users
 - [ ] Unauthorized access blocked
-
 
 ##  Acknowledgments
 
