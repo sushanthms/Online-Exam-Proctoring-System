@@ -9,6 +9,17 @@ const UserSchema = new mongoose.Schema({
     enum: ['student', 'admin'],
     default: 'student' 
   },
+  // NEW: Face recognition fields
+  faceDescriptor: {
+    type: [Number], // Array of numbers representing face features
+    default: null
+  },
+  isFaceRegistered: {
+    type: Boolean,
+    default: false
+  },
+  faceRegisteredAt: Date,
+  
   createdAt: { type: Date, default: Date.now },
   lastLogin: Date,
   isActive: { type: Boolean, default: true }

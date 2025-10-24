@@ -128,6 +128,63 @@ router.get('/me', authenticate, async (req, res) => {
     res.status(401).json({ message: 'Invalid token' });
   }
 });
+router.post('/register-face', authenticate, async (req, res) => {
+  try {
+    const { faceDescriptor } = req.body;
+
+    if (!faceDescriptor || !Array.isArray(faceDescriptor)) {
+      return res.status(400).json({ message: 'Invalid face descriptor' });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.faceDescriptor = faceDescriptor;
+    user.isFaceRegistered = true;
+    user.faceRegisteredAt = new Date();
+    await user.save();
+
+    res.json({ 
+      message: 'Face registered successfully',
+      isFaceRegistered: true
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Get user face registration status
+router.get('/face-status', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('isFaceRegistered faceRegisteredAt');
+    res.json({ 
+      isFaceRegistered: user.isFaceRegistered || false,
+      faceRegisteredAt: user.faceRegisteredAt
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Get face descriptor for verification
+router.get('/face-descriptor', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('faceDescriptor isFaceRegistered');
+    
+    if (!user.isFaceRegistered) {
+      return res.status(404).json({ message: 'Face not registered' });
+    }
+
+    res.json({ faceDescriptor: user.faceDescriptor });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 // Export middleware functions
 module.exports = router;

@@ -6,12 +6,37 @@ export default function StudentDashboard({ user, onLogout }) {
   const [exams, setExams] = useState([]);
   const [userStats, setUserStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [faceRegistered, setFaceRegistered] = useState(false); // NEW
+  const [showFacePrompt, setShowFacePrompt] = useState(false); // NEW
   const navigate = useNavigate();
 
   useEffect(() => {
+    checkFaceRegistration(); // NEW
     fetchAvailableExams();
     fetchUserStats();
   }, []);
+
+  // NEW: Check if face is registered
+  const checkFaceRegistration = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:4000/api/auth/face-status", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setFaceRegistered(data.isFaceRegistered);
+        
+        // Show prompt if not registered
+        if (!data.isFaceRegistered) {
+          setShowFacePrompt(true);
+        }
+      }
+    } catch (error) {
+      console.error("Error checking face registration:", error);
+    }
+  };
 
   const fetchAvailableExams = async () => {
     try {
@@ -77,9 +102,19 @@ export default function StudentDashboard({ user, onLogout }) {
   };
 
   const handleStartExam = (examId) => {
+    // NEW: Check if face is registered before starting exam
+    if (!faceRegistered) {
+      if (window.confirm(
+        "⚠️ Face verification is required!\n\nYou must register your face before taking exams. Would you like to register now?"
+      )) {
+        navigate("/face-registration");
+      }
+      return;
+    }
+
     if (
       window.confirm(
-        "Ready to start the exam?\n\n⚠️ Important:\n- Ensure you're in a quiet environment\n- Good lighting for camera\n- No tab switching allowed\n- Keep face visible to camera"
+        "Ready to start the exam?\n\n⚠️ Important:\n- Your identity will be verified continuously\n- Ensure you're in a quiet environment\n- Good lighting for camera\n- No tab switching allowed\n- Keep face visible to camera"
       )
     ) {
       navigate(`/exam/${examId}`);
@@ -104,16 +139,51 @@ export default function StudentDashboard({ user, onLogout }) {
 
   return (
     <div className="student-dashboard">
+      {/* NEW: Face Registration Prompt */}
+      {showFacePrompt && !faceRegistered && (
+        <div className="face-prompt-banner">
+          <div className="face-prompt-content">
+            <span className="face-prompt-icon">📸</span>
+            <div className="face-prompt-text">
+              <strong>Face Verification Required</strong>
+              <p>Register your face to enable identity verification during exams</p>
+            </div>
+            <div className="face-prompt-actions">
+              <button 
+                onClick={() => navigate("/face-registration")}
+                className="btn-register-face"
+              >
+                Register Now
+              </button>
+              <button 
+                onClick={() => setShowFacePrompt(false)}
+                className="btn-dismiss"
+              >
+                Later
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <header className="dashboard-header">
         <div className="header-left">
           <h1>🎓 Student Dashboard</h1>
           <p className="welcome-text">Welcome back, {user.name}!</p>
+          {faceRegistered && (
+            <span className="face-verified-badge">✓ Face Verified</span>
+          )}
         </div>
         <div className="header-right">
           <button onClick={() => navigate("/my-results")} className="btn-secondary">
             📊 My Results
           </button>
+          {!faceRegistered && (
+            <button onClick={() => navigate("/face-registration")} className="btn-warning">
+              📸 Register Face
+            </button>
+          )}
           <button onClick={handleLogout} className="btn-logout">
             🚪 Logout
           </button>
@@ -177,6 +247,11 @@ export default function StudentDashboard({ user, onLogout }) {
                     <span className="detail-icon">⏱️</span>
                     <span>{exam.durationMins || 30} Minutes</span>
                   </div>
+                  {!faceRegistered && (
+                    <div className="exam-warning">
+                      <span>⚠️ Face registration required</span>
+                    </div>
+                  )}
                 </div>
 
                 <button
@@ -195,10 +270,12 @@ export default function StudentDashboard({ user, onLogout }) {
       <div className="instructions-section">
         <h3>⚠️ Exam Instructions</h3>
         <ul className="instructions-list">
+          <li>✓ Your identity will be verified continuously during the exam</li>
           <li>✓ Your camera will be monitored throughout the exam</li>
           <li>✓ Keep your face visible to the camera at all times</li>
           <li>✓ Do not switch tabs or windows - it will be tracked</li>
           <li>✓ Multiple faces detected will be logged as suspicious activity</li>
+          <li>✓ Identity verification failures will result in automatic submission</li>
           <li>✓ Exam will auto-submit when time expires</li>
           <li>✓ 3 tab switches will result in automatic submission</li>
         </ul>

@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const ExamPaper = require("../models/ExamPaper");
 const Submission = require("../models/Submission");
 const { authenticate } = require('./auth'); // IMPORT FROM AUTH
+const FaceVerificationLog = require("../models/FaceVerificationLog");
+
 
 const JWT_SECRET = process.env.JWT_SECRET || "verysecretkey";
 
@@ -360,6 +362,70 @@ router.get("/my-submissions/:userId", authenticate, async (req, res) => {
   } catch (err) {
     console.error("Error fetching submissions:", err);
     res.status(500).json({ error: "Server error" });
+  }
+});
+router.post("/verify-face", authenticate, async (req, res) => {
+  try {
+    const { examId, verificationStatus, confidence, details } = req.body;
+
+    const log = new FaceVerificationLog({
+      userId: req.user.id,
+      examId,
+      verificationStatus,
+      confidence: confidence || 0,
+      details: details || '',
+      timestamp: new Date()
+    });
+
+    await log.save();
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error logging face verification:", error);
+    res.status(500).json({ error: "Failed to log verification" });
+  }
+});
+
+// Get face verification logs for a specific exam
+router.get("/face-verification-logs/:userId/:examId", authenticate, async (req, res) => {
+  try {
+    const { userId, examId } = req.params;
+
+    // Check if user is requesting their own data or is admin
+    if (req.user.id !== userId && req.user.role !== 'admin') {
+      return res.status(403).json({ error: "Unauthorized access" });
+    }
+
+    const logs = await FaceVerificationLog.find({ userId, examId })
+      .sort({ timestamp: 1 })
+      .lean();
+
+    res.json({ verificationLogs: logs });
+  } catch (err) {
+    console.error("Error fetching verification logs:", err);
+    res.status(500).json({ error: "Failed to fetch logs" });
+  }
+});
+router.get('/test-verification-logs', authenticate, async (req, res) => {
+  try {
+    const FaceVerificationLog = require('../models/FaceVerificationLog');
+    
+    // Get all logs
+    const logs = await FaceVerificationLog.find().limit(10);
+    
+    // Get count
+    const count = await FaceVerificationLog.countDocuments();
+    
+    res.json({
+      totalLogs: count,
+      recentLogs: logs,
+      collectionExists: true
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ 
+      message: 'Error accessing logs',
+      error: err.message 
+    });
   }
 });
 module.exports = router;
