@@ -1,5 +1,5 @@
 # 🎓 Online Exam Proctoring System
-
+Sushanth M S
 A comprehensive web-based examination platform with real-time proctoring, role-based access control, and automated monitoring features.
 
 ## ✨ Features
