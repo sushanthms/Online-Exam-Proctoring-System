@@ -1,0 +1,23 @@
+# =====================
+# Node Modules
+# =====================
+backend/node_modules/
+frontend/node_modules/
+
+# =====================
+# Face-api models
+frontend/public/models/
+
+# Logs
+*.log
+
+# OS system files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# Build / Distribution folders
+dist/
+build/
