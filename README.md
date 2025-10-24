@@ -11,11 +11,35 @@ A comprehensive web-based examination platform with real-time proctoring, role-b
 - **JWT Authentication**: Token-based authentication with role information
 
 ###  Student Features
+<<<<<<< HEAD
 - Exam Taking: Browse available exams, real-time timer with auto-submit, randomized questions and options, multiple-choice questions (MCQs)
+=======
+- **Exam Taking**:
+  - Browse available exams
+  - Real-time timer with auto-submit
+  - Randomized questions and options
+  - Multiple choice questions (MCQ)
+  
+- **Proctoring Monitoring**:
+  - Live webcam monitoring
+  - Face detection using face-api.js
+  - Tab switching detection (3 strikes = auto-submit)
+  - Multiple face detection alerts
+  - Automatic violation logging
+>>>>>>> 751a02d9345a24b99370f6a7e4b5d33375f1a2a5
 
 - Proctoring Monitoring: Live webcam monitoring, tab switching alerts (3 strikes = auto-submit), multiple face detection alerts, continuous identity verification, automatic violation logging
 
+<<<<<<< HEAD
 - Results & Analytics: Instant score calculation, detailed answer review, personal exam history, performance statistics dashboard
+=======
+###  Admin Features
+- **Dashboard Overview**:
+  - System-wide statistics
+  - User count (students/admins)
+  - Total exams and submissions
+  - Recent activity monitoring
+>>>>>>> 751a02d9345a24b99370f6a7e4b5d33375f1a2a5
 
 ###  Admin Features
 - Dashboard Overview: System statistics, user counts (students/admins), total exams and submissions
