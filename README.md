@@ -1,63 +1,31 @@
-# 🎓 Online Exam Proctoring System
-Sushanth M S
+# Online Exam Proctoring System
+
 A comprehensive web-based examination platform with real-time proctoring, role-based access control, and automated monitoring features.
 
-## ✨ Features
+##  Features
 
-### 🔐 Role-Based Access Control (RBAC)
+###  Role-Based Access Control (RBAC)
 - **Two User Roles**: Students and Administrators
 - **Separate Dashboards**: Customized interfaces for each role
 - **Protected Routes**: Secure access control at route level
 - **JWT Authentication**: Token-based authentication with role information
 
-### 👨‍🎓 Student Features
-- **Exam Taking**:
-  - Browse available exams
-  - Real-time timer with auto-submit
-  - Randomized questions and options
-  - Multiple choice questions (MCQ)
-  
-- **Proctoring Monitoring**:
-  - Live webcam monitoring
-  - Face detection using face-api.js
-  - Tab switching detection (3 strikes = auto-submit)
-  - Multiple face detection alerts
-  - Automatic violation logging
+###  Student Features
+- Exam Taking: Browse available exams, real-time timer with auto-submit, randomized questions and options, multiple-choice questions (MCQs)
 
-- **Results & Analytics**:
-  - Instant score calculation
-  - Detailed answer review
-  - Personal exam history
-  - Performance statistics dashboard
+- Proctoring Monitoring: Live webcam monitoring, tab switching alerts (3 strikes = auto-submit), multiple face detection alerts, continuous identity verification, automatic violation logging
 
-### 👨‍💼 Admin Features
-- **Dashboard Overview**:
-  - System-wide statistics
-  - User count (students/admins)
-  - Total exams and submissions
-  - Recent activity monitoring
+- Results & Analytics: Instant score calculation, detailed answer review, personal exam history, performance statistics dashboard
 
-- **User Management**:
-  - View all registered users
-  - Activate/deactivate accounts
-  - Track user login history
-  - Role-based user filtering
+###  Admin Features
+- Dashboard Overview: System statistics, user counts (students/admins), total exams and submissions
 
-- **Exam Management**:
-  - Create new exams with custom questions
-  - Edit existing exams
-  - Delete exams
-  - Set exam duration
-  - Activate/deactivate exams
+- User Management: View all users, activate/deactivate accounts
 
-- **Monitoring & Reports**:
-  - View all student submissions
-  - Detailed submission reports
-  - Proctoring violation logs
-  - Face detection event tracking
-  - Tab switching reports
+- Exam Management: Create, edit, delete exams; set duration; activate/deactivate exams
 
-## 🛠 Tech Stack
+- Monitoring & Reports: View student submissions, detailed reports, proctoring violation logs, face detection events, tab switching activity
+##  Tech Stack
 
 ### Backend
 - **Node.js** - Runtime environment
@@ -74,7 +42,7 @@ A comprehensive web-based examination platform with real-time proctoring, role-b
 - **Axios** - HTTP client
 - **CSS3** - Styling
 
-## 📦 Prerequisites
+## Prerequisites
 
 Before you begin, ensure you have the following installed:
 
@@ -82,7 +50,7 @@ Before you begin, ensure you have the following installed:
 - **npm** (v6.0.0 or higher)
 - **MongoDB** (v4.0 or higher)
 
-## 🚀 Installation
+## Installation
 
 ### 1. Clone the Repository
 
@@ -93,14 +61,14 @@ cd online-exam-proctoring
 
 ### 2. Backend Setup
 
-```bash
-# Navigate to backend directory
+```
+ Navigate to backend directory
 cd Backend
 
-# Install dependencies
+Install dependencies
 npm install
 
-# Create .env file
+Create .env file
 touch .env
 or create manual an .env file
 ```
@@ -108,7 +76,7 @@ or create manual an .env file
 Add the following to your `.env` file:
 
 ```env
-PORT=4000
+PORT= 5000 # The port your server will run on
 MONGO_URI=mongodb://localhost:27017/proctordb
 JWT_SECRET=your_super_secret_jwt_key_here
 ```
@@ -132,15 +100,11 @@ Add the following to your frontend `.env` file:
 REACT_APP_API_BASE=http://localhost:4000/api
 ```
 
-### 4. Download Face Detection Models
-
-Download the face-api.js models and place them in `frontend/public/models/`:
-
-```bash
+```
 cd frontend/public
 mkdir models
 cd models
-
+```
 # Download from: https://github.com/justadudewhohacks/face-api.js/tree/master/weights
 # Required files:
 # - tiny_face_detector_model-weights_manifest.json
@@ -164,7 +128,7 @@ mongod
 sudo service mongod start
 ```
 # Or Using MongoDB Compass (Recommended)
-
+```
 If you are using MongoDB Compass, you don’t need to run mongod manually.
 
 Open MongoDB Compass.
@@ -176,6 +140,7 @@ mongodb://127.0.0.1:27017
 Click Connect.
 
 Once connected, create or select your database (for example, proctordb).
+```
 
 ### 6. Run the Application
 
@@ -203,22 +168,7 @@ npm start
 
 ### Backend Configuration
 
-**Environment Variables:**
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PORT` | Server port | 4000 |
-| `MONGO_URI` | MongoDB connection string | mongodb://localhost:27017/proctordb |
-| `JWT_SECRET` | Secret key for JWT | yoursecretkey |
-| `NODE_ENV` | Environment mode | development |
-
-### Frontend Configuration
-
-**Environment Variables:**
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `REACT_APP_API_BASE` | Backend API URL | localhost:4000/api |
 
 ## 📖 Usage
 
@@ -411,7 +361,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-## 🧪 Testing
+##  Testing
 
 ### Manual Testing Checklist
 
@@ -430,7 +380,7 @@ if (process.env.NODE_ENV === 'development') {
 - [ ] Unauthorized access blocked
 
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - face-api.js for face detection
 - MongoDB for database
