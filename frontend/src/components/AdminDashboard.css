@@ -309,28 +309,133 @@
 }
 
 /* Responsive */
+/* Add to StudentDashboard.css */
+
+/* Face Registration Prompt Banner */
+.face-prompt-banner {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 2px solid #f59e0b;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.face-prompt-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.face-prompt-icon {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+
+.face-prompt-text {
+  flex: 1;
+}
+
+.face-prompt-text strong {
+  display: block;
+  color: #92400e;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.face-prompt-text p {
+  color: #78350f;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.face-prompt-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-register-face {
+  background: #f59e0b;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-register-face:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+}
+
+.btn-dismiss {
+  background: transparent;
+  color: #78350f;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #d97706;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-dismiss:hover {
+  background: rgba(217, 119, 6, 0.1);
+}
+
+.face-verified-badge {
+  display: inline-block;
+  background: #d1fae5;
+  color: #065f46;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.btn-warning {
+  background: #f59e0b;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+}
+
+.exam-warning {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 0.5rem;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
-  .dashboard-header {
+  .face-prompt-content {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    text-align: center;
   }
 
-  .header-right {
+  .face-prompt-actions {
+    flex-direction: column;
     width: 100%;
-    justify-content: space-between;
   }
 
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .admin-tabs {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-  }
-
-  .table-container {
-    overflow-x: scroll;
+  .btn-register-face,
+  .btn-dismiss {
+    width: 100%;
   }
 }
