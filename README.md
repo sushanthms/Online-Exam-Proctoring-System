@@ -1,16 +1,16 @@
-# 🎓 Online Exam Proctoring System
-Sushanth M S
+# Online Exam Proctoring System
+
 A comprehensive web-based examination platform with real-time proctoring, role-based access control, and automated monitoring features.
 
-## ✨ Features
+##  Features
 
-### 🔐 Role-Based Access Control (RBAC)
+###  Role-Based Access Control (RBAC)
 - **Two User Roles**: Students and Administrators
 - **Separate Dashboards**: Customized interfaces for each role
 - **Protected Routes**: Secure access control at route level
 - **JWT Authentication**: Token-based authentication with role information
 
-### 👨‍🎓 Student Features
+###  Student Features
 - **Exam Taking**:
   - Browse available exams
   - Real-time timer with auto-submit
@@ -30,7 +30,7 @@ A comprehensive web-based examination platform with real-time proctoring, role-b
   - Personal exam history
   - Performance statistics dashboard
 
-### 👨‍💼 Admin Features
+###  Admin Features
 - **Dashboard Overview**:
   - System-wide statistics
   - User count (students/admins)
@@ -74,7 +74,7 @@ A comprehensive web-based examination platform with real-time proctoring, role-b
 - **Axios** - HTTP client
 - **CSS3** - Styling
 
-## 📦 Prerequisites
+## Prerequisites
 
 Before you begin, ensure you have the following installed:
 
@@ -82,7 +82,7 @@ Before you begin, ensure you have the following installed:
 - **npm** (v6.0.0 or higher)
 - **MongoDB** (v4.0 or higher)
 
-## 🚀 Installation
+## Installation
 
 ### 1. Clone the Repository
 
@@ -93,14 +93,14 @@ cd online-exam-proctoring
 
 ### 2. Backend Setup
 
-```bash
-# Navigate to backend directory
+```
+ Navigate to backend directory
 cd Backend
 
-# Install dependencies
+Install dependencies
 npm install
 
-# Create .env file
+Create .env file
 touch .env
 or create manual an .env file
 ```
@@ -108,7 +108,7 @@ or create manual an .env file
 Add the following to your `.env` file:
 
 ```env
-PORT=4000
+PORT= 5000 # The port your server will run on
 MONGO_URI=mongodb://localhost:27017/proctordb
 JWT_SECRET=your_super_secret_jwt_key_here
 ```
@@ -132,15 +132,11 @@ Add the following to your frontend `.env` file:
 REACT_APP_API_BASE=http://localhost:4000/api
 ```
 
-### 4. Download Face Detection Models
-
-Download the face-api.js models and place them in `frontend/public/models/`:
-
-```bash
+```
 cd frontend/public
 mkdir models
 cd models
-
+```
 # Download from: https://github.com/justadudewhohacks/face-api.js/tree/master/weights
 # Required files:
 # - tiny_face_detector_model-weights_manifest.json
@@ -164,7 +160,7 @@ mongod
 sudo service mongod start
 ```
 # Or Using MongoDB Compass (Recommended)
-
+```
 If you are using MongoDB Compass, you don’t need to run mongod manually.
 
 Open MongoDB Compass.
@@ -176,6 +172,7 @@ mongodb://127.0.0.1:27017
 Click Connect.
 
 Once connected, create or select your database (for example, proctordb).
+```
 
 ### 6. Run the Application
 
@@ -203,22 +200,7 @@ npm start
 
 ### Backend Configuration
 
-**Environment Variables:**
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PORT` | Server port | 4000 |
-| `MONGO_URI` | MongoDB connection string | mongodb://localhost:27017/proctordb |
-| `JWT_SECRET` | Secret key for JWT | yoursecretkey |
-| `NODE_ENV` | Environment mode | development |
-
-### Frontend Configuration
-
-**Environment Variables:**
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `REACT_APP_API_BASE` | Backend API URL | localhost:4000/api |
 
 ## 📖 Usage
 
@@ -411,7 +393,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-## 🧪 Testing
+##  Testing
 
 ### Manual Testing Checklist
 
@@ -430,7 +412,7 @@ if (process.env.NODE_ENV === 'development') {
 - [ ] Unauthorized access blocked
 
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - face-api.js for face detection
 - MongoDB for database
