@@ -1,3 +1,4 @@
+// ExamPage.js
 import React, { useEffect, useState, useRef } from "react";
 import * as faceapi from "face-api.js";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,22 +12,22 @@ export default function ExamPage({ user, onLogout }) {
   const [timeLeft, setTimeLeft] = useState(600);
   const [logs, setLogs] = useState([]);
   const [paper, setPaper] = useState(null);
-  const [answers, setAnswers] = useState([]);
+  const [answers, setAnswers] = useState([]); // will store option text values (strings)
   const [currentQ, setCurrentQ] = useState(0);
-  
+
   const [registeredDescriptor, setRegisteredDescriptor] = useState(null);
   const [faceVerificationStatus, setFaceVerificationStatus] = useState("loading");
   const [verificationFailures, setVerificationFailures] = useState(0);
   const [lastVerificationTime, setLastVerificationTime] = useState(Date.now());
   const [modelsLoaded, setModelsLoaded] = useState(false);
-  
+
   const multipleFaceActive = useRef(false);
   const startTimeRef = useRef(null);
   const isSubmitting = useRef(false);
   const verificationInterval = useRef(null);
   const navigate = useNavigate();
 
-     // Load registered face descriptor
+  // Load registered face descriptor
   useEffect(() => {
     loadRegisteredFace();
   }, []);
@@ -44,7 +45,7 @@ export default function ExamPage({ user, onLogout }) {
       if (response.ok) {
         const data = await response.json();
         console.log("✅ Received face descriptor, length:", data.faceDescriptor?.length);
-        
+
         if (data.faceDescriptor && Array.isArray(data.faceDescriptor) && data.faceDescriptor.length === 128) {
           setRegisteredDescriptor(new Float32Array(data.faceDescriptor));
           setFaceVerificationStatus("ready");
@@ -73,18 +74,18 @@ export default function ExamPage({ user, onLogout }) {
       try {
         console.log("🔄 Loading face detection models...");
         const MODEL_URL = process.env.PUBLIC_URL + "/models";
-        
+
         await Promise.all([
           faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
           faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
           faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
         ]);
-        
+
         console.log("✅ Models loaded:");
         console.log("   - TinyFaceDetector:", faceapi.nets.tinyFaceDetector.isLoaded);
         console.log("   - FaceLandmark68:", faceapi.nets.faceLandmark68Net.isLoaded);
         console.log("   - FaceRecognition:", faceapi.nets.faceRecognitionNet.isLoaded);
-        
+
         setModelsLoaded(true);
 
         const res = await fetch(`http://localhost:4000/api/exam/paper/${examId}`, {
@@ -99,13 +100,14 @@ export default function ExamPage({ user, onLogout }) {
         }
 
         setPaper(data);
+        // Initialize answers array with nulls (we will store option text values)
         setAnswers(new Array(data.questions.length).fill(null));
         setTimeLeft((data.durationMins || 10) * 60);
 
-        const stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { width: 640, height: 480 } 
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: 640, height: 480 }
         });
-        
+
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           console.log("✅ Camera started");
@@ -119,7 +121,6 @@ export default function ExamPage({ user, onLogout }) {
 
     loadModelsAndExam();
   }, [examId, navigate]);
-
 
   // Face Verification - Continuous monitoring
   useEffect(() => {
@@ -190,9 +191,9 @@ export default function ExamPage({ user, onLogout }) {
         console.error("🚨 MISMATCH!");
         const newCount = verificationFailures + 1;
         setVerificationFailures(newCount);
-        
+
         logVerification("failed", confidence, `Mismatch (d=${distance.toFixed(3)})`);
-        
+
         setLogs((prev) => [
           ...prev,
           `🚨 MISMATCH #${newCount} at ${new Date().toLocaleTimeString()}`
@@ -214,7 +215,7 @@ export default function ExamPage({ user, onLogout }) {
   const logVerification = async (status, confidence, details) => {
     try {
       console.log("📝 Logging:", status, details);
-      
+
       const response = await fetch("http://localhost:4000/api/exam/verify-face", {
         method: "POST",
         headers: {
@@ -318,6 +319,7 @@ export default function ExamPage({ user, onLogout }) {
     return `${min}:${sec < 10 ? "0" : ""}${sec}`;
   };
 
+  // store option TEXT (value) instead of index
   const handleAnswerChange = (index, value) => {
     const newAnswers = [...answers];
     newAnswers[index] = value;
@@ -337,14 +339,14 @@ export default function ExamPage({ user, onLogout }) {
     try {
       const response = await fetch("http://localhost:4000/api/exam/submit", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
         body: JSON.stringify({
           userId: user._id,
           examId: examId,
-          answers: answers,
+          answers: answers, // array of option text values
         }),
       });
 
@@ -375,15 +377,13 @@ export default function ExamPage({ user, onLogout }) {
     <div className="exam-page">
       {/* Add debug info (remove in production) */}
       <div style={{ background: '#f0f0f0', padding: '10px', fontSize: '12px', marginBottom: '10px' }}>
-        DEBUG: Models: {modelsLoaded ? '✓' : '✗'} | 
-        Descriptor: {registeredDescriptor ? '✓' : '✗'} | 
-        Status: {faceVerificationStatus} | 
+        DEBUG: Models: {modelsLoaded ? '✓' : '✗'} |
+        Descriptor: {registeredDescriptor ? '✓' : '✗'} |
+        Status: {faceVerificationStatus} |
         Failures: {verificationFailures}/3
       </div>
 
-      {/* Rest of your JSX */}
-      {/* ... */}
-      <button 
+      <button
         onClick={() => {
           if (window.confirm("Are you sure you want to exit? Your progress will be lost!")) {
             if (user.role === "student") navigate("/student/dashboard");
@@ -398,7 +398,6 @@ export default function ExamPage({ user, onLogout }) {
 
       <div className="exam-body">
         <div className="exam-main-content">
-          {/* Progress Indicator */}
           <div className="exam-progress">
             Question {currentQ + 1} of {paper.questions.length}
           </div>
@@ -407,15 +406,15 @@ export default function ExamPage({ user, onLogout }) {
             <h3>Q{currentQ + 1}: {question.text}</h3>
             <div className="exam-options">
               {question.options.map((opt, idx) => (
-                <label 
-                  key={idx} 
-                  className={`exam-option-label ${answers[currentQ] === idx ? 'selected' : ''}`}
+                <label
+                  key={idx}
+                  className={`exam-option-label ${answers[currentQ] === opt ? 'selected' : ''}`}
                 >
                   <input
                     type="radio"
                     name={`q${currentQ}`}
-                    checked={answers[currentQ] === idx}
-                    onChange={() => handleAnswerChange(currentQ, idx)}
+                    checked={answers[currentQ] === opt}
+                    onChange={() => handleAnswerChange(currentQ, opt)}
                   />
                   {opt}
                 </label>

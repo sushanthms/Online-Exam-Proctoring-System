@@ -13,11 +13,16 @@ const submissionSchema = new mongoose.Schema({
     type: String,
     required: true 
   },
-  answers: [
-    {
-      type: Number  // ✅ Simple and matches your submit route
-    }
-  ],
+  answers: {
+  type: [String],
+  required: true
+},
+
+correctAnswers: {
+  type: [String],
+  required: true
+},
+
   score: {         // ✅ ADDED: Missing field
     type: Number, 
     required: true,

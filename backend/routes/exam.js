@@ -1,3 +1,4 @@
+// exam.js
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
@@ -5,7 +6,6 @@ const ExamPaper = require("../models/ExamPaper");
 const Submission = require("../models/Submission");
 const { authenticate } = require('./auth'); // IMPORT FROM AUTH
 const FaceVerificationLog = require("../models/FaceVerificationLog");
-
 
 const JWT_SECRET = process.env.JWT_SECRET || "verysecretkey";
 
@@ -17,6 +17,47 @@ let QUESTIONS = [
 ];
 
 let logs = [];
+
+// Helper: given a question object (from DB or mock), compute correctOptionIndex and correctOptionValue
+function normalizeQuestion(q) {
+  // q is expected to have at least: text (or q), options (array), and either correctOption (index) or ans (index) or correctOptionValue (string)
+  const options = q.options || q.opts || [];
+  let correctIndex = null;
+  let correctValue = null;
+
+  // Common naming possibilities
+  if (typeof q.correctOption === "number") {
+    correctIndex = q.correctOption;
+  } else if (typeof q.ans === "number") {
+    correctIndex = q.ans;
+  }
+
+  // If correctIndex available and options present
+  if (Number.isInteger(correctIndex) && options[correctIndex] !== undefined) {
+    correctValue = options[correctIndex];
+  }
+
+  // If direct correctOptionValue provided (string) use it
+  if (!correctValue && typeof q.correctOptionValue === "string") {
+    correctValue = q.correctOptionValue;
+  } else if (!correctValue && typeof q.correctAnswer === "string") {
+    correctValue = q.correctAnswer;
+  }
+
+  // Fallback: if correctIndex isn't set but correctValue exists in options, derive index
+  if (!Number.isInteger(correctIndex) && correctValue) {
+    const idx = options.indexOf(correctValue);
+    if (idx >= 0) correctIndex = idx;
+  }
+
+  // Final fallback: leave as nulls if we couldn't determine
+  return {
+    text: q.text || q.q || "",
+    options,
+    correctOption: Number.isInteger(correctIndex) ? correctIndex : null,
+    correctOptionValue: typeof correctValue === "string" ? correctValue : null,
+  };
+}
 
 // ========== AUTH MIDDLEWARE ==========
 function auth(req, res, next) {
@@ -35,7 +76,7 @@ function auth(req, res, next) {
 router.get("/available", authenticate, async (req, res) => {
   try {
     const exams = await ExamPaper.find().select('title questions durationMins');
-    
+
     if (!exams || exams.length === 0) {
       return res.json({
         exams: [
@@ -68,7 +109,7 @@ router.get("/paper/:examId", authenticate, async (req, res) => {
   try {
     const { examId } = req.params;
     console.log("Fetching exam with ID:", examId);
-    
+
     let selectedExam;
 
     if (examId === "EXAM001") {
@@ -79,6 +120,8 @@ router.get("/paper/:examId", authenticate, async (req, res) => {
         questions: QUESTIONS.map((q) => ({
           text: q.q,
           options: q.options,
+          // NOTE: do NOT reveal correctOptionValue to the client in a real system.
+          // The system currently included correctOption; keep as index if needed by front-end.
           correctOption: q.ans,
         })),
       };
@@ -107,6 +150,9 @@ router.get("/paper/:examId", authenticate, async (req, res) => {
     const qcopy = JSON.parse(JSON.stringify(selectedExam.questions));
     shuffle(qcopy);
     qcopy.forEach((q) => shuffle(q.options));
+
+    // Important: do not attach the correctOptionValue to the response (keeps answers secret).
+    // We'll rely on students sending back option text values; backend can still store the correct text internally.
 
     res.json({
       examId: selectedExam._id,
@@ -176,7 +222,7 @@ router.post("/submit", authenticate, async (req, res) => {
     }
 
     let examPaper;
-    
+
     if (examId === "EXAM001") {
       examPaper = {
         _id: examId,
@@ -198,9 +244,35 @@ router.post("/submit", authenticate, async (req, res) => {
       return res.status(404).json({ error: "Exam not found" });
     }
 
+    // Normalize questions to ensure we have a correctOptionValue for each
+    const normalizedQuestions = (examPaper.questions || []).map(q => {
+      const nq = normalizeQuestion(q);
+      // If correctOptionValue couldn't be determined, try derive from stored fields:
+      if (!nq.correctOptionValue && nq.correctOption !== null && nq.options[nq.correctOption]) {
+        nq.correctOptionValue = nq.options[nq.correctOption];
+      }
+      return nq;
+    });
+
+    // Score by comparing the student's answer value with the correct option value (both strings)
     let score = 0;
     answers.forEach((answer, index) => {
-      if (examPaper.questions[index] && answer === examPaper.questions[index].correctOption) {
+      const q = normalizedQuestions[index];
+      if (!q) return;
+      const studentAnswerValue = answer; // We expect frontend to send the option text
+      const correctValue = q.correctOptionValue;
+
+      if (!correctValue) {
+        // Can't verify this question (no correct value found) — skip scoring
+        console.warn(`No correct value available for question index ${index}`);
+        return;
+      }
+
+      // Compare trimmed string equality
+      if (
+        String(studentAnswerValue || "").trim() ===
+        String(correctValue || "").trim()
+      ) {
         score++;
       }
     });
@@ -224,7 +296,7 @@ router.post("/submit", authenticate, async (req, res) => {
 
     res.json({
       message: "Exam submitted successfully!",
-      totalQuestions: examPaper.questions.length,
+      totalQuestions: normalizedQuestions.length,
       score: score,
       submissionId: submission._id,
     });
@@ -240,7 +312,7 @@ router.get("/result/:submissionId", authenticate, async (req, res) => {
     console.log("Fetching result for submission:", req.params.submissionId);
 
     const submission = await Submission.findById(req.params.submissionId);
-    
+
     if (!submission) {
       console.log("Submission not found");
       return res.status(404).json({ error: "Submission not found" });
@@ -249,7 +321,7 @@ router.get("/result/:submissionId", authenticate, async (req, res) => {
     console.log("Submission found:", submission);
 
     let examPaper;
-    
+
     if (submission.examId === "EXAM001") {
       examPaper = {
         _id: submission.examId,
@@ -279,15 +351,27 @@ router.get("/result/:submissionId", authenticate, async (req, res) => {
       };
     }
 
+    // Normalize questions and attach correctOptionValue and correctOption index (if derivable)
+    const normalizedQuestions = (examPaper.questions || []).map(q => {
+      const nq = normalizeQuestion(q);
+      // Keep correctOption (index) if present and also include correctOptionValue for the UI
+      if (nq.correctOption === null && nq.correctOptionValue) {
+        // derive index if possible
+        const idx = nq.options.indexOf(nq.correctOptionValue);
+        if (idx >= 0) nq.correctOption = idx;
+      }
+      return nq;
+    });
+
     console.log("Returning result data");
 
     res.json({
       userId: submission.userId,
       examId: submission.examId,
       score: submission.score,
-      totalQuestions: examPaper.questions.length,
-      questions: examPaper.questions,
-      answers: submission.answers,
+      totalQuestions: normalizedQuestions.length,
+      questions: normalizedQuestions, // each question includes options and correctOptionValue
+      answers: submission.answers, // student's answers (we expect option text values)
     });
   } catch (err) {
     console.error("Result fetch error:", err);
@@ -364,6 +448,7 @@ router.get("/my-submissions/:userId", authenticate, async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
 router.post("/verify-face", authenticate, async (req, res) => {
   try {
     const { examId, verificationStatus, confidence, details } = req.body;

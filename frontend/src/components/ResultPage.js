@@ -1,3 +1,4 @@
+// ResultPage.js
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./ResultPage.css";
@@ -137,8 +138,11 @@ export default function ResultPage({ onLogout }) {
       <div className="result-section">
         <h3>📝 Question Review</h3>
         {result.questions.map((q, i) => {
-          const userAnswerIndex = result.answers[i];
-          const isCorrect = userAnswerIndex === q.correctOption;
+          // result.answers contains option TEXT values (or null)
+          const userAnswerValue = result.answers && result.answers[i] !== undefined ? result.answers[i] : null;
+          const correctValue = q.correctOptionValue || (typeof q.correctOption === "number" ? q.options[q.correctOption] : null);
+
+          const isCorrect = String(userAnswerValue || "").trim() === String(correctValue || "").trim();
 
           return (
             <div
@@ -156,14 +160,14 @@ export default function ResultPage({ onLogout }) {
                       isCorrect ? "correct-answer" : "wrong-answer"
                     }`}
                   >
-                    {q.options[userAnswerIndex] || "Not Answered"}
+                    {userAnswerValue || "Not Answered"}
                   </span>
                 </div>
 
                 <div className="result-answer-item">
                   <span className="result-answer-label">Correct Answer:</span>
                   <span className="result-answer-value correct-answer">
-                    {q.options[q.correctOption]}
+                    {correctValue || "Not Available"}
                   </span>
                 </div>
               </div>
