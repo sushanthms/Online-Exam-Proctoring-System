@@ -325,11 +325,11 @@ router.get("/result/:submissionId", authenticate, async (req, res) => {
     if (submission.examId === "EXAM001") {
       examPaper = {
         _id: submission.examId,
-        questions: QUESTIONS.map(q => ({
+        questions: QUESTIONS.map((q) => ({
           text: q.q,
           options: q.options,
-          correctOption: q.ans
-        }))
+          correctOption: q.ans,
+        })),
       };
     } else {
       try {
@@ -343,20 +343,18 @@ router.get("/result/:submissionId", authenticate, async (req, res) => {
       console.log("Using mock exam data for result");
       examPaper = {
         _id: submission.examId,
-        questions: QUESTIONS.map(q => ({
+        questions: QUESTIONS.map((q) => ({
           text: q.q,
           options: q.options,
-          correctOption: q.ans
-        }))
+          correctOption: q.ans,
+        })),
       };
     }
 
-    // Normalize questions and attach correctOptionValue and correctOption index (if derivable)
-    const normalizedQuestions = (examPaper.questions || []).map(q => {
+    // Normalize questions for display
+    const normalizedQuestions = (examPaper.questions || []).map((q) => {
       const nq = normalizeQuestion(q);
-      // Keep correctOption (index) if present and also include correctOptionValue for the UI
       if (nq.correctOption === null && nq.correctOptionValue) {
-        // derive index if possible
         const idx = nq.options.indexOf(nq.correctOptionValue);
         if (idx >= 0) nq.correctOption = idx;
       }
@@ -365,19 +363,22 @@ router.get("/result/:submissionId", authenticate, async (req, res) => {
 
     console.log("Returning result data");
 
+    // ✅ Include current submission's multipleFaceLogs in the result
     res.json({
       userId: submission.userId,
       examId: submission.examId,
       score: submission.score,
       totalQuestions: normalizedQuestions.length,
-      questions: normalizedQuestions, // each question includes options and correctOptionValue
-      answers: submission.answers, // student's answers (we expect option text values)
+      questions: normalizedQuestions,
+      answers: submission.answers,
+      multipleFaceLogs: submission.multipleFaceLogs || [], // ✅ Added
     });
   } catch (err) {
     console.error("Result fetch error:", err);
     res.status(500).json({ error: "Server error: " + err.message });
   }
 });
+
 
 // ========== PROCTORING EVENTS ==========
 const MultipleFaceLog = require("../models/MultipleFaceLog");
