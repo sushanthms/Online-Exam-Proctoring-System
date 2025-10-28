@@ -31,53 +31,43 @@ export default function ResultPage({ onLogout }) {
     window.location.reload();
   };
 
-  useEffect(() => {
-    const fetchResult = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          setError("No authentication token found. Please login.");
-          setLoading(false);
-          return;
-        }
-
-        // Fetch exam result
-        const response = await fetch(
-          `http://localhost:4000/api/exam/result/${submissionId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-
-        if (!response.ok) throw new Error(`Failed to fetch result: ${response.status}`);
-        const data = await response.json();
-        setResult(data);
-
-        // Fetch face logs if userId and examId exist
-        if (data.userId && data.examId) {
-          try {
-            const faceRes = await fetch(
-              `http://localhost:4000/api/exam/face-logs/${data.userId}/${data.examId}`,
-              { headers: { Authorization: `Bearer ${token}` } }
-            );
-
-            if (faceRes.ok) {
-              const faceData = await faceRes.json();
-              setFaceLogs(faceData.faceLogs || []);
-            }
-          } catch (faceError) {
-            console.warn("Could not fetch face logs:", faceError);
-          }
-        }
-
+ useEffect(() => {
+  const fetchResult = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("No authentication token found. Please login.");
         setLoading(false);
-      } catch (error) {
-        console.error("Error fetching result:", error);
-        setError(error.message);
-        setLoading(false);
+        return;
       }
-    };
 
-    fetchResult();
-  }, [submissionId]);
+      const response = await fetch(
+        `http://localhost:4000/api/exam/result/${submissionId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (!response.ok) throw new Error(`Failed to fetch result: ${response.status}`);
+      const data = await response.json();
+      setResult(data);
+
+      // ✅ Get face logs from current submission directly
+      if (data.multipleFaceLogs && data.multipleFaceLogs.length > 0) {
+        setFaceLogs(data.multipleFaceLogs);
+      } else {
+        setFaceLogs([]);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching result:", error);
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
+  fetchResult();
+}, [submissionId]);
+
 
   // --- Render loading ---
   if (loading) {

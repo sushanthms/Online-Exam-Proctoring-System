@@ -1,4 +1,7 @@
-// ExamPage.js
+// =============================================
+// ExamPage.js - Complete and Fixed Version
+// =============================================
+
 import React, { useEffect, useState, useRef } from "react";
 import * as faceapi from "face-api.js";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,13 +15,12 @@ export default function ExamPage({ user, onLogout }) {
   const [timeLeft, setTimeLeft] = useState(600);
   const [logs, setLogs] = useState([]);
   const [paper, setPaper] = useState(null);
-  const [answers, setAnswers] = useState([]); // will store option text values (strings)
+  const [answers, setAnswers] = useState([]);
   const [currentQ, setCurrentQ] = useState(0);
 
   const [registeredDescriptor, setRegisteredDescriptor] = useState(null);
   const [faceVerificationStatus, setFaceVerificationStatus] = useState("loading");
   const [verificationFailures, setVerificationFailures] = useState(0);
-  const [lastVerificationTime, setLastVerificationTime] = useState(Date.now());
   const [modelsLoaded, setModelsLoaded] = useState(false);
 
   const multipleFaceActive = useRef(false);
@@ -27,7 +29,17 @@ export default function ExamPage({ user, onLogout }) {
   const verificationInterval = useRef(null);
   const navigate = useNavigate();
 
-  // Load registered face descriptor
+  // ✅ Stop camera utility
+  const stopCamera = () => {
+    const stream = videoRef.current?.srcObject;
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+      videoRef.current.srcObject = null;
+      console.log("🛑 Camera stopped");
+    }
+  };
+
+  // ✅ Load registered face descriptor
   useEffect(() => {
     loadRegisteredFace();
   }, []);
@@ -40,24 +52,17 @@ export default function ExamPage({ user, onLogout }) {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log("Response status:", response.status);
-
       if (response.ok) {
         const data = await response.json();
-        console.log("✅ Received face descriptor, length:", data.faceDescriptor?.length);
-
         if (data.faceDescriptor && Array.isArray(data.faceDescriptor) && data.faceDescriptor.length === 128) {
           setRegisteredDescriptor(new Float32Array(data.faceDescriptor));
           setFaceVerificationStatus("ready");
           console.log("✅ Face verification system ready!");
         } else {
-          console.error("❌ Invalid descriptor format or length");
           alert("Invalid face descriptor. Please re-register your face.");
           navigate("/face-registration");
         }
       } else {
-        const errorData = await response.json();
-        console.error("❌ Error:", errorData);
         alert("⚠️ Please register your face before taking exams!");
         navigate("/face-registration");
       }
@@ -68,11 +73,11 @@ export default function ExamPage({ user, onLogout }) {
     }
   };
 
-  // Load exam paper & models
+  // ✅ Load exam paper & models
   useEffect(() => {
     const loadModelsAndExam = async () => {
       try {
-        console.log("🔄 Loading face detection models...");
+        console.log("🔄 Loading models...");
         const MODEL_URL = process.env.PUBLIC_URL + "/models";
 
         await Promise.all([
@@ -80,11 +85,6 @@ export default function ExamPage({ user, onLogout }) {
           faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
           faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
         ]);
-
-        console.log("✅ Models loaded:");
-        console.log("   - TinyFaceDetector:", faceapi.nets.tinyFaceDetector.isLoaded);
-        console.log("   - FaceLandmark68:", faceapi.nets.faceLandmark68Net.isLoaded);
-        console.log("   - FaceRecognition:", faceapi.nets.faceRecognitionNet.isLoaded);
 
         setModelsLoaded(true);
 
@@ -95,23 +95,16 @@ export default function ExamPage({ user, onLogout }) {
         if (!res.ok) throw new Error(`Server error: ${res.status}`);
         const data = await res.json();
 
-        if (!data?.questions?.length) {
-          throw new Error("No questions in exam");
-        }
+        if (!data?.questions?.length) throw new Error("No questions in exam");
 
         setPaper(data);
-        // Initialize answers array with nulls (we will store option text values)
         setAnswers(new Array(data.questions.length).fill(null));
         setTimeLeft((data.durationMins || 10) * 60);
 
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: { width: 640, height: 480 }
+          video: { width: 640, height: 480 },
         });
-
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          console.log("✅ Camera started");
-        }
+        if (videoRef.current) videoRef.current.srcObject = stream;
       } catch (err) {
         console.error("❌ Setup failed:", err);
         alert(`Failed to load exam: ${err.message}`);
@@ -120,43 +113,27 @@ export default function ExamPage({ user, onLogout }) {
     };
 
     loadModelsAndExam();
+    return () => stopCamera(); // ✅ Cleanup on unmount
   }, [examId, navigate]);
 
-  // Face Verification - Continuous monitoring
+  // ✅ Face verification monitoring
   useEffect(() => {
-    if (!paper || !registeredDescriptor || !modelsLoaded) {
-      console.log("⏳ Waiting for:", {
-        paper: !!paper,
-        registeredDescriptor: !!registeredDescriptor,
-        modelsLoaded
-      });
-      return;
-    }
-
-    console.log("🚀 Starting face verification monitoring...");
+    if (!paper || !registeredDescriptor || !modelsLoaded) return;
 
     verificationInterval.current = setInterval(async () => {
       await verifyFaceIdentity();
-    }, 5000); // Every 5 seconds
+    }, 5000);
 
-    // Initial verification
     setTimeout(() => verifyFaceIdentity(), 2000);
 
     return () => {
-      if (verificationInterval.current) {
-        clearInterval(verificationInterval.current);
-        console.log("🛑 Stopped face verification");
-      }
+      clearInterval(verificationInterval.current);
+      console.log("🛑 Stopped face verification");
     };
   }, [paper, registeredDescriptor, modelsLoaded]);
 
   const verifyFaceIdentity = async () => {
-    if (!videoRef.current || !registeredDescriptor) {
-      console.warn("⚠️ Cannot verify - missing video or descriptor");
-      return;
-    }
-
-    console.log("🔍 Verifying face identity...");
+    if (!videoRef.current || !registeredDescriptor) return;
 
     try {
       const detection = await faceapi
@@ -165,105 +142,54 @@ export default function ExamPage({ user, onLogout }) {
         .withFaceDescriptor();
 
       if (!detection) {
-        console.warn("⚠️ No face detected");
-        logVerification("no_face", 0, "No face in frame");
-        setLogs((prev) => [...prev, `⚠️ No face at ${new Date().toLocaleTimeString()}`]);
+        setLogs(prev => [...prev, `⚠️ No face at ${new Date().toLocaleTimeString()}`]);
         return;
       }
 
       const distance = faceapi.euclideanDistance(registeredDescriptor, detection.descriptor);
-      const threshold = 0.6;
-      const isMatch = distance < threshold;
+      const isMatch = distance < 0.6;
       const confidence = Math.max(0, 1 - distance);
 
-      console.log("📊 Verification result:");
-      console.log("   Distance:", distance.toFixed(4));
-      console.log("   Threshold:", threshold);
-      console.log("   Match:", isMatch);
-      console.log("   Confidence:", (confidence * 100).toFixed(1) + "%");
-
       if (isMatch) {
-        console.log("✅ VERIFIED");
-        logVerification("verified", confidence, `Verified (d=${distance.toFixed(3)})`);
         setFaceVerificationStatus("verified");
-        setLastVerificationTime(Date.now());
       } else {
-        console.error("🚨 MISMATCH!");
         const newCount = verificationFailures + 1;
         setVerificationFailures(newCount);
-
-        logVerification("failed", confidence, `Mismatch (d=${distance.toFixed(3)})`);
-
-        setLogs((prev) => [
-          ...prev,
-          `🚨 MISMATCH #${newCount} at ${new Date().toLocaleTimeString()}`
-        ]);
-
-        alert(`🚨 IDENTITY MISMATCH DETECTED!\n\nThis is attempt ${newCount} of 3.\nDistance: ${distance.toFixed(3)}\nThreshold: ${threshold}\n\nPlease ensure you are the registered user!`);
-
+        alert(`🚨 Identity mismatch detected! Attempt ${newCount} of 3.`);
         if (newCount >= 3) {
-          alert("🚨 3 identity verification failures!\n\nExam will be auto-submitted.");
+          alert("🚨 Too many mismatches. Auto-submitting exam...");
           handleSubmit();
         }
       }
-
     } catch (error) {
-      console.error("❌ Verification error:", error);
+      console.error("Verification error:", error);
     }
   };
 
-  const logVerification = async (status, confidence, details) => {
-    try {
-      console.log("📝 Logging:", status, details);
-
-      const response = await fetch("http://localhost:4000/api/exam/verify-face", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({
-          examId,
-          verificationStatus: status,
-          confidence,
-          details,
-        }),
-      });
-
-      if (response.ok) {
-        console.log("✅ Logged to database");
-      } else {
-        console.error("❌ Log failed:", await response.text());
-      }
-    } catch (error) {
-      console.error("❌ Log error:", error);
-    }
-  };
-
-  // --- Tab switch detection ---
+  // ✅ Tab switching detection
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.hidden) setTabSwitchCount((prev) => prev + 1);
+      if (document.hidden) setTabSwitchCount(prev => prev + 1);
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, []);
 
-  // --- Tab switch warnings ---
+  // ✅ Tab warning logic
   useEffect(() => {
     if (tabSwitchCount === 2 && !warningShown) {
       alert("⚠️ Warning: You switched tabs! One more switch will auto-submit your exam.");
       setWarningShown(true);
     } else if (tabSwitchCount >= 3) {
-      alert("❌ You switched tabs too many times. Your exam will be auto-submitted now.");
+      alert("❌ Too many tab switches. Auto-submitting your exam...");
       handleSubmit();
     }
   }, [tabSwitchCount, warningShown]);
 
-  // --- Timer countdown ---
+  // ✅ Timer
   useEffect(() => {
     if (timeLeft <= 0) {
-      alert("⏰ Time's up! Your exam will be auto-submitted.");
+      alert("⏰ Time’s up! Auto-submitting your exam...");
       handleSubmit();
       return;
     }
@@ -271,47 +197,35 @@ export default function ExamPage({ user, onLogout }) {
     return () => clearTimeout(timer);
   }, [timeLeft]);
 
-  // --- Multiple face detection ---
+  // ✅ Multiple face detection
   useEffect(() => {
     if (!paper) return;
-
     const interval = setInterval(async () => {
       if (!videoRef.current) return;
       try {
-        const detections = await faceapi.detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions());
-
+        const detections = await faceapi.detectAllFaces(
+          videoRef.current,
+          new faceapi.TinyFaceDetectorOptions()
+        );
         if (detections.length > 1) {
           if (!multipleFaceActive.current) {
             multipleFaceActive.current = true;
             startTimeRef.current = new Date();
-            setLogs((prev) => [...prev, `Multiple faces started at ${startTimeRef.current.toLocaleTimeString()}`]);
+            setLogs(prev => [...prev, `Multiple faces detected at ${startTimeRef.current.toLocaleTimeString()}`]);
           }
-
-          await fetch("http://localhost:4000/api/exam/proctor-event", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            body: JSON.stringify({
-              examId: examId,
-              type: "multiple-face",
-              data: { message: `Detected ${detections.length} faces` },
-            }),
-          });
         } else if (multipleFaceActive.current) {
           multipleFaceActive.current = false;
           const endTime = new Date();
           const duration = Math.round((endTime - startTimeRef.current) / 1000);
-          setLogs((prev) => [...prev, `Multiple faces ended at ${endTime.toLocaleTimeString()} (Duration: ${duration}s)`]);
+          setLogs(prev => [...prev, `Multiple faces ended at ${endTime.toLocaleTimeString()} (${duration}s)`]);
         }
-      } catch (error) {
-        console.error("Face detection error:", error);
+      } catch (err) {
+        console.error("Face detection error:", err);
       }
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [paper, examId]);
+  }, [paper]);
 
   const formatTime = (seconds) => {
     const min = Math.floor(seconds / 60);
@@ -319,19 +233,19 @@ export default function ExamPage({ user, onLogout }) {
     return `${min}:${sec < 10 ? "0" : ""}${sec}`;
   };
 
-  // store option TEXT (value) instead of index
   const handleAnswerChange = (index, value) => {
     const newAnswers = [...answers];
     newAnswers[index] = value;
     setAnswers(newAnswers);
   };
 
+  // ✅ Submit handler (corrected)
   const handleSubmit = async () => {
     if (isSubmitting.current) return;
-    if (!paper) { alert("Exam data not loaded!"); return; }
+    if (!paper) return alert("Exam not loaded!");
 
     if (tabSwitchCount < 3 && timeLeft > 0) {
-      if (!window.confirm("Are you sure you want to submit your exam?")) return;
+      if (!window.confirm("Are you sure you want to submit?")) return;
     }
 
     isSubmitting.current = true;
@@ -341,23 +255,27 @@ export default function ExamPage({ user, onLogout }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
           userId: user._id,
-          examId: examId,
-          answers: answers, // array of option text values
+          examId,
+          answers,
         }),
       });
 
       if (!response.ok) throw new Error(`Submit failed: ${response.status}`);
       const data = await response.json();
 
-      if (data.submissionId) navigate(`/result/${data.submissionId}`);
-      else throw new Error("No submission ID returned");
-    } catch (error) {
-      console.error("Submit error:", error);
-      alert("❌ Failed to submit exam. Please try again.");
+      if (data.submissionId) {
+        stopCamera();
+        navigate(`/result/${data.submissionId}`);
+      } else {
+        throw new Error("No submission ID returned");
+      }
+    } catch (err) {
+      console.error("Submit error:", err);
+      alert("❌ Failed to submit exam. Try again.");
       isSubmitting.current = false;
     }
   };
@@ -375,17 +293,14 @@ export default function ExamPage({ user, onLogout }) {
 
   return (
     <div className="exam-page">
-      {/* Add debug info (remove in production) */}
-      <div style={{ background: '#f0f0f0', padding: '10px', fontSize: '12px', marginBottom: '10px' }}>
-        DEBUG: Models: {modelsLoaded ? '✓' : '✗'} |
-        Descriptor: {registeredDescriptor ? '✓' : '✗'} |
-        Status: {faceVerificationStatus} |
-        Failures: {verificationFailures}/3
+      <div className="debug-info">
+        Models: {modelsLoaded ? "✅" : "❌"} | Descriptor: {registeredDescriptor ? "✅" : "❌"} | Status: {faceVerificationStatus} | Failures: {verificationFailures}/3
       </div>
 
       <button
         onClick={() => {
-          if (window.confirm("Are you sure you want to exit? Your progress will be lost!")) {
+          if (window.confirm("Exit exam? Progress will be lost!")) {
+            stopCamera();
             if (user.role === "student") navigate("/student/dashboard");
             else if (user.role === "admin") navigate("/admin/dashboard");
             else navigate("/");
@@ -403,12 +318,14 @@ export default function ExamPage({ user, onLogout }) {
           </div>
 
           <div className="exam-question">
-            <h3>Q{currentQ + 1}: {question.text}</h3>
+            <h3>
+              Q{currentQ + 1}: {question.text}
+            </h3>
             <div className="exam-options">
               {question.options.map((opt, idx) => (
                 <label
                   key={idx}
-                  className={`exam-option-label ${answers[currentQ] === opt ? 'selected' : ''}`}
+                  className={`exam-option-label ${answers[currentQ] === opt ? "selected" : ""}`}
                 >
                   <input
                     type="radio"
@@ -424,13 +341,17 @@ export default function ExamPage({ user, onLogout }) {
 
           <div className="exam-nav-buttons">
             {currentQ > 0 && (
-              <button onClick={() => setCurrentQ(currentQ - 1)} className="exam-prev-btn">⬅️ Previous</button>
+              <button onClick={() => setCurrentQ(currentQ - 1)} className="exam-prev-btn">
+                ⬅️ Previous
+              </button>
             )}
             {currentQ < paper.questions.length - 1 ? (
-              <button onClick={() => setCurrentQ(currentQ + 1)} className="exam-next-btn">Next ➡️</button>
+              <button onClick={() => setCurrentQ(currentQ + 1)} className="exam-next-btn">
+                Next ➡️
+              </button>
             ) : (
               <button onClick={handleSubmit} className="exam-submit-btn" disabled={isSubmitting.current}>
-                {isSubmitting.current ? '⏳ Submitting...' : '🚀 Submit Exam'}
+                {isSubmitting.current ? "⏳ Submitting..." : "🚀 Submit Exam"}
               </button>
             )}
           </div>
@@ -440,17 +361,19 @@ export default function ExamPage({ user, onLogout }) {
           <div className="exam-camera-preview">
             <h4>📷 Camera Monitor</h4>
             <video ref={videoRef} autoPlay muted style={{ width: "100%", maxWidth: "300px" }} />
-            <p className="exam-camera-status">🎥 Camera Active</p>
+            <p>🎥 Camera Active</p>
           </div>
 
           <div className="exam-face-logs">
             <h4>👀 Face Detection Logs</h4>
             {logs.length > 0 ? (
               <ul>
-                {logs.map((log, i) => <li key={i}>{log}</li>)}
+                {logs.map((log, i) => (
+                  <li key={i}>{log}</li>
+                ))}
               </ul>
             ) : (
-              <p className="exam-face-logs-empty">✅ No issues detected</p>
+              <p>✅ No issues detected</p>
             )}
           </div>
         </div>
