@@ -8,6 +8,7 @@ import AdminDashboard from './components/AdminDashboard';
 import PreExamSetup from './components/PreExamSetup'; // NEW
 import ExamPage from './components/ExamPage';
 import ResultPage from './components/ResultPage';
+import ResultsPage from './components/ResultsPage'; // NEW - Enhanced results with proctoring violations
 import MyResultsPage from './components/MyResultsPage';
 import ExamCreator from './components/ExamCreator';
 import FaceRegistration from './components/FaceRegistration';
@@ -184,6 +185,15 @@ function App() {
           element={
             <ProtectedRoute user={user} allowedRoles={['student']}>
               <ResultPage onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/results/:examId"
+          element={
+            <ProtectedRoute user={user} allowedRoles={['student', 'admin']}>
+              <ResultsPage user={user} />
             </ProtectedRoute>
           }
         />

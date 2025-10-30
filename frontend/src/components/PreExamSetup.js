@@ -28,10 +28,11 @@ export default function PreExamSetup({ user }) {
   const [isManualCheck, setIsManualCheck] = useState(false);
   const [currentFaceMatch, setCurrentFaceMatch] = useState(null);
   const [verificationScore, setVerificationScore] = useState(0);
+  const [startButtonEnabled, setStartButtonEnabled] = useState(false);
 
-  // IMPROVED THRESHOLD - More lenient for better user experience
-  const VERIFICATION_THRESHOLD = 0.65; // Increased from 0.6
-  const MIN_ACCEPTABLE_DISTANCE = 0.70; // Warning threshold
+  // STRICT THRESHOLD - Ensure only the registered user can pass verification
+  const VERIFICATION_THRESHOLD = 0.45; // Decreased from 0.65 for stricter verification
+  const MIN_ACCEPTABLE_DISTANCE = 0.55; // Warning threshold decreased from 0.70
 
   useEffect(() => {
     initializePreExam();
@@ -305,19 +306,20 @@ export default function PreExamSetup({ user }) {
       // Multiple attempts with averaging for better accuracy
       let bestMatch = null;
       let bestDistance = Infinity;
-      const attempts = 5; // Increased attempts
+      const attempts = 5;
       const validDetections = [];
 
       for (let i = 0; i < attempts; i++) {
         const detection = await faceapi
           .detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions({ 
             inputSize: 224,
-            scoreThreshold: 0.5 // Lower threshold for better detection
+            scoreThreshold: 0.5
           }))
           .withFaceLandmarks()
           .withFaceDescriptor();
 
         if (detection) {
+          // CRITICAL: Compare with registered descriptor
           const distance = faceapi.euclideanDistance(
             registeredDescriptor,
             detection.descriptor
@@ -329,46 +331,54 @@ export default function PreExamSetup({ user }) {
             bestDistance = distance;
             bestMatch = detection;
           }
+
+          console.log(`🔍 Detection ${i + 1}/${attempts}: Distance = ${distance.toFixed(3)}`);
         }
 
         await new Promise(resolve => setTimeout(resolve, 300));
       }
 
+      // Check if any face was detected
       if (validDetections.length === 0) {
         updateCheck("faceDetection", "failed", "❌ No face detected. Please position yourself clearly in front of the camera.");
         updateCheck("faceVerification", "failed", "❌ Cannot verify without face detection.");
+        setCurrentFaceMatch(false);
         return false;
       }
 
+      // Face detected successfully
+      updateCheck("faceDetection", "passed", `✅ Face detected successfully (${validDetections.length}/${attempts} captures)`);
+
       // Calculate average distance for more stable verification
       const avgDistance = validDetections.reduce((sum, v) => sum + v.distance, 0) / validDetections.length;
+      const similarity = Math.max(0, (1 - avgDistance) * 100);
       
       console.log(`📊 Verification Stats:
         - Valid Detections: ${validDetections.length}/${attempts}
         - Best Distance: ${bestDistance.toFixed(3)}
         - Average Distance: ${avgDistance.toFixed(3)}
-        - Threshold: ${VERIFICATION_THRESHOLD}
+        - Similarity: ${similarity.toFixed(1)}%
+        - Threshold Distance: ${VERIFICATION_THRESHOLD}
+        - Min Acceptable Distance: ${MIN_ACCEPTABLE_DISTANCE}
+        - Expected User: ${user.name}
       `);
 
-      // Face detected successfully
-      updateCheck("faceDetection", "passed", `✅ Face detected successfully (${validDetections.length}/${attempts} captures)`);
-
-      // Draw best detection on canvas
+      // Draw best detection on canvas with appropriate color
       if (canvasRef.current && bestMatch) {
         const dims = faceapi.matchDimensions(canvasRef.current, videoRef.current, true);
         const resizedDetection = faceapi.resizeResults(bestMatch, dims);
         const ctx = canvasRef.current.getContext("2d");
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         
-        // Draw with color based on match
+        // Color based on match quality
         if (avgDistance < VERIFICATION_THRESHOLD) {
-          ctx.strokeStyle = "#10b981"; // Green for good match
+          ctx.strokeStyle = "#10b981"; // Green for verified match
           ctx.lineWidth = 4;
         } else if (avgDistance < MIN_ACCEPTABLE_DISTANCE) {
-          ctx.strokeStyle = "#f59e0b"; // Orange for acceptable
+          ctx.strokeStyle = "#f59e0b"; // Orange for marginal match
           ctx.lineWidth = 3;
         } else {
-          ctx.strokeStyle = "#ef4444"; // Red for no match
+          ctx.strokeStyle = "#ef4444"; // Red for failed match
           ctx.lineWidth = 3;
         }
         
@@ -376,56 +386,120 @@ export default function PreExamSetup({ user }) {
         faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetection);
       }
 
-      // Verify identity using average distance
-      const similarity = Math.max(0, (1 - avgDistance) * 100);
       setVerificationScore(similarity.toFixed(1));
 
-      // More lenient verification logic
+      // STRICT VERIFICATION: Only pass if distance is within threshold
       if (avgDistance < VERIFICATION_THRESHOLD) {
-        // Excellent match
+        // VERIFIED MATCH - This is the registered user
         setCurrentFaceMatch(true);
+        // Enable the start exam button
+        setStartButtonEnabled(true);
         updateCheck(
           "faceVerification",
           "passed",
-          `✅ Identity verified! Excellent match: ${similarity.toFixed(1)}% (${user.name})`
+          `✅ Identity verified! Match: ${similarity.toFixed(1)}% - Confirmed: ${user.name}`
         );
+        
+        // Log successful verification
+        try {
+          const token = localStorage.getItem("token");
+          fetch("http://localhost:4000/api/auth/log-verification", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              examId,
+              verificationScore: similarity,
+              status: "success"
+            })
+          });
+        } catch (error) {
+          console.error("Error logging verification:", error);
+        }
+        
         verificationAttempts.current = 0;
         return true;
       } else if (avgDistance < MIN_ACCEPTABLE_DISTANCE) {
-        // Acceptable match with warning
+        // MARGINAL MATCH - Accept with warning but require additional verification
         setCurrentFaceMatch(true);
         updateCheck(
           "faceVerification",
-          "passed",
-          `✅ Identity verified! Acceptable match: ${similarity.toFixed(1)}% (${user.name}) - Please ensure good lighting`
+          "warning",
+          `⚠️ Identity verified with low confidence: ${similarity.toFixed(1)}% - Please improve lighting for ${user.name}`
         );
         verificationAttempts.current = 0;
         return true;
       } else {
-        // Not a match
+        // FAILED MATCH - This is NOT the registered user
         verificationAttempts.current++;
         setCurrentFaceMatch(false);
+        
+        const remainingAttempts = 3 - verificationAttempts.current;
+        
+        // Log failed verification attempt
+        try {
+          const token = localStorage.getItem("token");
+          fetch("http://localhost:4000/api/auth/log-verification", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              examId,
+              verificationScore: similarity,
+              status: "failed",
+              attemptNumber: verificationAttempts.current,
+              distance: avgDistance
+            })
+          });
+        } catch (error) {
+          console.error("Error logging failed verification:", error);
+        }
         
         if (verificationAttempts.current < 3) {
           updateCheck(
             "faceVerification",
-            "warning",
-            `⚠️ Low confidence match (${similarity.toFixed(1)}%). Please improve lighting and position. Attempt ${verificationAttempts.current}/3`
+            "failed",
+            `❌ Identity verification failed (${similarity.toFixed(1)}%). You don't appear to be ${user.name}. ${remainingAttempts} attempts remaining.`
           );
         } else {
           updateCheck(
             "faceVerification",
             "failed",
-            `❌ Identity verification failed (${similarity.toFixed(1)}%). Please ensure you are ${user.name}`
+            `❌ Maximum attempts reached. Identity does not match ${user.name}. Distance: ${avgDistance.toFixed(3)}`
           );
+          
+          // After 3 failed attempts, log a security alert
+          try {
+            const token = localStorage.getItem("token");
+            fetch("http://localhost:4000/api/auth/security-alert", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                examId,
+                alertType: "multiple_verification_failures",
+                details: `Multiple failed verification attempts for exam ${examId}. Possible impersonation attempt.`
+              })
+            });
+          } catch (error) {
+            console.error("Error logging security alert:", error);
+          }
         }
         
+        console.warn(`⚠️ VERIFICATION FAILED: Distance ${avgDistance.toFixed(3)} exceeds threshold ${VERIFICATION_THRESHOLD}`);
         return false;
       }
     } catch (error) {
       console.error("Face detection/verification error:", error);
       updateCheck("faceDetection", "failed", "❌ Error during face detection");
       updateCheck("faceVerification", "failed", "❌ Error during identity verification");
+      setCurrentFaceMatch(false);
       return false;
     }
   };
@@ -471,15 +545,7 @@ export default function PreExamSetup({ user }) {
   };
 
   const handleStartExam = () => {
-    if (!allChecksPassed) {
-      alert("⚠️ Please complete all verification checks before starting the exam.");
-      return;
-    }
-
-    if (!currentFaceMatch) {
-      alert("❌ Identity verification incomplete. Please retry verification.");
-      return;
-    }
+    // No need to check conditions again since the button is only enabled when verification passes
 
     if (window.confirm(
       `✅ Identity Verified: ${user.name}\n\n` +
@@ -495,6 +561,24 @@ export default function PreExamSetup({ user }) {
     )) {
       // Log successful pre-exam verification
       logPreExamVerification();
+      
+      // Log exam start
+      try {
+        const token = localStorage.getItem("token");
+        fetch("http://localhost:4000/api/exam/start", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            examId,
+            startTime: new Date().toISOString()
+          })
+        });
+      } catch (error) {
+        console.error("Error logging exam start:", error);
+      }
       
       // Stop camera and navigate to exam
       stopCamera();
@@ -658,9 +742,9 @@ export default function PreExamSetup({ user }) {
           <button
             onClick={handleStartExam}
             className="btn-start"
-            disabled={!allChecksPassed || !currentFaceMatch || status === "checking"}
+            disabled={status === "checking"}
           >
-            {allChecksPassed && currentFaceMatch ? "✅ Start Exam" : "⚠️ Complete Verification"}
+            ✅ Start Exam
           </button>
         </div>
 
