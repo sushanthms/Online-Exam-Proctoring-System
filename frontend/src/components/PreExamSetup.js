@@ -1,4 +1,4 @@
-// frontend/src/components/PreExamSetup.js - ENHANCED VERSION
+// frontend/src/components/PreExamSetup.js - FIXED VERSION WITH IMPROVED VERIFICATION
 import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import { useNavigate, useParams } from "react-router-dom";
@@ -28,6 +28,10 @@ export default function PreExamSetup({ user }) {
   const [isManualCheck, setIsManualCheck] = useState(false);
   const [currentFaceMatch, setCurrentFaceMatch] = useState(null);
   const [verificationScore, setVerificationScore] = useState(0);
+
+  // IMPROVED THRESHOLD - More lenient for better user experience
+  const VERIFICATION_THRESHOLD = 0.65; // Increased from 0.6
+  const MIN_ACCEPTABLE_DISTANCE = 0.70; // Warning threshold
 
   useEffect(() => {
     initializePreExam();
@@ -206,7 +210,7 @@ export default function PreExamSetup({ user }) {
 
     try {
       // Wait a moment for camera to stabilize
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Check lighting
       await checkLighting();
@@ -216,8 +220,8 @@ export default function PreExamSetup({ user }) {
       const faceCheckPassed = await checkFaceDetectionAndVerification();
       
       if (!faceCheckPassed) {
-        setStatus("failed");
-        setMessage("❌ Identity verification failed. Cannot proceed with exam.");
+        setStatus("incomplete");
+        setMessage("⚠️ Please adjust position and lighting for better verification");
         setAllChecksPassed(false);
         return;
       }
@@ -232,14 +236,14 @@ export default function PreExamSetup({ user }) {
         check => check.status === "passed" || check.status === "warning"
       );
       
-      setAllChecksPassed(allPassed);
+      setAllChecksPassed(allPassed && faceCheckPassed);
       
-      if (allPassed) {
+      if (allPassed && faceCheckPassed) {
         setStatus("ready");
         setMessage("✅ All checks passed! Identity verified. You're ready to start the exam.");
       } else {
         setStatus("incomplete");
-        setMessage("⚠️ Some checks failed. Please resolve all issues before proceeding.");
+        setMessage("⚠️ Please resolve all issues before proceeding.");
       }
     } catch (error) {
       console.error("Check error:", error);
@@ -275,15 +279,15 @@ export default function PreExamSetup({ user }) {
       const avgBrightness = totalBrightness / (data.length / 4);
       
       if (avgBrightness < 50) {
-        updateCheck("lighting", "failed", "❌ Too dark. Please improve lighting conditions.");
+        updateCheck("lighting", "warning", "⚠️ Low lighting detected. Please improve lighting for better results.");
       } else if (avgBrightness > 200) {
-        updateCheck("lighting", "warning", "⚠️ Too bright. Consider adjusting lighting.");
+        updateCheck("lighting", "warning", "⚠️ Very bright. Consider adjusting lighting.");
       } else {
         updateCheck("lighting", "passed", `✅ Lighting is good (${Math.round(avgBrightness)}/255)`);
       }
     } catch (error) {
       console.error("Lighting check error:", error);
-      updateCheck("lighting", "failed", "❌ Failed to check lighting");
+      updateCheck("lighting", "warning", "⚠️ Unable to check lighting");
     }
   };
 
@@ -298,95 +302,124 @@ export default function PreExamSetup({ user }) {
         return false;
       }
 
-      // Multiple attempts for better accuracy
+      // Multiple attempts with averaging for better accuracy
       let bestMatch = null;
       let bestDistance = Infinity;
-      const attempts = 3;
+      const attempts = 5; // Increased attempts
+      const validDetections = [];
 
       for (let i = 0; i < attempts; i++) {
         const detection = await faceapi
-          .detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions({ inputSize: 224 }))
+          .detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions({ 
+            inputSize: 224,
+            scoreThreshold: 0.5 // Lower threshold for better detection
+          }))
           .withFaceLandmarks()
           .withFaceDescriptor();
 
-        if (!detection) {
-          if (i === attempts - 1) {
-            updateCheck("faceDetection", "failed", "❌ No face detected. Please position yourself clearly.");
-            updateCheck("faceVerification", "failed", "❌ Cannot verify without face detection.");
-            return false;
-          }
-          await new Promise(resolve => setTimeout(resolve, 500));
-          continue;
-        }
-
-        // Calculate distance
-        const distance = faceapi.euclideanDistance(
-          registeredDescriptor,
-          detection.descriptor
-        );
-
-        if (distance < bestDistance) {
-          bestDistance = distance;
-          bestMatch = detection;
-        }
-
-        // Draw detection on canvas
-        if (canvasRef.current && i === attempts - 1) {
-          const dims = faceapi.matchDimensions(canvasRef.current, videoRef.current, true);
-          const resizedDetection = faceapi.resizeResults(detection, dims);
-          const ctx = canvasRef.current.getContext("2d");
-          ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        if (detection) {
+          const distance = faceapi.euclideanDistance(
+            registeredDescriptor,
+            detection.descriptor
+          );
           
-          // Draw with color based on match
-          if (bestDistance < 0.6) {
-            ctx.strokeStyle = "#10b981"; // Green for match
-          } else {
-            ctx.strokeStyle = "#ef4444"; // Red for no match
-          }
-          ctx.lineWidth = 3;
+          validDetections.push({ detection, distance });
           
-          faceapi.draw.drawDetections(canvasRef.current, resizedDetection);
-          faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetection);
+          if (distance < bestDistance) {
+            bestDistance = distance;
+            bestMatch = detection;
+          }
         }
 
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 300));
       }
 
-      if (!bestMatch) {
-        updateCheck("faceDetection", "failed", "❌ No face detected after multiple attempts.");
-        updateCheck("faceVerification", "failed", "❌ Identity verification failed.");
+      if (validDetections.length === 0) {
+        updateCheck("faceDetection", "failed", "❌ No face detected. Please position yourself clearly in front of the camera.");
+        updateCheck("faceVerification", "failed", "❌ Cannot verify without face detection.");
         return false;
       }
 
+      // Calculate average distance for more stable verification
+      const avgDistance = validDetections.reduce((sum, v) => sum + v.distance, 0) / validDetections.length;
+      
+      console.log(`📊 Verification Stats:
+        - Valid Detections: ${validDetections.length}/${attempts}
+        - Best Distance: ${bestDistance.toFixed(3)}
+        - Average Distance: ${avgDistance.toFixed(3)}
+        - Threshold: ${VERIFICATION_THRESHOLD}
+      `);
+
       // Face detected successfully
-      updateCheck("faceDetection", "passed", "✅ Face detected successfully");
+      updateCheck("faceDetection", "passed", `✅ Face detected successfully (${validDetections.length}/${attempts} captures)`);
 
-      // Verify identity
-      const similarity = Math.max(0, (1 - bestDistance) * 100);
+      // Draw best detection on canvas
+      if (canvasRef.current && bestMatch) {
+        const dims = faceapi.matchDimensions(canvasRef.current, videoRef.current, true);
+        const resizedDetection = faceapi.resizeResults(bestMatch, dims);
+        const ctx = canvasRef.current.getContext("2d");
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        
+        // Draw with color based on match
+        if (avgDistance < VERIFICATION_THRESHOLD) {
+          ctx.strokeStyle = "#10b981"; // Green for good match
+          ctx.lineWidth = 4;
+        } else if (avgDistance < MIN_ACCEPTABLE_DISTANCE) {
+          ctx.strokeStyle = "#f59e0b"; // Orange for acceptable
+          ctx.lineWidth = 3;
+        } else {
+          ctx.strokeStyle = "#ef4444"; // Red for no match
+          ctx.lineWidth = 3;
+        }
+        
+        faceapi.draw.drawDetections(canvasRef.current, resizedDetection);
+        faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetection);
+      }
+
+      // Verify identity using average distance
+      const similarity = Math.max(0, (1 - avgDistance) * 100);
       setVerificationScore(similarity.toFixed(1));
-      setCurrentFaceMatch(bestDistance < 0.6);
 
-      console.log(`Identity verification: Distance=${bestDistance.toFixed(3)}, Similarity=${similarity.toFixed(1)}%`);
-
-      if (bestDistance < 0.6) {
+      // More lenient verification logic
+      if (avgDistance < VERIFICATION_THRESHOLD) {
+        // Excellent match
+        setCurrentFaceMatch(true);
         updateCheck(
           "faceVerification",
           "passed",
-          `✅ Identity verified! Match: ${similarity.toFixed(1)}% (${user.name})`
+          `✅ Identity verified! Excellent match: ${similarity.toFixed(1)}% (${user.name})`
+        );
+        verificationAttempts.current = 0;
+        return true;
+      } else if (avgDistance < MIN_ACCEPTABLE_DISTANCE) {
+        // Acceptable match with warning
+        setCurrentFaceMatch(true);
+        updateCheck(
+          "faceVerification",
+          "passed",
+          `✅ Identity verified! Acceptable match: ${similarity.toFixed(1)}% (${user.name}) - Please ensure good lighting`
         );
         verificationAttempts.current = 0;
         return true;
       } else {
+        // Not a match
         verificationAttempts.current++;
-        updateCheck(
-          "faceVerification",
-          "failed",
-          `❌ Identity mismatch (${similarity.toFixed(1)}% match). Expected: ${user.name}`
-        );
+        setCurrentFaceMatch(false);
         
-        if (verificationAttempts.current >= 3) {
-          alert("❌ Identity verification failed multiple times. Please ensure you are the registered student.");
+        if (verificationAttempts.current < 3) {
+          updateCheck(
+            "faceVerification",
+            "warning",
+            `⚠️ Low confidence match (${similarity.toFixed(1)}%). Please improve lighting and position. Attempt ${verificationAttempts.current}/3`
+          );
+        } else {
+          updateCheck(
+            "faceVerification",
+            "failed",
+            `❌ Identity verification failed (${similarity.toFixed(1)}%). Please ensure you are ${user.name}`
+          );
         }
+        
         return false;
       }
     } catch (error) {
@@ -408,7 +441,7 @@ export default function PreExamSetup({ user }) {
 
       const detections = await faceapi.detectAllFaces(
         videoRef.current,
-        new faceapi.TinyFaceDetectorOptions()
+        new faceapi.TinyFaceDetectorOptions({ scoreThreshold: 0.5 })
       );
 
       if (detections.length === 0) {
@@ -418,8 +451,8 @@ export default function PreExamSetup({ user }) {
       } else {
         updateCheck(
           "environment",
-          "failed",
-          `❌ Multiple people detected (${detections.length}). Ensure you're alone.`
+          "warning",
+          `⚠️ Multiple people detected (${detections.length}). Please ensure you're alone.`
         );
       }
     } catch (error) {
@@ -439,12 +472,12 @@ export default function PreExamSetup({ user }) {
 
   const handleStartExam = () => {
     if (!allChecksPassed) {
-      alert("⚠️ Please resolve all verification issues before starting the exam.");
+      alert("⚠️ Please complete all verification checks before starting the exam.");
       return;
     }
 
     if (!currentFaceMatch) {
-      alert("❌ Identity verification failed. You must be the registered student to take this exam.");
+      alert("❌ Identity verification incomplete. Please retry verification.");
       return;
     }
 
@@ -452,7 +485,7 @@ export default function PreExamSetup({ user }) {
       `✅ Identity Verified: ${user.name}\n\n` +
       `Match Score: ${verificationScore}%\n\n` +
       `⚠️ Important Reminders:\n` +
-      `• Timer will start ONLY when you begin the exam\n` +
+      `• Timer will start when you begin the exam\n` +
       `• Your identity will be verified continuously\n` +
       `• Keep your face visible at all times\n` +
       `• Multiple face detection will be logged\n` +
@@ -562,8 +595,8 @@ export default function PreExamSetup({ user }) {
                     </div>
                   ) : (
                     <div className="match-fail">
-                      <span className="match-icon">❌</span>
-                      <span className="match-text">Identity Mismatch</span>
+                      <span className="match-icon">⚠️</span>
+                      <span className="match-text">Please Retry</span>
                       <span className="match-score">{verificationScore}%</span>
                     </div>
                   )}
@@ -598,14 +631,14 @@ export default function PreExamSetup({ user }) {
         </div>
 
         <div className="instructions-box">
-          <h4>⚠️ Critical Requirements</h4>
+          <h4>💡 Verification Tips</h4>
           <ul>
-            <li><strong>Face Registration Required:</strong> You must have registered your face before taking exams</li>
-            <li><strong>Identity Verification:</strong> Your face will be matched against your registered profile</li>
-            <li><strong>Continuous Monitoring:</strong> Identity verification continues throughout the exam</li>
-            <li><strong>Single Person Only:</strong> Ensure you are alone in the room</li>
-            <li><strong>Good Lighting:</strong> Face must be clearly visible</li>
-            <li><strong>Timer Starts After:</strong> Timer begins only after you click "Start Exam" on next page</li>
+            <li><strong>Good Lighting:</strong> Ensure your face is well-lit and clearly visible</li>
+            <li><strong>Face Position:</strong> Look directly at the camera, keep face centered</li>
+            <li><strong>Remove Obstacles:</strong> Take off glasses, hats, or masks if possible</li>
+            <li><strong>Stable Position:</strong> Keep your head still during verification</li>
+            <li><strong>Camera Quality:</strong> Use a good quality webcam for best results</li>
+            <li><strong>Retry if Needed:</strong> Use the Re-verify button to try again with better conditions</li>
           </ul>
         </div>
 
@@ -627,14 +660,14 @@ export default function PreExamSetup({ user }) {
             className="btn-start"
             disabled={!allChecksPassed || !currentFaceMatch || status === "checking"}
           >
-            {allChecksPassed && currentFaceMatch ? "✅ Start Exam" : "⚠️ Verification Required"}
+            {allChecksPassed && currentFaceMatch ? "✅ Start Exam" : "⚠️ Complete Verification"}
           </button>
         </div>
 
         <div className="verification-info">
           <p className="info-text">
             🛡️ <strong>Security Notice:</strong> All verification attempts are logged. 
-            Repeated verification failures may result in account review.
+            If you're having trouble, ensure good lighting and camera position, then use the Re-verify button.
           </p>
         </div>
       </div>
