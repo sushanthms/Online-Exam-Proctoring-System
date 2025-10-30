@@ -1,14 +1,16 @@
+// frontend/src/App.js - UPDATED VERSION
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import StudentDashboard from './components/StudentDashboard';
 import AdminDashboard from './components/AdminDashboard';
+import PreExamSetup from './components/PreExamSetup'; // NEW
 import ExamPage from './components/ExamPage';
 import ResultPage from './components/ResultPage';
 import MyResultsPage from './components/MyResultsPage';
 import ExamCreator from './components/ExamCreator';
-import FaceRegistration from './components/FaceRegistration'; // NEW
+import FaceRegistration from './components/FaceRegistration';
 import { setAuthToken } from './api';
 import './styles.css';
 
@@ -135,7 +137,7 @@ function App() {
         
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-        {/* NEW: Face Registration Route for Students */}
+        {/* Face Registration Route */}
         <Route
           path="/face-registration"
           element={
@@ -154,6 +156,16 @@ function App() {
           element={
             <ProtectedRoute user={user} allowedRoles={['student']}>
               <StudentDashboard user={user} onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+        
+        {/* NEW: Pre-Exam Setup Route */}
+        <Route
+          path="/pre-exam/:examId"
+          element={
+            <ProtectedRoute user={user} allowedRoles={['student']}>
+              <PreExamSetup user={user} />
             </ProtectedRoute>
           }
         />

@@ -1,0 +1,271 @@
+/* General layout */
+.pre-exam-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  padding: 2rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.pre-exam-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 1100px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 2rem 2.5rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Header */
+.pre-exam-header {
+  text-align: center;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.pre-exam-header h2 {
+  color: #334155;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.exam-info h3 {
+  color: #4f46e5;
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.exam-info p {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+/* Verification area layout */
+.verification-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.camera-section {
+  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.camera-container {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  border: 3px solid #4f46e5;
+  box-shadow: 0 5px 20px rgba(79, 70, 229, 0.2);
+}
+
+.camera-video {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.detection-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.status-display {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.status-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin: 0 auto 0.5rem;
+}
+
+.status-message {
+  color: #475569;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Checks section */
+.checks-section {
+  flex: 1 1 45%;
+}
+
+.checks-section h3 {
+  color: #334155;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.checks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: #f9fafb;
+  border-left: 5px solid #6b7280;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.check-item strong {
+  font-size: 0.95rem;
+  color: #111827;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.check-item p {
+  font-size: 0.85rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+.check-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+/* Status colors */
+.check-item.passed {
+  border-left-color: #10b981;
+  background: #ecfdf5;
+}
+
+.check-item.failed {
+  border-left-color: #ef4444;
+  background: #fef2f2;
+}
+
+.check-item.warning {
+  border-left-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.check-item.pending {
+  border-left-color: #6b7280;
+  background: #f9fafb;
+}
+
+/* Instructions */
+.instructions-box {
+  background: #eef2ff;
+  border-left: 5px solid #6366f1;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.instructions-box h4 {
+  color: #3730a3;
+  margin-bottom: 0.75rem;
+}
+
+.instructions-box ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  color: #4f46e5;
+  font-size: 0.9rem;
+}
+
+.instructions-box li {
+  margin-bottom: 0.4rem;
+}
+
+/* Buttons */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  border-top: 2px solid #e5e7eb;
+  padding-top: 1rem;
+}
+
+.btn-cancel,
+.btn-test,
+.btn-start {
+  padding: 0.65rem 1.25rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-cancel {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.btn-cancel:hover {
+  background: #e5e7eb;
+}
+
+.btn-test {
+  background: #6366f1;
+  color: white;
+}
+
+.btn-test:hover {
+  background: #4f46e5;
+  box-shadow: 0 3px 10px rgba(79, 70, 229, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-start {
+  background: #10b981;
+  color: white;
+}
+
+.btn-start:hover {
+  background: #059669;
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-start:disabled,
+.btn-test:disabled {
+  background: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Status indicator colors */
+.status-indicator.ready {
+  background-color: #10b981;
+}
+.status-indicator.error {
+  background-color: #ef4444;
+}
+.status-indicator.checking {
+  background-color: #f59e0b;
+}
+.status-indicator.initializing {
+  background-color: #3b82f6;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

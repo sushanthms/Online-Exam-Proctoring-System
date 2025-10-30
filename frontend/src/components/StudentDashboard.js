@@ -1,3 +1,4 @@
+// frontend/src/components/StudentDashboard.js - UPDATED
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./StudentDashboard.css";
@@ -6,17 +7,16 @@ export default function StudentDashboard({ user, onLogout }) {
   const [exams, setExams] = useState([]);
   const [userStats, setUserStats] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [faceRegistered, setFaceRegistered] = useState(false); // NEW
-  const [showFacePrompt, setShowFacePrompt] = useState(false); // NEW
+  const [faceRegistered, setFaceRegistered] = useState(false);
+  const [showFacePrompt, setShowFacePrompt] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    checkFaceRegistration(); // NEW
+    checkFaceRegistration();
     fetchAvailableExams();
     fetchUserStats();
   }, []);
 
-  // NEW: Check if face is registered
   const checkFaceRegistration = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -28,7 +28,6 @@ export default function StudentDashboard({ user, onLogout }) {
         const data = await response.json();
         setFaceRegistered(data.isFaceRegistered);
         
-        // Show prompt if not registered
         if (!data.isFaceRegistered) {
           setShowFacePrompt(true);
         }
@@ -102,22 +101,34 @@ export default function StudentDashboard({ user, onLogout }) {
   };
 
   const handleStartExam = (examId) => {
-    // NEW: Check if face is registered before starting exam
+    // STRICT CHECK: Face must be registered
     if (!faceRegistered) {
-      if (window.confirm(
-        "⚠️ Face verification is required!\n\nYou must register your face before taking exams. Would you like to register now?"
-      )) {
-        navigate("/face-registration");
-      }
+      alert(
+        "🚫 ACCESS DENIED\n\n" +
+        "Face Registration Required!\n\n" +
+        "You MUST register your face before taking any exam.\n" +
+        "This is mandatory for identity verification during the exam.\n\n" +
+        "Click OK to register your face now."
+      );
+      navigate("/face-registration");
       return;
     }
 
-    if (
-      window.confirm(
-        "Ready to start the exam?\n\n⚠️ Important:\n- Your identity will be verified continuously\n- Ensure you're in a quiet environment\n- Good lighting for camera\n- No tab switching allowed\n- Keep face visible to camera"
-      )
-    ) {
-      navigate(`/exam/${examId}`);
+    // Confirmation before starting
+    if (window.confirm(
+      `📝 Start Exam Process\n\n` +
+      `You are about to begin:\n` +
+      `• Pre-exam verification (identity check)\n` +
+      `• Full exam with monitoring\n\n` +
+      `⚠️ Important:\n` +
+      `• Timer starts ONLY after you pass verification\n` +
+      `• Your identity will be checked continuously\n` +
+      `• Ensure you're in a quiet, well-lit room\n` +
+      `• Have stable internet connection\n\n` +
+      `Ready to proceed?`
+    )) {
+      // Navigate to pre-exam setup
+      navigate(`/pre-exam/${examId}`);
     }
   };
 
@@ -139,7 +150,7 @@ export default function StudentDashboard({ user, onLogout }) {
 
   return (
     <div className="student-dashboard">
-      {/* NEW: Face Registration Prompt */}
+      {/* Face Registration Prompt */}
       {showFacePrompt && !faceRegistered && (
         <div className="face-prompt-banner">
           <div className="face-prompt-content">
@@ -270,6 +281,7 @@ export default function StudentDashboard({ user, onLogout }) {
       <div className="instructions-section">
         <h3>⚠️ Exam Instructions</h3>
         <ul className="instructions-list">
+          <li>✓ Face verification will be checked before exam starts</li>
           <li>✓ Your identity will be verified continuously during the exam</li>
           <li>✓ Your camera will be monitored throughout the exam</li>
           <li>✓ Keep your face visible to the camera at all times</li>
