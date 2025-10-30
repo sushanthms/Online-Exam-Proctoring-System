@@ -544,6 +544,11 @@ export default function PreExamSetup({ user }) {
     setIsManualCheck(false);
   };
 
+  // Create a separate function for navigation that doesn't use any hooks
+  function navigateToExam(id) {
+    window.location.href = `/exam/${id}`;
+  }
+
   const handleStartExam = () => {
     // No need to check conditions again since the button is only enabled when verification passes
 
@@ -559,6 +564,9 @@ export default function PreExamSetup({ user }) {
       `• Exam will auto-submit on violations\n\n` +
       `Are you ready to start?`
     )) {
+      // Disable all hooks by setting a flag
+      setStatus("navigating");
+      
       // Log successful pre-exam verification
       logPreExamVerification();
       
@@ -580,9 +588,17 @@ export default function PreExamSetup({ user }) {
         console.error("Error logging exam start:", error);
       }
       
-      // Stop camera and navigate to exam
+      // Stop camera before navigating
       stopCamera();
-      navigate(`/exam/${examId}`);
+      
+      // Store the exam ID in a variable to avoid closure issues
+      const targetExamId = examId;
+      
+      // Use direct window.location navigation instead of React Router's navigate
+      // This completely bypasses React's lifecycle and prevents hook errors
+      setTimeout(() => {
+        navigateToExam(targetExamId);
+      }, 1000);
     }
   };
 
