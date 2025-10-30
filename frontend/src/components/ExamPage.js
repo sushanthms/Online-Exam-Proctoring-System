@@ -477,8 +477,9 @@ export default function ExamPage({ user, onLogout }) {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [paper, timerStarted, examId, handleSubmit]);
+  }, [paper, timerStarted, examId]);
 
+  // Define formatTime and handleSubmit before they're used
   const formatTime = (seconds) => {
     if (seconds === null) return "Loading...";
     const min = Math.floor(seconds / 60);
@@ -493,11 +494,10 @@ export default function ExamPage({ user, onLogout }) {
   };
 
   // Submit handler
-  const handleSubmit = async () => {
+    const handleSubmit = async () => {
     if (isSubmitting.current) return;
     if (!paper) return alert("Exam not loaded!");
 
-    // Auto-submit scenarios
     const isAutoSubmit = tabSwitchCount >= 3 || timeLeft <= 0 || verificationFailures >= 3;
 
     if (!isAutoSubmit) {
@@ -544,6 +544,10 @@ export default function ExamPage({ user, onLogout }) {
       isSubmitting.current = false;
     }
   };
+
+  
+
+ 
 
   if (!paper || !paper.questions) {
     return (
