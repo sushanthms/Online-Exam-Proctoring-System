@@ -28,6 +28,8 @@ export default function ExamPage({ user, onLogout }) {
   const isSubmitting = useRef(false);
   const verificationInterval = useRef(null);
   const examStartTime = useRef(null); // NEW
+  const multipleFaceViolationCount = useRef(0); // moved here from inside useEffect
+
   const navigate = useNavigate();
 
   // Stop camera utility
@@ -171,6 +173,10 @@ export default function ExamPage({ user, onLogout }) {
 
   const verifyFaceIdentity = async () => {
     if (!videoRef.current || !registeredDescriptor) return;
+    if (!videoRef.current.readyState || videoRef.current.readyState < 2) {
+      console.log("Video not ready for face detection, skipping verification");
+      return; // Video not ready yet
+    }
 
     try {
       // Multiple attempts for more reliable verification
@@ -178,6 +184,12 @@ export default function ExamPage({ user, onLogout }) {
       let validDetections = [];
       
       for (let i = 0; i < attempts; i++) {
+        // Check video is still valid before each attempt
+        if (!videoRef.current || !videoRef.current.readyState || videoRef.current.readyState < 2) {
+          console.log("Video not ready during detection attempt", i);
+          break;
+        }
+        
         const detection = await faceapi
           .detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions({ 
             inputSize: 224,
@@ -389,11 +401,16 @@ export default function ExamPage({ user, onLogout }) {
   useEffect(() => {
     if (!paper || !timerStarted) return;
     
-    const multipleFaceViolationCount = useRef(0);
     const VIOLATION_THRESHOLD = 3; // Auto-submit after 3 violations
     
     const interval = setInterval(async () => {
       if (!videoRef.current) return;
+      // Check if video is ready for processing
+      if (!videoRef.current.readyState || videoRef.current.readyState < 2) {
+        console.log("Video not ready for multiple face detection, skipping check");
+        return;
+      }
+      
       try {
         const detections = await faceapi.detectAllFaces(
           videoRef.current,
@@ -514,33 +531,62 @@ export default function ExamPage({ user, onLogout }) {
     isSubmitting.current = true;
 
     try {
+      console.log("Submitting exam answers:", {
+        examId,
+        answersCount: answers.length,
+        tabSwitches: tabSwitchCount,
+        verificationFailures
+      });
+      
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Authentication token not found");
+      }
+      
       const response = await fetch("http://localhost:4000/api/exam/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          userId: user._id,
+          userId: user?._id,
           examId,
           answers,
-          tabSwitches: tabSwitchCount,
+          tabSwitches: [{
+            timestamp: new Date().toISOString(),
+            timeInExam: formatTime(paper.durationMins * 60 - timeLeft),
+            warningMessage: `${tabSwitchCount} tab switches detected during exam`
+          }],
           verificationFailures,
+          timeSpent: examStartTime.current ? Math.floor((Date.now() - examStartTime.current) / 1000) : null
         }),
       });
 
-      if (!response.ok) throw new Error(`Submit failed: ${response.status}`);
-      const data = await response.json();
+      const responseText = await response.text();
+      console.log("Submit response:", response.status, responseText);
+      
+      if (!response.ok) {
+        throw new Error(`Submit failed: ${response.status} - ${responseText}`);
+      }
+      
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        throw new Error(`Invalid JSON response: ${responseText}`);
+      }
 
       if (data.submissionId) {
+        console.log("Submission successful, ID:", data.submissionId);
         stopCamera();
         navigate(`/result/${data.submissionId}`);
       } else {
-        throw new Error("No submission ID returned");
+        throw new Error("No submission ID returned in response");
       }
     } catch (err) {
       console.error("Submit error:", err);
-      alert("❌ Failed to submit exam. Please try again.");
+      alert(`❌ Failed to submit exam: ${err.message}. Please try again.`);
       isSubmitting.current = false;
     }
   };
