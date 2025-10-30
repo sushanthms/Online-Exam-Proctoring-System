@@ -160,6 +160,22 @@ router.get('/exams', async (req, res) => {
   }
 });
 
+// Get a single exam by ID (for editing)
+router.get('/exam/:examId', async (req, res) => {
+  try {
+    const exam = await ExamPaper.findById(req.params.examId);
+    
+    if (!exam) {
+      return res.status(404).json({ error: 'Exam not found' });
+    }
+    
+    res.json({ exam });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // Update exam
 router.put('/exam/:examId', async (req, res) => {
   try {
