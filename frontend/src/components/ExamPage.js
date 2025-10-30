@@ -1,7 +1,4 @@
-// =============================================
-// ExamPage.js - Complete and Fixed Version
-// =============================================
-
+// frontend/src/components/ExamPage.js - ENHANCED VERSION WITH TIMER CONTROL
 import React, { useEffect, useState, useRef } from "react";
 import * as faceapi from "face-api.js";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,7 +9,8 @@ export default function ExamPage({ user, onLogout }) {
   const videoRef = useRef(null);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
   const [warningShown, setWarningShown] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(600);
+  const [timeLeft, setTimeLeft] = useState(null); // Start as null
+  const [timerStarted, setTimerStarted] = useState(false); // NEW
   const [logs, setLogs] = useState([]);
   const [paper, setPaper] = useState(null);
   const [answers, setAnswers] = useState([]);
@@ -22,14 +20,16 @@ export default function ExamPage({ user, onLogout }) {
   const [faceVerificationStatus, setFaceVerificationStatus] = useState("loading");
   const [verificationFailures, setVerificationFailures] = useState(0);
   const [modelsLoaded, setModelsLoaded] = useState(false);
+  const [lastVerificationTime, setLastVerificationTime] = useState(Date.now());
 
   const multipleFaceActive = useRef(false);
   const startTimeRef = useRef(null);
   const isSubmitting = useRef(false);
   const verificationInterval = useRef(null);
+  const examStartTime = useRef(null); // NEW
   const navigate = useNavigate();
 
-  // ✅ Stop camera utility
+  // Stop camera utility
   const stopCamera = () => {
     const stream = videoRef.current?.srcObject;
     if (stream) {
@@ -39,7 +39,7 @@ export default function ExamPage({ user, onLogout }) {
     }
   };
 
-  // ✅ Load registered face descriptor
+  // Load registered face descriptor
   useEffect(() => {
     loadRegisteredFace();
   }, []);
@@ -73,11 +73,11 @@ export default function ExamPage({ user, onLogout }) {
     }
   };
 
-  // ✅ Load exam paper & models
+  // Load exam paper & models
   useEffect(() => {
     const loadModelsAndExam = async () => {
       try {
-        console.log("🔄 Loading models...");
+        console.log("🔄 Loading face detection models...");
         const MODEL_URL = process.env.PUBLIC_URL + "/models";
 
         await Promise.all([
@@ -87,6 +87,7 @@ export default function ExamPage({ user, onLogout }) {
         ]);
 
         setModelsLoaded(true);
+        console.log("✅ Models loaded");
 
         const res = await fetch(`http://localhost:4000/api/exam/paper/${examId}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -99,12 +100,23 @@ export default function ExamPage({ user, onLogout }) {
 
         setPaper(data);
         setAnswers(new Array(data.questions.length).fill(null));
+        
+        // SET TIMER BUT DON'T START IT YET
         setTimeLeft((data.durationMins || 10) * 60);
 
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { width: 640, height: 480 },
         });
-        if (videoRef.current) videoRef.current.srcObject = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          
+          // START TIMER WHEN VIDEO IS READY
+          videoRef.current.onloadedmetadata = () => {
+            console.log("📹 Camera ready - Starting timer NOW");
+            examStartTime.current = Date.now();
+            setTimerStarted(true);
+          };
+        }
       } catch (err) {
         console.error("❌ Setup failed:", err);
         alert(`Failed to load exam: ${err.message}`);
@@ -113,24 +125,48 @@ export default function ExamPage({ user, onLogout }) {
     };
 
     loadModelsAndExam();
-    return () => stopCamera(); // ✅ Cleanup on unmount
+    return () => {
+      stopCamera();
+      if (verificationInterval.current) {
+        clearInterval(verificationInterval.current);
+      }
+    };
   }, [examId, navigate]);
 
-  // ✅ Face verification monitoring
+  // TIMER COUNTDOWN - Only runs when timerStarted is true
   useEffect(() => {
-    if (!paper || !registeredDescriptor || !modelsLoaded) return;
+    if (!timerStarted || timeLeft === null) return;
+
+    if (timeLeft <= 0) {
+      alert("⏰ Time's up! Auto-submitting your exam...");
+      handleSubmit();
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setTimeLeft(prev => prev - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [timeLeft, timerStarted]);
+
+  // Face verification monitoring
+  useEffect(() => {
+    if (!paper || !registeredDescriptor || !modelsLoaded || !timerStarted) return;
 
     verificationInterval.current = setInterval(async () => {
       await verifyFaceIdentity();
     }, 5000);
 
+    // Initial verification
     setTimeout(() => verifyFaceIdentity(), 2000);
 
     return () => {
-      clearInterval(verificationInterval.current);
-      console.log("🛑 Stopped face verification");
+      if (verificationInterval.current) {
+        clearInterval(verificationInterval.current);
+      }
     };
-  }, [paper, registeredDescriptor, modelsLoaded]);
+  }, [paper, registeredDescriptor, modelsLoaded, timerStarted]);
 
   const verifyFaceIdentity = async () => {
     if (!videoRef.current || !registeredDescriptor) return;
@@ -141,65 +177,90 @@ export default function ExamPage({ user, onLogout }) {
         .withFaceLandmarks()
         .withFaceDescriptor();
 
+      const currentTime = Date.now();
+      const timeSinceLastVerification = currentTime - lastVerificationTime;
+
       if (!detection) {
-        setLogs(prev => [...prev, `⚠️ No face at ${new Date().toLocaleTimeString()}`]);
+        setLogs(prev => [...prev, `⚠️ No face detected at ${new Date().toLocaleTimeString()}`]);
+        setFaceVerificationStatus("warning");
         return;
       }
 
       const distance = faceapi.euclideanDistance(registeredDescriptor, detection.descriptor);
+      const similarity = Math.max(0, (1 - distance) * 100);
       const isMatch = distance < 0.6;
-      const confidence = Math.max(0, 1 - distance);
+
+      console.log(`🔐 Verification: Distance=${distance.toFixed(3)}, Similarity=${similarity.toFixed(1)}%, Match=${isMatch}`);
 
       if (isMatch) {
         setFaceVerificationStatus("verified");
+        setVerificationFailures(0);
+        setLogs(prev => [...prev, `✅ Identity verified at ${new Date().toLocaleTimeString()} (${similarity.toFixed(1)}%)`]);
       } else {
         const newCount = verificationFailures + 1;
         setVerificationFailures(newCount);
-        alert(`🚨 Identity mismatch detected! Attempt ${newCount} of 3.`);
+        setFaceVerificationStatus("failed");
+        
+        setLogs(prev => [...prev, `❌ Identity mismatch at ${new Date().toLocaleTimeString()} (${similarity.toFixed(1)}%) - Attempt ${newCount}/3`]);
+        
+        alert(`🚨 IDENTITY VERIFICATION FAILED!\n\nExpected: ${user.name}\nMatch Score: ${similarity.toFixed(1)}%\n\nAttempt ${newCount} of 3\n\n${newCount >= 3 ? 'Exam will be auto-submitted!' : 'Please ensure you are the registered student.'}`);
+        
+        // Log to backend
+        await fetch("http://localhost:4000/api/exam/verify-face", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          },
+          body: JSON.stringify({
+            examId,
+            verificationStatus: "failed",
+            confidence: similarity,
+            details: `Identity mismatch detected - Expected: ${user.name}`
+          })
+        });
+
         if (newCount >= 3) {
-          alert("🚨 Too many mismatches. Auto-submitting exam...");
+          alert("🚨 MAXIMUM VERIFICATION FAILURES REACHED!\n\nYour exam will be auto-submitted due to identity verification failures.");
           handleSubmit();
         }
       }
+
+      setLastVerificationTime(currentTime);
     } catch (error) {
       console.error("Verification error:", error);
+      setLogs(prev => [...prev, `⚠️ Verification error at ${new Date().toLocaleTimeString()}`]);
     }
   };
 
-  // ✅ Tab switching detection
+  // Tab switching detection
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.hidden) setTabSwitchCount(prev => prev + 1);
+      if (document.hidden && timerStarted) {
+        const newCount = tabSwitchCount + 1;
+        setTabSwitchCount(newCount);
+        setLogs(prev => [...prev, `⚠️ Tab switch #${newCount} at ${new Date().toLocaleTimeString()}`]);
+      }
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
-  }, []);
+  }, [tabSwitchCount, timerStarted]);
 
-  // ✅ Tab warning logic
+  // Tab warning logic
   useEffect(() => {
     if (tabSwitchCount === 2 && !warningShown) {
-      alert("⚠️ Warning: You switched tabs! One more switch will auto-submit your exam.");
+      alert("⚠️ WARNING: You switched tabs!\n\nOne more tab switch will AUTO-SUBMIT your exam.\n\nStay focused on the exam page!");
       setWarningShown(true);
     } else if (tabSwitchCount >= 3) {
-      alert("❌ Too many tab switches. Auto-submitting your exam...");
+      alert("❌ TOO MANY TAB SWITCHES!\n\nYour exam is being auto-submitted due to suspicious activity.");
       handleSubmit();
     }
   }, [tabSwitchCount, warningShown]);
 
-  // ✅ Timer
+  // Multiple face detection
   useEffect(() => {
-    if (timeLeft <= 0) {
-      alert("⏰ Time’s up! Auto-submitting your exam...");
-      handleSubmit();
-      return;
-    }
-    const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-    return () => clearTimeout(timer);
-  }, [timeLeft]);
-
-  // ✅ Multiple face detection
-  useEffect(() => {
-    if (!paper) return;
+    if (!paper || !timerStarted) return;
+    
     const interval = setInterval(async () => {
       if (!videoRef.current) return;
       try {
@@ -207,17 +268,18 @@ export default function ExamPage({ user, onLogout }) {
           videoRef.current,
           new faceapi.TinyFaceDetectorOptions()
         );
+        
         if (detections.length > 1) {
           if (!multipleFaceActive.current) {
             multipleFaceActive.current = true;
             startTimeRef.current = new Date();
-            setLogs(prev => [...prev, `Multiple faces detected at ${startTimeRef.current.toLocaleTimeString()}`]);
+            setLogs(prev => [...prev, `👥 Multiple faces detected (${detections.length} people) at ${startTimeRef.current.toLocaleTimeString()}`]);
           }
         } else if (multipleFaceActive.current) {
           multipleFaceActive.current = false;
           const endTime = new Date();
           const duration = Math.round((endTime - startTimeRef.current) / 1000);
-          setLogs(prev => [...prev, `Multiple faces ended at ${endTime.toLocaleTimeString()} (${duration}s)`]);
+          setLogs(prev => [...prev, `✅ Multiple faces cleared at ${endTime.toLocaleTimeString()} (Duration: ${duration}s)`]);
         }
       } catch (err) {
         console.error("Face detection error:", err);
@@ -225,9 +287,10 @@ export default function ExamPage({ user, onLogout }) {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [paper]);
+  }, [paper, timerStarted]);
 
   const formatTime = (seconds) => {
+    if (seconds === null) return "Loading...";
     const min = Math.floor(seconds / 60);
     const sec = seconds % 60;
     return `${min}:${sec < 10 ? "0" : ""}${sec}`;
@@ -239,13 +302,23 @@ export default function ExamPage({ user, onLogout }) {
     setAnswers(newAnswers);
   };
 
-  // ✅ Submit handler (corrected)
+  // Submit handler
   const handleSubmit = async () => {
     if (isSubmitting.current) return;
     if (!paper) return alert("Exam not loaded!");
 
-    if (tabSwitchCount < 3 && timeLeft > 0) {
-      if (!window.confirm("Are you sure you want to submit?")) return;
+    // Auto-submit scenarios
+    const isAutoSubmit = tabSwitchCount >= 3 || timeLeft <= 0 || verificationFailures >= 3;
+
+    if (!isAutoSubmit) {
+      if (!window.confirm(
+        `Are you sure you want to submit?\n\n` +
+        `Time Remaining: ${formatTime(timeLeft)}\n` +
+        `Questions Answered: ${answers.filter(a => a !== null).length}/${answers.length}\n\n` +
+        `You cannot change your answers after submission.`
+      )) {
+        return;
+      }
     }
 
     isSubmitting.current = true;
@@ -261,6 +334,8 @@ export default function ExamPage({ user, onLogout }) {
           userId: user._id,
           examId,
           answers,
+          tabSwitches: tabSwitchCount,
+          verificationFailures,
         }),
       });
 
@@ -275,7 +350,7 @@ export default function ExamPage({ user, onLogout }) {
       }
     } catch (err) {
       console.error("Submit error:", err);
-      alert("❌ Failed to submit exam. Try again.");
+      alert("❌ Failed to submit exam. Please try again.");
       isSubmitting.current = false;
     }
   };
@@ -283,8 +358,9 @@ export default function ExamPage({ user, onLogout }) {
   if (!paper || !paper.questions) {
     return (
       <div className="exam-loading">
+        <div className="loading-spinner"></div>
         <h3>Loading exam...</h3>
-        <p>Please wait while we prepare your exam.</p>
+        <p>Please wait while we prepare your exam environment...</p>
       </div>
     );
   }
@@ -293,23 +369,82 @@ export default function ExamPage({ user, onLogout }) {
 
   return (
     <div className="exam-page">
-      <div className="debug-info">
-        Models: {modelsLoaded ? "✅" : "❌"} | Descriptor: {registeredDescriptor ? "✅" : "❌"} | Status: {faceVerificationStatus} | Failures: {verificationFailures}/3
+      {/* Timer Status Banner */}
+      <div className={`timer-status-banner ${timerStarted ? 'active' : 'waiting'}`}>
+        {timerStarted ? (
+          <>
+            ⏱️ <strong>Timer Started:</strong> Exam in progress
+          </>
+        ) : (
+          <>
+            ⏳ <strong>Initializing:</strong> Timer will start when camera is ready...
+          </>
+        )}
+      </div>
+
+      {/* Verification Status Banner */}
+      <div className={`verification-banner ${faceVerificationStatus}`}>
+        <div className="verification-content">
+          {faceVerificationStatus === "verified" && (
+            <>
+              ✅ <strong>Identity Verified:</strong> {user.name}
+            </>
+          )}
+          {faceVerificationStatus === "failed" && (
+            <>
+              ❌ <strong>Verification Failed:</strong> {verificationFailures}/3 attempts
+            </>
+          )}
+          {faceVerificationStatus === "warning" && (
+            <>
+              ⚠️ <strong>Warning:</strong> Face not detected
+            </>
+          )}
+          {faceVerificationStatus === "loading" && (
+            <>
+              🔄 <strong>Loading:</strong> Preparing verification system...
+            </>
+          )}
+          {faceVerificationStatus === "ready" && (
+            <>
+              🟢 <strong>Ready:</strong> Verification system active
+            </>
+          )}
+        </div>
       </div>
 
       <button
         onClick={() => {
-          if (window.confirm("Exit exam? Progress will be lost!")) {
+          if (window.confirm("Exit exam? Your progress will be lost!")) {
             stopCamera();
-            if (user.role === "student") navigate("/student/dashboard");
-            else if (user.role === "admin") navigate("/admin/dashboard");
-            else navigate("/");
+            navigate("/student/dashboard");
           }
         }}
         className="exam-back-btn"
       >
-        ← Back to Dashboard
+        ← Exit Exam
       </button>
+
+      <div className="exam-header">
+        <div>
+          <h2>{paper.title}</h2>
+          <p>Student: <strong>{user.name}</strong></p>
+        </div>
+        <div className="timer">
+          {timerStarted ? (
+            <>⏱️ Time: {formatTime(timeLeft)}</>
+          ) : (
+            <>⏳ Starting...</>
+          )}
+        </div>
+      </div>
+
+      {tabSwitchCount > 0 && (
+        <div className="exam-tab-warning">
+          ⚠️ <strong>Tab Switches Detected: {tabSwitchCount}/3</strong>
+          {tabSwitchCount >= 2 && " - One more will auto-submit!"}
+        </div>
+      )}
 
       <div className="exam-body">
         <div className="exam-main-content">
@@ -318,9 +453,7 @@ export default function ExamPage({ user, onLogout }) {
           </div>
 
           <div className="exam-question">
-            <h3>
-              Q{currentQ + 1}: {question.text}
-            </h3>
+            <h3>Q{currentQ + 1}: {question.text}</h3>
             <div className="exam-options">
               {question.options.map((opt, idx) => (
                 <label
@@ -359,16 +492,23 @@ export default function ExamPage({ user, onLogout }) {
 
         <div className="exam-sidebar">
           <div className="exam-camera-preview">
-            <h4>📷 Camera Monitor</h4>
-            <video ref={videoRef} autoPlay muted style={{ width: "100%", maxWidth: "300px" }} />
-            <p>🎥 Camera Active</p>
+            <h4>📷 Live Monitoring</h4>
+            <video ref={videoRef} autoPlay muted playsInline style={{ width: "100%", maxWidth: "300px", borderRadius: "12px" }} />
+            <div className="verification-status">
+              {faceVerificationStatus === "verified" && (
+                <span className="status-verified">✅ Verified</span>
+              )}
+              {faceVerificationStatus === "failed" && (
+                <span className="status-warning">❌ Failed ({verificationFailures}/3)</span>
+              )}
+            </div>
           </div>
 
           <div className="exam-face-logs">
-            <h4>👀 Face Detection Logs</h4>
+            <h4>📋 Activity Log</h4>
             {logs.length > 0 ? (
               <ul>
-                {logs.map((log, i) => (
+                {logs.slice(-10).reverse().map((log, i) => (
                   <li key={i}>{log}</li>
                 ))}
               </ul>

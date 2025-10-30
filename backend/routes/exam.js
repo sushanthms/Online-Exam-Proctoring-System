@@ -212,20 +212,32 @@ router.get("/paper", authenticate, async (req, res) => {
 // ========== SUBMIT EXAM ==========
 router.post("/submit", authenticate, async (req, res) => {
   try {
-    console.log("Received submission:", req.body);
-    console.log("User from token:", req.user);
+    console.log("📥 Received submission:", req.body);
 
-    const { userId, examId, answers } = req.body;
+    const { 
+      userId, 
+      username,
+      examId, 
+      examTitle,
+      answers,
+      tabSwitches = [],
+      multipleFaceLogs = [],
+      identityVerifications = [],
+      warnings = [],
+      examSession = {},
+      proctoringSummary = {}
+    } = req.body;
 
     if (!examId || !answers) {
       return res.status(400).json({ error: "Missing examId or answers" });
     }
 
+    // Load exam paper to get correct answers
     let examPaper;
-
     if (examId === "EXAM001") {
       examPaper = {
         _id: examId,
+        title: "Sample Exam",
         questions: QUESTIONS.map(q => ({
           text: q.q,
           options: q.options,
@@ -244,67 +256,156 @@ router.post("/submit", authenticate, async (req, res) => {
       return res.status(404).json({ error: "Exam not found" });
     }
 
-    // Normalize questions to ensure we have a correctOptionValue for each
+    // Normalize questions and calculate score
     const normalizedQuestions = (examPaper.questions || []).map(q => {
       const nq = normalizeQuestion(q);
-      // If correctOptionValue couldn't be determined, try derive from stored fields:
       if (!nq.correctOptionValue && nq.correctOption !== null && nq.options[nq.correctOption]) {
         nq.correctOptionValue = nq.options[nq.correctOption];
       }
       return nq;
     });
 
-    // Score by comparing the student's answer value with the correct option value (both strings)
     let score = 0;
+    const correctAnswersArray = [];
+
     answers.forEach((answer, index) => {
       const q = normalizedQuestions[index];
-      if (!q) return;
-      const studentAnswerValue = answer; // We expect frontend to send the option text
+      if (!q) {
+        correctAnswersArray.push("");
+        return;
+      }
+      
+      const studentAnswerValue = answer;
       const correctValue = q.correctOptionValue;
+      correctAnswersArray.push(correctValue || "");
 
       if (!correctValue) {
-        // Can't verify this question (no correct value found) — skip scoring
-        console.warn(`No correct value available for question index ${index}`);
+        console.warn(`No correct value for question ${index}`);
         return;
       }
 
-      // Compare trimmed string equality
-      if (
-        String(studentAnswerValue || "").trim() ===
-        String(correctValue || "").trim()
-      ) {
+      if (String(studentAnswerValue || "").trim() === String(correctValue || "").trim()) {
         score++;
       }
     });
 
-    console.log("Calculated score:", score);
+    console.log("📊 Calculated score:", score, "/", normalizedQuestions.length);
 
+    // Get user info
     const User = require("../models/User");
     const user = await User.findById(req.user.id);
 
+    // Create submission with ALL data
     const submission = new Submission({
       userId: req.user.id,
-      username: user ? user.name : "Unknown",
+      username: username || (user ? user.name : "Unknown"),
       examId: examId,
+      examTitle: examTitle || examPaper.title,
       answers: answers,
+      correctAnswers: correctAnswersArray,
       score: score,
+      
+      // Enhanced proctoring data
+      tabSwitches: tabSwitches.map(ts => ({
+        timestamp: new Date(ts.timestamp),
+        timeInExam: ts.timeInExam,
+        warningMessage: ts.warningMessage
+      })),
+      
+      multipleFaceLogs: multipleFaceLogs.map(mf => ({
+        timestamp: new Date(mf.timestamp),
+        timeInExam: mf.timeInExam,
+        facesDetected: mf.facesDetected,
+        duration: mf.duration,
+        details: mf.details
+      })),
+      
+      identityVerifications: identityVerifications.map(iv => ({
+        timestamp: new Date(iv.timestamp),
+        timeInExam: iv.timeInExam,
+        status: iv.status,
+        confidence: iv.confidence,
+        matchScore: iv.matchScore,
+        details: iv.details
+      })),
+      
+      warnings: warnings.map(w => ({
+        timestamp: new Date(w.timestamp),
+        timeInExam: w.timeInExam,
+        type: w.type,
+        severity: w.severity,
+        message: w.message
+      })),
+      
+      examSession: {
+        startedAt: examSession.startedAt ? new Date(examSession.startedAt) : new Date(),
+        submittedAt: examSession.submittedAt ? new Date(examSession.submittedAt) : new Date(),
+        duration: examSession.duration || 0,
+        autoSubmitted: examSession.autoSubmitted || false,
+        autoSubmitReason: examSession.autoSubmitReason || null
+      },
+      
+      proctoringSummary: {
+        totalTabSwitches: proctoringSummary.totalTabSwitches || tabSwitches.length,
+        totalIdentityFailures: proctoringSummary.totalIdentityFailures || 0,
+        totalMultipleFaceEvents: proctoringSummary.totalMultipleFaceEvents || multipleFaceLogs.length,
+        totalWarnings: proctoringSummary.totalWarnings || warnings.length,
+        verificationSuccessRate: proctoringSummary.verificationSuccessRate || 100
+      },
+      
       submittedAt: new Date(),
     });
 
     await submission.save();
-    console.log("Submission saved:", submission._id);
+    console.log("✅ Submission saved with complete data:", submission._id);
 
     res.json({
       message: "Exam submitted successfully!",
       totalQuestions: normalizedQuestions.length,
       score: score,
       submissionId: submission._id,
+      proctoringSummary: submission.proctoringSummary
     });
   } catch (err) {
-    console.error("Submit error:", err);
+    console.error("❌ Submit error:", err);
     res.status(500).json({ error: "Server error: " + err.message });
   }
 });
+
+// Helper function (if not already present)
+function normalizeQuestion(q) {
+  const options = q.options || q.opts || [];
+  let correctIndex = null;
+  let correctValue = null;
+
+  if (typeof q.correctOption === "number") {
+    correctIndex = q.correctOption;
+  } else if (typeof q.ans === "number") {
+    correctIndex = q.ans;
+  }
+
+  if (Number.isInteger(correctIndex) && options[correctIndex] !== undefined) {
+    correctValue = options[correctIndex];
+  }
+
+  if (!correctValue && typeof q.correctOptionValue === "string") {
+    correctValue = q.correctOptionValue;
+  } else if (!correctValue && typeof q.correctAnswer === "string") {
+    correctValue = q.correctAnswer;
+  }
+
+  if (!Number.isInteger(correctIndex) && correctValue) {
+    const idx = options.indexOf(correctValue);
+    if (idx >= 0) correctIndex = idx;
+  }
+
+  return {
+    text: q.text || q.q || "",
+    options,
+    correctOption: Number.isInteger(correctIndex) ? correctIndex : null,
+    correctOptionValue: typeof correctValue === "string" ? correctValue : null,
+  };
+}
 
 // ========== GET RESULT BY SUBMISSION ID ==========
 router.get("/result/:submissionId", authenticate, async (req, res) => {

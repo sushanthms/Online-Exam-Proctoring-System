@@ -93,3 +93,34 @@
     font-size: 1.5rem;
   }
 }
+.register-success {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  border-left: 4px solid #10b981;
+}
+
+.admin-key-section {
+  width: 100%;
+}
+
+.helper-text {
+  font-size: 0.75rem;
+  color: #f59e0b;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #667eea;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  font-weight: 600;
+}

@@ -1,3 +1,4 @@
+// backend/routes/auth.js - UPDATED WITH ADMIN SECRET KEY
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
@@ -5,8 +6,9 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'verysecretkey';
+const ADMIN_SECRET_KEY = process.env.ADMIN_SECRET_KEY || 'ADMIN2024SECRET'; // Set this in .env
 
-// Middleware for authentication (keep in this file)
+// Middleware for authentication
 function authenticate(req, res, next) {
   const bearer = req.headers.authorization;
   if (!bearer) {
@@ -32,13 +34,28 @@ function adminOnly(req, res, next) {
   next();
 }
 
-// Register with role selection
+// Register with role selection and admin secret key
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, adminSecretKey } = req.body;
     
     if (!email || !password) {
       return res.status(400).json({ message: 'Email and password required' });
+    }
+
+    // If registering as admin, verify secret key
+    if (role === 'admin') {
+      if (!adminSecretKey) {
+        return res.status(400).json({ 
+          message: 'Admin secret key required for admin registration' 
+        });
+      }
+      
+      if (adminSecretKey !== ADMIN_SECRET_KEY) {
+        return res.status(403).json({ 
+          message: 'Invalid admin secret key. Access denied.' 
+        });
+      }
     }
 
     const existing = await User.findOne({ email });
@@ -60,7 +77,7 @@ router.post('/register', async (req, res) => {
     await user.save();
     
     res.json({ 
-      message: 'Registration successful',
+      message: `Registration successful as ${userRole}`,
       role: userRole 
     });
   } catch (err) {
@@ -77,6 +94,13 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Check if user is active
+    if (!user.isActive) {
+      return res.status(403).json({ 
+        message: 'Your account has been deactivated. Please contact administrator.' 
+      });
     }
     
     const ok = await bcrypt.compare(password, user.passwordHash);
@@ -128,6 +152,8 @@ router.get('/me', authenticate, async (req, res) => {
     res.status(401).json({ message: 'Invalid token' });
   }
 });
+
+// Register face
 router.post('/register-face', authenticate, async (req, res) => {
   try {
     const { faceDescriptor } = req.body;
