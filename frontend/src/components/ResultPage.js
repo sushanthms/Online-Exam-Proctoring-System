@@ -230,6 +230,7 @@ export default function ResultPage({ onLogout, isAdmin = false }) {
 
       {/* Exam Session Info */}
       <div className="exam-session-info">
+        <h3>📝 Exam Details</h3>
         <div className="session-info-grid">
           <div className="info-item">
             <span className="info-icon">🏫</span>

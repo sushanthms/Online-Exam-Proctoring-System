@@ -11,6 +11,7 @@ import ResultPage from './components/ResultPage';
 import ResultsPage from './components/ResultsPage'; // NEW - Enhanced results with proctoring violations
 import MyResultsPage from './components/MyResultsPage';
 import ExamCreator from './components/ExamCreator';
+import EditExam from './components/EditExam';
 import FaceRegistration from './components/FaceRegistration';
 import { setAuthToken } from './api';
 import './styles.css';
@@ -222,6 +223,15 @@ function App() {
           element={
             <ProtectedRoute user={user} allowedRoles={['admin']}>
               <ExamCreator user={user} />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/edit-exam/:examId"
+          element={
+            <ProtectedRoute user={user} allowedRoles={['admin']}>
+              <EditExam user={user} />
             </ProtectedRoute>
           }
         />
