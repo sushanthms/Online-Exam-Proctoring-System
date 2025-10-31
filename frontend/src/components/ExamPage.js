@@ -2,11 +2,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import * as faceapi from "face-api.js";
 import { useNavigate, useParams } from "react-router-dom";
+import { useBookmarks } from "../contexts/BookmarkContext";
 import "./ExamPage.css";
 import "./ProctoringPanel.css";
 
 export default function ExamPage({ user, onLogout }) {
   const { examId } = useParams();
+  const { isBookmarked, toggleBookmark, getExamBookmarks } = useBookmarks();
   const videoRef = useRef(null);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
   const [warningShown, setWarningShown] = useState(false);
@@ -16,6 +18,8 @@ export default function ExamPage({ user, onLogout }) {
   const [paper, setPaper] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [currentQ, setCurrentQ] = useState(0);
+  const [lastSaved, setLastSaved] = useState(null);
+  const [saveStatus, setSaveStatus] = useState("idle"); // idle, saving, saved, error
 
   const [registeredDescriptor, setRegisteredDescriptor] = useState(null);
   const [faceVerificationStatus, setFaceVerificationStatus] = useState("loading");
@@ -152,6 +156,17 @@ export default function ExamPage({ user, onLogout }) {
 
     return () => clearTimeout(timer);
   }, [timeLeft, timerStarted]);
+  
+  // Auto-save every 30 seconds
+  useEffect(() => {
+    if (!timerStarted || !paper || !user) return;
+    
+    const autoSaveInterval = setInterval(() => {
+      saveProgress();
+    }, 30000); // Save every 30 seconds
+    
+    return () => clearInterval(autoSaveInterval);
+  }, [timerStarted, paper, user, answers, currentQ, timeLeft]);
 
   // Face verification monitoring
   useEffect(() => {
@@ -508,6 +523,46 @@ export default function ExamPage({ user, onLogout }) {
     const newAnswers = [...answers];
     newAnswers[index] = value;
     setAnswers(newAnswers);
+    
+    // Trigger auto-save
+    saveProgress(newAnswers);
+  };
+  
+  // Auto-save functionality
+  const saveProgress = async (currentAnswers = answers) => {
+    if (!paper || !user || saveStatus === "saving") return;
+    
+    setSaveStatus("saving");
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:4000/api/exam/save-progress", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          userId: user._id,
+          examId,
+          answers: currentAnswers,
+          currentQuestion: currentQ,
+          timeRemaining: timeLeft
+        }),
+      });
+      
+      if (response.ok) {
+        setSaveStatus("saved");
+        setLastSaved(new Date());
+        setTimeout(() => setSaveStatus("idle"), 2000);
+      } else {
+        setSaveStatus("error");
+        setTimeout(() => setSaveStatus("idle"), 2000);
+      }
+    } catch (error) {
+      console.error("Error saving progress:", error);
+      setSaveStatus("error");
+      setTimeout(() => setSaveStatus("idle"), 2000);
+    }
   };
 
   // Submit handler
@@ -699,6 +754,12 @@ export default function ExamPage({ user, onLogout }) {
         <div>
           <h2>{paper.title}</h2>
           <p>Student: <strong>{user.name}</strong></p>
+          <div className={`auto-save-status ${saveStatus}`}>
+            {saveStatus === "saving" && "Saving..."}
+            {saveStatus === "saved" && "✓ Saved"}
+            {saveStatus === "error" && "⚠️ Save failed"}
+            {saveStatus === "idle" && lastSaved && `Last saved: ${lastSaved.toLocaleTimeString()}`}
+          </div>
         </div>
         <div className="timer">
           {timerStarted ? (
@@ -723,7 +784,19 @@ export default function ExamPage({ user, onLogout }) {
           </div>
 
           <div className="exam-question">
-            <h3>Q{currentQ + 1}: {question.text}</h3>
+            <div className="question-header">
+              <h3>Q{currentQ + 1}: {question.text}</h3>
+              <button 
+                className={`bookmark-btn ${isBookmarked(examId, currentQ) ? 'bookmarked' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleBookmark(examId, currentQ);
+                }}
+                title={isBookmarked(examId, currentQ) ? "Remove bookmark" : "Bookmark this question"}
+              >
+                {isBookmarked(examId, currentQ) ? '🔖' : '☆'}
+              </button>
+            </div>
             {question.imageUrl && (
               <div className="exam-question-image">
                 <img 
@@ -786,6 +859,26 @@ export default function ExamPage({ user, onLogout }) {
                 <span className="status-warning">❌ Failed ({verificationFailures}/3)</span>
               )}
             </div>
+          </div>
+
+          {/* Bookmarked Questions */}
+          <div className="bookmarked-questions">
+            <h4>🔖 Bookmarked Questions</h4>
+            {getExamBookmarks(examId).length > 0 ? (
+              <div className="bookmark-list">
+                {getExamBookmarks(examId).map((qIndex) => (
+                  <button 
+                    key={qIndex} 
+                    className={`bookmark-item ${currentQ === qIndex ? 'current' : ''}`}
+                    onClick={() => setCurrentQ(qIndex)}
+                  >
+                    Question {qIndex + 1}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <p className="no-bookmarks">No bookmarked questions yet</p>
+            )}
           </div>
 
           <div className="exam-face-logs">

@@ -1,6 +1,7 @@
 // frontend/src/components/StudentDashboard.js - UPDATED
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
 import "./StudentDashboard.css";
 
 export default function StudentDashboard({ user, onLogout }) {
@@ -187,6 +188,7 @@ export default function StudentDashboard({ user, onLogout }) {
           )}
         </div>
         <div className="header-right">
+          <ThemeToggle />
           <button onClick={() => navigate("/my-results")} className="btn-secondary">
             📊 My Results
           </button>

@@ -13,8 +13,11 @@ import MyResultsPage from './components/MyResultsPage';
 import ExamCreator from './components/ExamCreator';
 import EditExam from './components/EditExam';
 import FaceRegistration from './components/FaceRegistration';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { BookmarkProvider } from './contexts/BookmarkContext';
 import { setAuthToken } from './api';
 import './styles.css';
+import './styles/theme.css';
 
 function ProtectedRoute({ user, allowedRoles, children }) {
   if (!user) {
@@ -251,4 +254,13 @@ function App() {
   );
 }
 
-export default App;
+// Wrap App with ThemeProvider and BookmarkProvider
+export default function AppWithTheme() {
+  return (
+    <ThemeProvider>
+      <BookmarkProvider>
+        <App />
+      </BookmarkProvider>
+    </ThemeProvider>
+  );
+}
