@@ -247,8 +247,8 @@ export default function ExamPage({ user, onLogout }) {
       const avgDistance = totalDistance / validDetections.length;
       const similarity = Math.max(0, (1 - avgDistance) * 100);
       
-      // Stricter threshold for continuous verification
-      const VERIFICATION_THRESHOLD = 0.45;
+      // Balanced threshold for continuous verification to prevent false rejections
+      const VERIFICATION_THRESHOLD = 0.6;
       const isMatch = avgDistance < VERIFICATION_THRESHOLD;
 
       console.log(`🔐 Verification: Detections=${validDetections.length}/${attempts}, AvgDistance=${avgDistance.toFixed(3)}, BestDistance=${bestDistance.toFixed(3)}, Similarity=${similarity.toFixed(1)}%, Match=${isMatch}`);
