@@ -13,6 +13,7 @@ import MyResultsPage from './components/MyResultsPage';
 import ExamCreator from './components/ExamCreator';
 import EditExam from './components/EditExam';
 import FaceRegistration from './components/FaceRegistration';
+import Navbar from './components/Navbar';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { BookmarkProvider } from './contexts/BookmarkContext';
 import { setAuthToken } from './api';

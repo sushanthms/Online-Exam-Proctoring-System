@@ -1,7 +1,7 @@
 // frontend/src/components/StudentDashboard.js - UPDATED
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ThemeToggle from "./ThemeToggle";
+import Navbar from "./Navbar";
 import "./StudentDashboard.css";
 
 export default function StudentDashboard({ user, onLogout }) {
@@ -151,6 +151,9 @@ export default function StudentDashboard({ user, onLogout }) {
 
   return (
     <div className="student-dashboard">
+      {/* Navbar */}
+      <Navbar user={user} onLogout={onLogout} />
+      
       {/* Face Registration Prompt */}
       {showFacePrompt && !faceRegistered && (
         <div className="face-prompt-banner">
@@ -178,30 +181,23 @@ export default function StudentDashboard({ user, onLogout }) {
         </div>
       )}
 
-      {/* Header */}
-      <header className="dashboard-header">
-        <div className="header-left">
-          <h1>🎓 Student Dashboard</h1>
-          <p className="welcome-text">Welcome back, {user.name}!</p>
+      {/* Content */}
+      <div className="dashboard-content">
           {faceRegistered && (
             <span className="face-verified-badge">✓ Face Verified</span>
           )}
-        </div>
-        <div className="header-right">
-          <ThemeToggle />
-          <button onClick={() => navigate("/my-results")} className="btn-secondary">
-            📊 My Results
-          </button>
-          {!faceRegistered && (
-            <button onClick={() => navigate("/face-registration")} className="btn-warning">
-              📸 Register Face
+        
+          <div className="dashboard-actions">
+            <button onClick={() => navigate("/my-results")} className="btn-secondary">
+              📊 My Results
             </button>
-          )}
-          <button onClick={handleLogout} className="btn-logout">
-            🚪 Logout
-          </button>
-        </div>
-      </header>
+            {!faceRegistered && (
+              <button onClick={() => navigate("/face-registration")} className="btn-warning">
+                📸 Register Face
+              </button>
+            )}
+          </div>
+      </div>
 
       {/* Stats Cards */}
       {userStats && (
@@ -277,6 +273,34 @@ export default function StudentDashboard({ user, onLogout }) {
             ))}
           </div>
         )}
+      </div>
+
+      {/* Suggested Resources */}
+      <div className="resources-section">
+        <h2>📚 Suggested Resources</h2>
+        <div className="resources-grid">
+          <a href="https://www.indiabix.com/aptitude/questions-and-answers/" target="_blank" rel="noopener noreferrer" className="resource-card">
+            <div className="resource-icon">📊</div>
+            <div className="resource-content">
+              <h3>IndiaBIX Aptitude</h3>
+              <p>Practice aptitude questions and answers</p>
+            </div>
+          </a>
+          <a href="https://www.geeksforgeeks.org/aptitude/aptitude-questions-and-answers/" target="_blank" rel="noopener noreferrer" className="resource-card">
+            <div className="resource-icon">💡</div>
+            <div className="resource-content">
+              <h3>GeeksforGeeks Aptitude</h3>
+              <p>Comprehensive aptitude practice questions</p>
+            </div>
+          </a>
+          <a href="https://share.google/8FL9YNILBHhEMVxss" target="_blank" rel="noopener noreferrer" className="resource-card">
+            <div className="resource-icon">🎬</div>
+            <div className="resource-content">
+              <h3>CareerRide YouTube</h3>
+              <p>Video tutorials and career guidance</p>
+            </div>
+          </a>
+        </div>
       </div>
 
       {/* Instructions */}

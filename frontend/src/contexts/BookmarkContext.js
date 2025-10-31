@@ -1,74 +1,46 @@
-// frontend/src/contexts/BookmarkContext.js
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 
+// Create the bookmark context
 const BookmarkContext = createContext();
 
+// Custom hook to use the bookmark context
 export const useBookmarks = () => useContext(BookmarkContext);
 
+// Bookmark provider component
 export const BookmarkProvider = ({ children }) => {
-  const [bookmarkedQuestions, setBookmarkedQuestions] = useState({});
+  // Initialize bookmarks from localStorage or empty array
+  const [bookmarks, setBookmarks] = useState(() => {
+    const savedBookmarks = localStorage.getItem('bookmarks');
+    return savedBookmarks ? JSON.parse(savedBookmarks) : [];
+  });
 
-  // Load bookmarks from localStorage on mount
-  useEffect(() => {
-    const savedBookmarks = localStorage.getItem('bookmarkedQuestions');
-    if (savedBookmarks) {
-      try {
-        setBookmarkedQuestions(JSON.parse(savedBookmarks));
-      } catch (error) {
-        console.error('Error loading bookmarks:', error);
+  // Toggle bookmark function
+  const toggleBookmark = (questionId) => {
+    setBookmarks(prevBookmarks => {
+      if (prevBookmarks.includes(questionId)) {
+        return prevBookmarks.filter(id => id !== questionId);
+      } else {
+        return [...prevBookmarks, questionId];
       }
-    }
-  }, []);
-
-  // Save bookmarks to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem('bookmarkedQuestions', JSON.stringify(bookmarkedQuestions));
-  }, [bookmarkedQuestions]);
-
-  // Toggle bookmark for a question in a specific exam
-  const toggleBookmark = (examId, questionIndex) => {
-    setBookmarkedQuestions(prev => {
-      const examBookmarks = prev[examId] || [];
-      const isBookmarked = examBookmarks.includes(questionIndex);
-      
-      const updatedExamBookmarks = isBookmarked
-        ? examBookmarks.filter(idx => idx !== questionIndex)
-        : [...examBookmarks, questionIndex];
-      
-      return {
-        ...prev,
-        [examId]: updatedExamBookmarks
-      };
     });
   };
 
   // Check if a question is bookmarked
-  const isBookmarked = (examId, questionIndex) => {
-    return (bookmarkedQuestions[examId] || []).includes(questionIndex);
+  const isBookmarked = (questionId) => {
+    return bookmarks.includes(questionId);
   };
 
-  // Get all bookmarked questions for an exam
-  const getExamBookmarks = (examId) => {
-    return bookmarkedQuestions[examId] || [];
-  };
+  // Update localStorage when bookmarks change
+  useEffect(() => {
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+  }, [bookmarks]);
 
-  // Clear all bookmarks for an exam
-  const clearExamBookmarks = (examId) => {
-    setBookmarkedQuestions(prev => {
-      const newBookmarks = { ...prev };
-      delete newBookmarks[examId];
-      return newBookmarks;
-    });
-  };
-
+  // Provide bookmark context to children
   return (
-    <BookmarkContext.Provider value={{
-      isBookmarked,
-      toggleBookmark,
-      getExamBookmarks,
-      clearExamBookmarks
-    }}>
+    <BookmarkContext.Provider value={{ bookmarks, toggleBookmark, isBookmarked }}>
       {children}
     </BookmarkContext.Provider>
   );
 };
+
+export default BookmarkContext;

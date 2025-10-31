@@ -34,6 +34,13 @@
   margin-bottom: 1.5rem;
 }
 
+.theme-toggle-container {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+}
+
 .exam-timer {
   font-weight: 700;
   font-size: 1.2rem;
@@ -354,105 +361,4 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* Bookmark styles */
-.question-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-}
-
-.bookmark-btn {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #9ca3af;
-  transition: all 0.2s ease;
-  padding: 0.25rem;
-  margin-left: 0.5rem;
-}
-
-.bookmark-btn:hover {
-  color: #f59e0b;
-  transform: scale(1.1);
-}
-
-.bookmark-btn.bookmarked {
-  color: #f59e0b;
-}
-
-/* Auto-save styles */
-.auto-save-status {
-  font-size: 0.85rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  margin-top: 0.5rem;
-  display: inline-block;
-}
-
-.auto-save-status.saving {
-  background-color: #dbeafe;
-  color: #1e40af;
-}
-
-.auto-save-status.saved {
-  background-color: #d1fae5;
-  color: #065f46;
-}
-
-.auto-save-status.error {
-  background-color: #fee2e2;
-  color: #991b1b;
-}
-
-.auto-save-status.idle {
-  color: #6b7280;
-  font-style: italic;
-}
-
-/* Bookmarked questions list */
-.bookmarked-questions {
-  background: white;
-  padding: 1rem;
-  border-radius: 8px;
-  border: 2px solid #e3f2fd;
-  margin-bottom: 1rem;
-}
-
-.bookmark-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.bookmark-item {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  padding: 0.5rem;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.bookmark-item:hover {
-  background: #f0f9ff;
-  border-color: #93c5fd;
-}
-
-.bookmark-item.current {
-  background: #dbeafe;
-  border-color: #3b82f6;
-  font-weight: bold;
-}
-
-.no-bookmarks {
-  color: #6b7280;
-  font-style: italic;
-  text-align: center;
-  padding: 0.5rem;
 }

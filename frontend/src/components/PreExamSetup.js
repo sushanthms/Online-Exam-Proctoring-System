@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import { useNavigate, useParams } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
 import "./PreExamSetup.css";
 
 export default function PreExamSetup({ user }) {
@@ -654,7 +655,12 @@ export default function PreExamSetup({ user }) {
     <div className="pre-exam-container">
       <div className="pre-exam-card">
         <div className="pre-exam-header">
-          <h2>🔒 Identity Verification Required</h2>
+          <div className="header-top">
+            <h2>🔒 Identity Verification Required</h2>
+            <div className="theme-toggle-container">
+              <ThemeToggle />
+            </div>
+          </div>
           {examDetails && (
             <div className="exam-info">
               <h3>{examDetails.title}</h3>

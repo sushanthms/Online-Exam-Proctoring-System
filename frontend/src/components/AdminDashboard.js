@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 import "./AdminDashboard.css";
 
 export default function AdminDashboard({ user, onLogout }) {
@@ -128,18 +129,8 @@ export default function AdminDashboard({ user, onLogout }) {
 
   return (
     <div className="admin-dashboard">
-      {/* Header */}
-      <header className="dashboard-header">
-        <div className="header-left">
-          <h1>⚙️ Admin Dashboard</h1>
-          <p className="welcome-text">Welcome, {user.name}</p>
-        </div>
-        <div className="header-right">
-          <button onClick={handleLogout} className="btn-logout">
-            🚪 Logout
-          </button>
-        </div>
-      </header>
+      {/* Navbar */}
+      <Navbar user={user} onLogout={onLogout} />
 
       {/* Stats Overview */}
       {stats && (
