@@ -8,6 +8,7 @@ export default function ExamCreator({ user }) {
   const [questions, setQuestions] = useState([
     {
       text: "",
+      imageUrl: "",
       options: ["", "", "", ""],
       correctOption: 0,
     },
@@ -20,6 +21,7 @@ export default function ExamCreator({ user }) {
       ...questions,
       {
         text: "",
+        imageUrl: "",
         options: ["", "", "", ""],
         correctOption: 0,
       },
@@ -201,6 +203,41 @@ export default function ExamCreator({ user }) {
                   rows="3"
                   required
                 />
+              </div>
+              
+              <div className="form-group">
+                <label>Question Image (Optional)</label>
+                <div className="image-upload-container">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        const file = e.target.files[0];
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          // Store image as base64 string
+                          const base64String = reader.result;
+                          handleQuestionChange(qIndex, "imageUrl", base64String);
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                    className="form-input"
+                  />
+                </div>
+                {question.imageUrl && (
+                  <div className="image-preview">
+                    <img 
+                      src={question.imageUrl} 
+                      alt="Question" 
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://via.placeholder.com/400x200?text=Invalid+Image+URL";
+                      }}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="options-section">

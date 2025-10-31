@@ -185,6 +185,24 @@
   margin-bottom: 0;
 }
 
+.image-upload-container {
+  margin-bottom: 10px;
+}
+
+.image-preview {
+  margin-top: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.image-preview img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 .correct-indicator {
   background: #d1fae5;
   color: #065f46;

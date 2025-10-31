@@ -724,6 +724,20 @@ export default function ExamPage({ user, onLogout }) {
 
           <div className="exam-question">
             <h3>Q{currentQ + 1}: {question.text}</h3>
+            {question.imageUrl && (
+              <div className="exam-question-image">
+                <img 
+                  src={question.imageUrl} 
+                  alt="Question" 
+                  onError={(e) => {
+                    console.log("Image failed to load:", question.imageUrl);
+                    e.target.onerror = null;
+                    e.target.src = "https://via.placeholder.com/400x200?text=Image+Not+Available";
+                  }}
+                />
+              </div>
+            )}
+            {console.log("Question data:", question)}
             <div className="exam-options">
               {question.options.map((opt, idx) => (
                 <label

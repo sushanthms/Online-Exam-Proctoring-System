@@ -114,20 +114,31 @@ router.get("/paper/:examId", authenticate, async (req, res) => {
 
     if (examId === "EXAM001") {
       selectedExam = {
-        _id: "EXAM001",
-        title: "Sample JavaScript Exam",
-        durationMins: 10,
-        questions: QUESTIONS.map((q) => ({
-          text: q.q,
-          options: q.options,
-          // NOTE: do NOT reveal correctOptionValue to the client in a real system.
-          // The system currently included correctOption; keep as index if needed by front-end.
-          correctOption: q.ans,
-        })),
-      };
+          _id: "EXAM001",
+          title: "Sample JavaScript Exam",
+          durationMins: 10,
+          questions: QUESTIONS.map((q) => ({
+            text: q.q,
+            options: q.options,
+            imageUrl: q.imageUrl || null,
+            // NOTE: do NOT reveal correctOptionValue to the client in a real system.
+            // The system currently included correctOption; keep as index if needed by front-end.
+            correctOption: q.ans,
+          })),
+        };
     } else {
       try {
         selectedExam = await ExamPaper.findById(examId);
+        
+        // Ensure we're sending the complete exam data including imageUrl
+        if (selectedExam) {
+          selectedExam = selectedExam.toObject();
+          // Make sure each question includes the imageUrl field
+          selectedExam.questions = selectedExam.questions.map(q => ({
+            ...q,
+            imageUrl: q.imageUrl || null
+          }));
+        }
       } catch (err) {
         console.error("Error finding exam:", err);
         return res.status(404).json({ error: "Exam not found" });
