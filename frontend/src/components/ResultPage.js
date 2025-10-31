@@ -9,7 +9,16 @@ export default function ResultPage({ onLogout, isAdmin = false }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("answers"); // answers, proctoring, timeline
+  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    // Get user data from localStorage
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUserData(JSON.parse(storedUser));
+    }
+  }, []);
 
   const handleGoToDashboard = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -46,6 +55,16 @@ export default function ResultPage({ onLogout, isAdmin = false }) {
         const data = await response.json();
         
         console.log("📊 Result data:", data);
+        
+        // Print duration and verification rate for debugging
+        const duration = data.duration ? `${formatDuration(data.duration)}` : 
+                        (data.examSession?.duration ? `${formatDuration(data.examSession.duration)}` : "N/A");
+        const verificationRate = data.verificationRate ? `${data.verificationRate}%` : 
+                               (data.proctoringSummary?.avgVerificationScore ? `${data.proctoringSummary.avgVerificationScore}%` : "N/A");
+        
+        console.log("⏱️ Duration took:", duration);
+        console.log("🔐 Verification rate:", verificationRate);
+        
         setResult(data);
         setLoading(false);
       } catch (error) {
@@ -243,14 +262,17 @@ export default function ResultPage({ onLogout, isAdmin = false }) {
             <span className="info-icon">👤</span>
             <div>
               <div className="info-label">Student</div>
-              <div className="info-value">{result.username || "Unknown"}</div>
+              <div className="info-value">{result.studentName || result.username || userData?.name || "Unknown"}</div>
             </div>
           </div>
           <div className="info-item">
             <span className="info-icon">⏱️</span>
             <div>
               <div className="info-label">Duration</div>
-              <div className="info-value">{formatDuration(examSession.duration)}</div>
+              <div className="info-value">
+                {examSession.duration ? formatDuration(examSession.duration) : 
+                (result.duration ? formatDuration(result.duration) : "N/A")}
+              </div>
             </div>
           </div>
           <div className="info-item">
@@ -258,7 +280,18 @@ export default function ResultPage({ onLogout, isAdmin = false }) {
             <div>
               <div className="info-label">Submitted</div>
               <div className="info-value">
-                {examSession.submittedAt ? new Date(examSession.submittedAt).toLocaleString() : "N/A"}
+                {examSession.submittedAt ? new Date(examSession.submittedAt).toLocaleString() : 
+                (result.submittedAt ? new Date(result.submittedAt).toLocaleString() : "N/A")}
+              </div>
+            </div>
+          </div>
+          <div className="info-item">
+            <span className="info-icon">🔐</span>
+            <div>
+              <div className="info-label">Verification Rate</div>
+              <div className="info-value">
+                {result.verificationRate ? `${result.verificationRate}%` : 
+                (proctoringSummary.avgVerificationScore ? `${proctoringSummary.avgVerificationScore}%` : "N/A")}
               </div>
             </div>
           </div>
