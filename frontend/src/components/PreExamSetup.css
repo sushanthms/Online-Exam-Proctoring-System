@@ -27,6 +27,19 @@
   margin-bottom: 2rem;
 }
 
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.theme-toggle-container {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
 .pre-exam-header h2 {
   color: #334155;
   font-size: 1.8rem;

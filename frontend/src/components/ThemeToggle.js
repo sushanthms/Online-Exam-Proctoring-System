@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import '../styles/theme.css';
 
 const ThemeToggle = () => {
   const { darkMode, toggleDarkMode } = useTheme();
@@ -7,8 +8,8 @@ const ThemeToggle = () => {
   return (
     <button 
       className="theme-toggle" 
-      onClick={toggleDarkMode} 
-      title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+      onClick={toggleDarkMode}
+      aria-label="Toggle dark mode"
     >
       {darkMode ? '☀️' : '🌙'}
     </button>
