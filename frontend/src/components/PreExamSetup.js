@@ -30,9 +30,9 @@ export default function PreExamSetup({ user }) {
   const [verificationScore, setVerificationScore] = useState(0);
   const [startButtonEnabled, setStartButtonEnabled] = useState(false);
 
-  // STRICT THRESHOLD - Ensure only the registered user can pass verification
-  const VERIFICATION_THRESHOLD = 0.45; // Decreased from 0.65 for stricter verification
-  const MIN_ACCEPTABLE_DISTANCE = 0.55; // Warning threshold decreased from 0.70
+  // BALANCED THRESHOLD - Ensure proper verification while avoiding false rejections
+  const VERIFICATION_THRESHOLD = 0.6; // Increased from 0.45 for more lenient verification
+  const MIN_ACCEPTABLE_DISTANCE = 0.7; // Warning threshold increased from 0.55
 
   useEffect(() => {
     initializePreExam();
@@ -758,7 +758,7 @@ export default function PreExamSetup({ user }) {
           <button
             onClick={handleStartExam}
             className="btn-start"
-            disabled={status === "checking"}
+            disabled={status === "checking" || !startButtonEnabled || checks.faceVerification.status === "failed"}
           >
             ✅ Start Exam
           </button>
