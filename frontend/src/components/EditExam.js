@@ -14,6 +14,7 @@ export default function EditExam({ user }) {
   const [questions, setQuestions] = useState([
     {
       text: "",
+      imageUrl: "",
       options: ["", "", "", ""],
       correctOption: 0,
     },
@@ -135,6 +136,31 @@ export default function EditExam({ user }) {
 
     try {
       const token = localStorage.getItem("token");
+      // Clean up and prepare questions data before sending to backend
+      const cleanedQuestions = questions.map(q => {
+        // Create a new object without imageFile property
+        const { imageFile, ...cleanQuestion } = q;
+        
+        // Ensure imageUrl is properly formatted or null
+        if (cleanQuestion.imageUrl) {
+          // Check if it's already a valid string
+          if (typeof cleanQuestion.imageUrl !== 'string' || 
+              (!cleanQuestion.imageUrl.startsWith('data:image/') && 
+               !cleanQuestion.imageUrl.startsWith('http'))) {
+            cleanQuestion.imageUrl = null;
+          }
+        }
+        
+        return cleanQuestion;
+      });
+
+      console.log("Sending data to backend:", JSON.stringify({
+        title,
+        durationMins,
+        questions: cleanedQuestions,
+        isActive,
+      }).substring(0, 200) + "...");
+
       const response = await fetch(`http://localhost:4000/api/admin/exam/${examId}`, {
         method: "PUT",
         headers: {
@@ -144,7 +170,7 @@ export default function EditExam({ user }) {
         body: JSON.stringify({
           title,
           durationMins,
-          questions,
+          questions: cleanedQuestions,
           isActive,
         }),
       });
@@ -159,8 +185,9 @@ export default function EditExam({ user }) {
       }
     } catch (error) {
       console.error("Error updating exam:", error);
-      setError("Network error while updating exam");
-      alert("❌ Error updating exam");
+      const errorMessage = error.message || "Unknown error";
+      setError(`Network error while updating exam: ${errorMessage}`);
+      alert(`❌ Error updating exam: ${errorMessage}`);
     } finally {
       setSaving(false);
     }
@@ -286,6 +313,55 @@ export default function EditExam({ user }) {
                   placeholder="Enter your question here"
                   required
                 />
+              </div>
+              
+              <div className="form-group">
+                <label>Question Image (Optional)</label>
+                <div className="image-upload-container">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        const file = e.target.files[0];
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          try {
+                            // Store image as base64 string
+                            const base64String = reader.result;
+                            // Limit the size of the base64 string to prevent payload size issues
+                            if (base64String.length > 1000000) { // ~1MB limit
+                              alert("Image is too large. Please choose a smaller image (less than 1MB).");
+                              return;
+                            }
+                            handleQuestionChange(qIndex, "imageUrl", base64String);
+                          } catch (error) {
+                            console.error("Error processing image:", error);
+                            alert("Error processing image. Please try a different image.");
+                          }
+                        };
+                        reader.onerror = () => {
+                          console.error("Error reading file");
+                          alert("Error reading file. Please try again.");
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                    className="form-input"
+                  />
+                </div>
+                {question.imageUrl && (
+                  <div className="image-preview">
+                    <img 
+                      src={question.imageUrl} 
+                      alt="Question" 
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://via.placeholder.com/400x200?text=Invalid+Image+URL";
+                      }}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="options-container">
