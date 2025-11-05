@@ -432,6 +432,10 @@ router.get("/result/:submissionId", authenticate, async (req, res) => {
 
     console.log("Submission found:", submission);
 
+    // Get user information for the submission
+    const User = require("../models/User");
+    const user = await User.findById(submission.userId);
+    
     let examPaper;
 
     if (submission.examId === "EXAM001") {
@@ -475,15 +479,39 @@ router.get("/result/:submissionId", authenticate, async (req, res) => {
 
     console.log("Returning result data");
 
-    // ✅ Include current submission's multipleFaceLogs in the result
+    // ✅ Include complete proctoring data in the result
     res.json({
       userId: submission.userId,
+      username: submission.username || (user ? user.name : "Student"),
       examId: submission.examId,
+      examTitle: submission.examTitle,
       score: submission.score,
       totalQuestions: normalizedQuestions.length,
       questions: normalizedQuestions,
       answers: submission.answers,
-      multipleFaceLogs: submission.multipleFaceLogs || [], // ✅ Added
+      
+      // Complete proctoring data
+      tabSwitches: submission.tabSwitches || [],
+      multipleFaceLogs: submission.multipleFaceLogs || [],
+      identityVerifications: submission.identityVerifications || [],
+      warnings: submission.warnings || [],
+      
+      // Exam session data
+      examSession: submission.examSession || {},
+      
+      // Proctoring summary statistics
+      proctoringSummary: submission.proctoringSummary || {
+        totalTabSwitches: 0,
+        totalIdentityFailures: 0,
+        totalMultipleFaceEvents: 0,
+        totalWarnings: 0,
+        verificationSuccessRate: 100
+      },
+      
+      // Additional metadata
+      submittedAt: submission.submittedAt,
+      percentage: submission.percentage || ((submission.score / normalizedQuestions.length) * 100).toFixed(1),
+      isPassed: submission.isPassed || (submission.score / normalizedQuestions.length) >= 0.6
     });
   } catch (err) {
     console.error("Result fetch error:", err);

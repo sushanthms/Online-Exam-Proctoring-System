@@ -128,8 +128,8 @@ export default function MyResultsPage({ user }) {
       <div className="my-results-submission-info">
         <span>Score: {sub.score}/{sub.answers.length}</span>
         <span>
-          Date: {new Date(sub.submittedAt).toLocaleDateString()}{" "}
-          {new Date(sub.submittedAt).toLocaleTimeString()}
+          Date: {sub.submittedAt ? new Date(sub.submittedAt).toLocaleDateString() : 'N/A'}{" "}
+          {sub.submittedAt ? new Date(sub.submittedAt).toLocaleTimeString() : ''}
         </span>
       </div>
       <div className="my-results-view-btn">View Details ➡️</div>

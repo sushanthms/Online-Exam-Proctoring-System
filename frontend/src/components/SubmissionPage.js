@@ -51,7 +51,7 @@ export default function SubmissionPage({ user, examId, onBack }) {
         {submission.tabSwitches?.length > 0 ? (
           <ul>
             {submission.tabSwitches.map((t, i) => (
-              <li key={i}>{new Date(t.timestamp).toLocaleTimeString()}</li>
+              <li key={i}>{t.timestamp ? new Date(t.timestamp).toLocaleTimeString() : 'Invalid time'}</li>
             ))}
           </ul>
         ) : (
@@ -65,8 +65,8 @@ export default function SubmissionPage({ user, examId, onBack }) {
           <ul>
             {submission.multipleFaceLogs.map((log, i) => (
               <li key={i}>
-                {new Date(log.startTime).toLocaleTimeString()} -{" "}
-                {new Date(log.endTime).toLocaleTimeString()} ({log.duration}s)
+                {log.startTime ? new Date(log.startTime).toLocaleTimeString() : 'Invalid start time'} -{" "}
+                {log.endTime ? new Date(log.endTime).toLocaleTimeString() : 'Invalid end time'} ({log.duration}s)
               </li>
             ))}
           </ul>

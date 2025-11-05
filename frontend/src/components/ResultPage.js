@@ -104,7 +104,7 @@ export default function ResultPage({ onLogout, isAdmin = false }) {
 
   // Format duration
   const formatDuration = (seconds) => {
-    if (!seconds) return "N/A";
+    if (seconds === null || seconds === undefined || seconds === 0) return "0m 0s";
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}m ${secs}s`;
@@ -247,7 +247,7 @@ export default function ResultPage({ onLogout, isAdmin = false }) {
             <span className="info-icon">👤</span>
             <div>
               <div className="info-label">Student</div>
-              <div className="info-value">{result.username || "Unknown"}</div>
+              <div className="info-value">{result.username || result.studentName || result.user?.name || "Student"}</div>
             </div>
           </div>
           <div className="info-item">
@@ -275,27 +275,27 @@ export default function ResultPage({ onLogout, isAdmin = false }) {
         <div className="summary-grid">
           <div className="summary-card">
             <div className="summary-icon">🔄</div>
-            <div className="summary-value">{proctoringSummary.totalTabSwitches || 0}</div>
+            <div className="summary-value">{tabSwitches.length}</div>
             <div className="summary-label">Tab Switches</div>
           </div>
           <div className="summary-card">
             <div className="summary-icon">❌</div>
-            <div className="summary-value">{proctoringSummary.totalIdentityFailures || 0}</div>
+            <div className="summary-value">{identityVerifications.filter(iv => iv.status === 'failed').length}</div>
             <div className="summary-label">Identity Failures</div>
           </div>
           <div className="summary-card">
             <div className="summary-icon">👥</div>
-            <div className="summary-value">{proctoringSummary.totalMultipleFaceEvents || 0}</div>
+            <div className="summary-value">{multipleFaceLogs.length}</div>
             <div className="summary-label">Multiple Face Events</div>
           </div>
           <div className="summary-card">
             <div className="summary-icon">⚠️</div>
-            <div className="summary-value">{proctoringSummary.totalWarnings || 0}</div>
+            <div className="summary-value">{warnings.length}</div>
             <div className="summary-label">Total Warnings</div>
           </div>
           <div className="summary-card">
             <div className="summary-icon">✅</div>
-            <div className="summary-value">{proctoringSummary.verificationSuccessRate || 100}%</div>
+            <div className="summary-value">{Math.round((identityVerifications.filter(iv => iv.status === 'verified').length / Math.max(1, identityVerifications.length)) * 100)}%</div>
             <div className="summary-label">Verification Rate</div>
           </div>
         </div>

@@ -21,7 +21,8 @@ export default function LoginPage({ onLogin }) {
       if (user.role === "admin") navigate("/admin/dashboard");
       else navigate("/student/dashboard");
     } catch (err) {
-      setErr("Invalid credentials or user not registered.");
+      const message = err.response?.data?.message || "An error occurred";
+      setErr(message);
     } finally {
       setLoading(false);
     }

@@ -286,7 +286,8 @@ export default function ExamPage({ user, onLogout }) {
         
         setLogs(prev => [...prev, `❌ Identity mismatch at ${new Date().toLocaleTimeString()} (${similarity.toFixed(1)}%) - Attempt ${newCount}/3`]);
         
-        alert(`🚨 IDENTITY VERIFICATION FAILED!\n\nExpected: ${user.name}\nMatch Score: ${similarity.toFixed(1)}%\n\nAttempt ${newCount} of 3\n\n${newCount >= 3 ? 'Exam will be auto-submitted!' : 'Please ensure you are the registered student.'}`);
+        // Log the identity verification failure (no alert message)
+        // The failure will be recorded in proctoring logs for admin review
         
         // Log to backend
         await fetch("http://localhost:4000/api/exam/verify-face", {
@@ -304,7 +305,8 @@ export default function ExamPage({ user, onLogout }) {
         });
 
         if (newCount >= 3) {
-          alert("🚨 MAXIMUM VERIFICATION FAILURES REACHED!\n\nYour exam will be auto-submitted due to identity verification failures.");
+          // Auto-submit without alert message
+          // Maximum verification failures reached, exam will be auto-submitted
           handleSubmit();
         }
       }
@@ -333,7 +335,7 @@ export default function ExamPage({ user, onLogout }) {
         const newCount = tabSwitchCount + 1;
         
         setTabSwitchCount(newCount);
-        setLogs(prev => [...prev, `⚠️ Tab switch #${newCount} at ${tabSwitchStartTime.toLocaleTimeString()} (Duration: ${duration}s)`]);
+        setLogs(prev => [...prev, `⚠️ Tab switch #${newCount} at ${tabSwitchStartTime ? tabSwitchStartTime.toLocaleTimeString() : new Date().toLocaleTimeString()} (Duration: ${duration}s)`]);
         
         // Log to backend
         try {
@@ -363,15 +365,15 @@ export default function ExamPage({ user, onLogout }) {
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [tabSwitchCount, timerStarted, examId]);
 
-  // Tab warning logic with stricter enforcement
+  // Tab warning logic (without alert messages)
   useEffect(() => {
     if (tabSwitchCount === 1 && !warningShown) {
-      alert("⚠️ WARNING: You switched tabs!\n\nThis is your FIRST warning.\n\nTwo more tab switches will AUTO-SUBMIT your exam.\n\nStay focused on the exam page!");
+      // First tab switch - log without alert
       setWarningShown(true);
     } else if (tabSwitchCount === 2) {
-      alert("⚠️ FINAL WARNING: You switched tabs again!\n\nOne more tab switch will AUTO-SUBMIT your exam.\n\nStay focused on the exam page!");
+      // Second tab switch - log without alert
     } else if (tabSwitchCount >= 3) {
-      alert("❌ TOO MANY TAB SWITCHES!\n\nYour exam is being auto-submitted due to suspicious activity.");
+      // Too many tab switches - auto-submit without alert
       
       // Log critical violation
       try {
@@ -429,7 +431,7 @@ export default function ExamPage({ user, onLogout }) {
             multipleFaceViolationCount.current++;
             
             // Log to UI
-            setLogs(prev => [...prev, `👥 VIOLATION: Multiple faces detected (${detections.length} people) at ${startTimeRef.current.toLocaleTimeString()} - #${multipleFaceViolationCount.current}`]);
+            setLogs(prev => [...prev, `👥 VIOLATION: Multiple faces detected (${detections.length} people) at ${startTimeRef.current ? startTimeRef.current.toLocaleTimeString() : new Date().toLocaleTimeString()} - #${multipleFaceViolationCount.current}`]);
             
             // Log to backend
             try {
@@ -453,12 +455,12 @@ export default function ExamPage({ user, onLogout }) {
               console.error("Error logging multiple face violation:", error);
             }
             
-            // Alert the user
-            alert(`👥 VIOLATION DETECTED: Multiple people (${detections.length}) in camera view!\n\nThis is violation #${multipleFaceViolationCount.current} of ${VIOLATION_THRESHOLD} allowed.\n\nPlease ensure you are alone while taking the exam.`);
+            // Log violation without alert message
+            // Multiple face detection will be recorded in proctoring logs for admin review
             
-            // Auto-submit if threshold reached
+            // Auto-submit if threshold reached (without alert)
             if (multipleFaceViolationCount.current >= VIOLATION_THRESHOLD) {
-              alert("🚨 CRITICAL VIOLATION: Multiple people detected too many times!\n\nYour exam is being auto-submitted.");
+              // Maximum violations reached, auto-submit exam
               handleSubmit();
             }
           }
