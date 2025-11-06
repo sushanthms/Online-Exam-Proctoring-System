@@ -1,0 +1,326 @@
+/* ===== Global Colors & Sizes ===== */
+:root {
+  --primary-color: #2563eb;
+  --primary-dark: #1d4ed8;
+  --success-color: #059669;
+  --danger-color: #dc2626;
+  --warning-color: #f57c00;
+  --text-primary: #424242;
+  --text-secondary: #6b7280;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 30px;
+
+  --shadow-sm: 0 4px 12px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+
+  --transition: 0.3s ease-in-out;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2.5rem;
+}
+
+/* ===== Container ===== */
+.home-container {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== Header ===== */
+.home-header {
+  background: #ffffffee;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-lg);
+  flex-wrap: wrap;
+}
+
+.home-header h1 {
+  color: var(--primary-color);
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.home-header p {
+  color: var(--text-primary);
+  margin: 0.5rem 0 0 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.home-header strong {
+  color: var(--primary-color);
+}
+
+.home-logout-btn {
+  background: linear-gradient(135deg, var(--danger-color), #e53935);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  font-weight: 700;
+  transition: all var(--transition);
+  text-transform: uppercase;
+}
+
+.home-logout-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
+}
+
+/* ===== Section ===== */
+.home-section {
+  background: #ffffffee;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 2rem;
+}
+
+/* Section Titles */
+.home-section h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.home-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), #64b5f6);
+  border-radius: 2px;
+}
+
+/* ===== Exams Grid ===== */
+.home-exams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.home-exam-card {
+  background: white;
+  border: 2px solid #e0e7ff;
+  border-radius: var(--radius-lg);
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.home-exam-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.25);
+}
+
+/* Exam Card Header */
+.home-exam-card-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-exam-card-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.home-exam-badge {
+  background: linear-gradient(135deg, var(--success-color), #059669);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+  animation: pulse 2s infinite;
+}
+
+/* Exam Card Body */
+.home-exam-card-body {
+  padding: 1.5rem;
+}
+
+.home-exam-info p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.home-exam-info strong {
+  color: var(--primary-color);
+}
+
+/* Instructions */
+.home-exam-instructions {
+  background: #fff3e0;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border-left: 5px solid var(--warning-color);
+  margin-top: 1rem;
+}
+
+.home-exam-instructions ul {
+  padding-left: 1.2rem;
+}
+
+.home-exam-instructions li {
+  margin: 0.5rem 0;
+  list-style: disc;
+  font-size: 0.9rem;
+}
+
+/* Card Footer */
+.home-exam-card-footer {
+  padding: 1rem 1.5rem;
+  text-align: center;
+}
+
+.home-start-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: var(--radius-xl);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.home-start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+}
+
+/* Quick Actions */
+.home-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.home-action-card {
+  background: white;
+  border: 2px solid #e0e7ff;
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.home-action-card:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.15);
+}
+
+.home-action-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.home-action-card h3 {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  color: var(--primary-color);
+}
+
+.home-action-card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* Guidelines */
+.home-guidelines-box {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.home-guideline-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: var(--radius-md);
+  border-left: 5px solid var(--primary-color);
+  transition: all var(--transition);
+}
+
+.home-guideline-item:hover {
+  transform: translateX(5px);
+  background: #e3f2fd;
+}
+
+.home-guideline-icon {
+  font-size: 2rem;
+}
+
+.home-guideline-item strong {
+  display: block;
+  color: var(--primary-color);
+}
+
+.home-guideline-item p {
+  margin: 0.2rem 0 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Empty State */
+.home-empty-state {
+  text-align: center;
+  padding: 2rem;
+  border: 2px dashed #cbd5e1;
+  border-radius: var(--radius-lg);
+}
+
+.home-empty-state p:first-child {
+  font-size: 2rem;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid var(--primary-color);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .home-exams-grid, .home-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .home-header h1 { font-size: 1.6rem; }
+}

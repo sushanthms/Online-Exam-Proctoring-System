@@ -1,0 +1,1060 @@
+(node:18972) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:18972) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+[36mStarting the development server...[39m
+[36m[39m
+[33mCompiled with warnings.[39m
+[33m[39m
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\NeuralNetwork.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\NeuralNetwork.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\AgeGenderNet.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\AgeGenderNet.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\extractParams.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\extractParams.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\extractParamsFromWeigthMap.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\extractParamsFromWeigthMap.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\types.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\types.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\BoundingBox.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\BoundingBox.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Box.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Box.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Dimensions.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Dimensions.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceDetection.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceDetection.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceLandmarks.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceLandmarks.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceLandmarks5.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceLandmarks5.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceLandmarks68.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceLandmarks68.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceMatch.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceMatch.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\LabeledBox.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\LabeledBox.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\LabeledFaceDescriptors.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\LabeledFaceDescriptors.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\ObjectDetection.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\ObjectDetection.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Point.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Point.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\PredictedBox.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\PredictedBox.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Rect.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Rect.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\convLayer.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\convLayer.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\depthwiseSeparableConv.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\depthwiseSeparableConv.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\disposeUnusedWeightTensors.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\disposeUnusedWeightTensors.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractConvParamsFactory.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractConvParamsFactory.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractFCParamsFactory.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractFCParamsFactory.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractSeparableConvParamsFactory.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractSeparableConvParamsFactory.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractWeightEntryFactory.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractWeightEntryFactory.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractWeightsFactory.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractWeightsFactory.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\fullyConnectedLayer.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\fullyConnectedLayer.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\getModelUris.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\getModelUris.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\loadConvParamsFactory.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\loadConvParamsFactory.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\types.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\types.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\NetInput.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\NetInput.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\awaitMediaLoaded.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\awaitMediaLoaded.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\bufferToImage.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\bufferToImage.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\createCanvas.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\createCanvas.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\extractFaceTensors.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\extractFaceTensors.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\extractFaces.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\extractFaces.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchImage.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchImage.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchJson.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchJson.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchNetWeights.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchNetWeights.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchOrThrow.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchOrThrow.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\getContext2dOrThrow.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\getContext2dOrThrow.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\getMediaDimensions.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\getMediaDimensions.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\imageTensorToCanvas.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\imageTensorToCanvas.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\imageToSquare.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\imageToSquare.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\isMediaElement.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\isMediaElement.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\isMediaLoaded.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\isMediaLoaded.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\loadWeightMap.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\loadWeightMap.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\matchDimensions.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\matchDimensions.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\resolveInput.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\resolveInput.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\toNetInput.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\toNetInput.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\DrawBox.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\DrawBox.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\DrawFaceLandmarks.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\DrawFaceLandmarks.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\DrawTextField.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\DrawTextField.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\drawContour.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\drawContour.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\drawDetections.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\drawDetections.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\drawFaceExpressions.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\drawFaceExpressions.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\createBrowserEnv.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\createBrowserEnv.ts'
+
+Module not found: Error: Can't resolve 'fs' in 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\build\es6\env'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\createFileSystem.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\createFileSystem.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\createNodejsEnv.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\createNodejsEnv.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\isBrowser.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\isBrowser.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\isNodejs.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\isNodejs.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\euclideanDistance.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\euclideanDistance.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceExpressionNet\FaceExpressionNet.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceExpressionNet\FaceExpressionNet.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceExpressionNet\FaceExpressions.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceExpressionNet\FaceExpressions.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceExpressionNet\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceExpressionNet\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\FaceFeatureExtractor.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\FaceFeatureExtractor.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\TinyFaceFeatureExtractor.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\TinyFaceFeatureExtractor.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\denseBlock.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\denseBlock.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParams.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParams.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParamsFromWeigthMap.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParamsFromWeigthMap.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParamsFromWeigthMapTiny.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParamsFromWeigthMapTiny.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParamsTiny.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParamsTiny.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractorsFactory.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractorsFactory.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\loadParamsFactory.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\loadParamsFactory.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\FaceLandmark68Net.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\FaceLandmark68Net.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\FaceLandmark68NetBase.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\FaceLandmark68NetBase.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\FaceLandmark68TinyNet.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\FaceLandmark68TinyNet.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\FaceProcessor.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\FaceProcessor.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\extractParams.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\extractParams.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\extractParamsFromWeigthMap.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\extractParamsFromWeigthMap.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\util.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\util.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\FaceRecognitionNet.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\FaceRecognitionNet.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\convLayer.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\convLayer.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\extractParams.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\extractParams.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\extractParamsFromWeigthMap.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\extractParamsFromWeigthMap.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\residualLayer.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\residualLayer.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\scaleLayer.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\scaleLayer.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithAge.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithAge.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceDescriptor.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceDescriptor.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceDetection.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceDetection.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceExpressions.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceExpressions.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceLandmarks.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceLandmarks.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithGender.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithGender.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\ComposableTask.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\ComposableTask.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\ComputeFaceDescriptorsTasks.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\ComputeFaceDescriptorsTasks.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\DetectFaceLandmarksTasks.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\DetectFaceLandmarksTasks.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\DetectFacesTasks.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\DetectFacesTasks.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\FaceMatcher.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\FaceMatcher.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\PredictAgeAndGenderTask.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\PredictAgeAndGenderTask.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\PredictFaceExpressionsTask.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\PredictFaceExpressionsTask.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\allFaces.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\allFaces.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\detectFaces.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\detectFaces.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\extractFacesAndComputeResults.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\extractFacesAndComputeResults.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\nets.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\nets.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\Mtcnn.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\Mtcnn.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\MtcnnBox.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\MtcnnBox.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\MtcnnOptions.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\MtcnnOptions.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\ONet.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\ONet.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\PNet.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\PNet.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\RNet.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\RNet.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\bgrToRgbTensor.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\bgrToRgbTensor.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\config.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\config.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\extractImagePatches.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\extractImagePatches.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\extractParams.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\extractParams.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\extractParamsFromWeigthMap.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\extractParamsFromWeigthMap.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\getSizesForScale.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\getSizesForScale.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\normalize.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\normalize.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\prelu.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\prelu.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\pyramidDown.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\pyramidDown.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\sharedLayers.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\sharedLayers.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\stage1.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\stage1.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\stage2.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\stage2.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\stage3.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\stage3.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\iou.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\iou.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\minBbox.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\minBbox.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\nonMaxSuppression.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\nonMaxSuppression.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\normalize.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\normalize.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\padToSquare.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\padToSquare.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\shuffleArray.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\shuffleArray.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\resizeResults.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\resizeResults.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\SsdMobilenetv1.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\SsdMobilenetv1.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\SsdMobilenetv1Options.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\SsdMobilenetv1Options.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\boxPredictionLayer.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\boxPredictionLayer.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\extractParams.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\extractParams.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\extractParamsFromWeigthMap.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\extractParamsFromWeigthMap.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\mobileNetV1.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\mobileNetV1.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\nonMaxSuppression.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\nonMaxSuppression.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\outputLayer.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\outputLayer.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\pointwiseConvLayer.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\pointwiseConvLayer.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\predictionLayer.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\predictionLayer.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\TinyFaceDetector.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\TinyFaceDetector.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\TinyFaceDetectorOptions.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\TinyFaceDetectorOptions.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\const.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\const.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\TinyYolov2.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\TinyYolov2.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\TinyYolov2Base.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\TinyYolov2Base.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\TinyYolov2Options.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\TinyYolov2Options.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\config.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\config.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\const.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\const.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\convWithBatchNorm.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\convWithBatchNorm.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\depthwiseSeparableConv.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\depthwiseSeparableConv.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\extractParams.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\extractParams.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\extractParamsFromWeigthMap.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\extractParamsFromWeigthMap.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\leaky.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\leaky.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\utils\index.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\utils\index.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\xception\TinyXception.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\xception\TinyXception.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\xception\extractParams.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\xception\extractParams.ts'
+
+Failed to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\xception\extractParamsFromWeigthMap.ts' file: Error: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\xception\extractParamsFromWeigthMap.ts'
+
+Search for the [4m[33mkeywords[39m[24m to learn more about each warning.
+To ignore, add [36m// eslint-disable-next-line[39m to the line before.
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/NeuralNetwork.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\NeuralNetwork.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\NeuralNetwork.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ageGenderNet/AgeGenderNet.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\AgeGenderNet.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\AgeGenderNet.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ageGenderNet/extractParams.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\extractParams.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\extractParams.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ageGenderNet/extractParamsFromWeigthMap.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\extractParamsFromWeigthMap.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\extractParamsFromWeigthMap.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ageGenderNet/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ageGenderNet/types.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\types.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ageGenderNet\types.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/BoundingBox.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\BoundingBox.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\BoundingBox.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/Box.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Box.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Box.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/Dimensions.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Dimensions.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Dimensions.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/FaceDetection.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceDetection.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceDetection.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/FaceLandmarks.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceLandmarks.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceLandmarks.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/FaceLandmarks5.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceLandmarks5.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceLandmarks5.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/FaceLandmarks68.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceLandmarks68.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceLandmarks68.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/FaceMatch.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceMatch.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\FaceMatch.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/LabeledBox.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\LabeledBox.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\LabeledBox.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/LabeledFaceDescriptors.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\LabeledFaceDescriptors.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\LabeledFaceDescriptors.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/ObjectDetection.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\ObjectDetection.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\ObjectDetection.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/Point.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Point.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Point.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/PredictedBox.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\PredictedBox.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\PredictedBox.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/Rect.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Rect.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\Rect.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/classes/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\classes\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/common/convLayer.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\convLayer.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\convLayer.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/common/depthwiseSeparableConv.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\depthwiseSeparableConv.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\depthwiseSeparableConv.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/common/disposeUnusedWeightTensors.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\disposeUnusedWeightTensors.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\disposeUnusedWeightTensors.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/common/extractConvParamsFactory.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractConvParamsFactory.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractConvParamsFactory.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/common/extractFCParamsFactory.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractFCParamsFactory.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractFCParamsFactory.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/common/extractSeparableConvParamsFactory.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractSeparableConvParamsFactory.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractSeparableConvParamsFactory.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/common/extractWeightEntryFactory.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractWeightEntryFactory.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractWeightEntryFactory.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/common/extractWeightsFactory.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractWeightsFactory.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\extractWeightsFactory.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/common/fullyConnectedLayer.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\fullyConnectedLayer.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\fullyConnectedLayer.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/common/getModelUris.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\getModelUris.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\getModelUris.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/common/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/common/loadConvParamsFactory.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\loadConvParamsFactory.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\loadConvParamsFactory.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/common/types.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\types.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\common\types.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/NetInput.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\NetInput.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\NetInput.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/awaitMediaLoaded.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\awaitMediaLoaded.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\awaitMediaLoaded.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/bufferToImage.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\bufferToImage.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\bufferToImage.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/createCanvas.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\createCanvas.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\createCanvas.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/extractFaceTensors.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\extractFaceTensors.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\extractFaceTensors.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/extractFaces.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\extractFaces.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\extractFaces.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/fetchImage.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchImage.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchImage.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/fetchJson.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchJson.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchJson.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/fetchNetWeights.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchNetWeights.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchNetWeights.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/fetchOrThrow.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchOrThrow.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\fetchOrThrow.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/getContext2dOrThrow.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\getContext2dOrThrow.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\getContext2dOrThrow.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/getMediaDimensions.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\getMediaDimensions.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\getMediaDimensions.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/imageTensorToCanvas.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\imageTensorToCanvas.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\imageTensorToCanvas.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/imageToSquare.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\imageToSquare.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\imageToSquare.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/isMediaElement.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\isMediaElement.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\isMediaElement.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/isMediaLoaded.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\isMediaLoaded.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\isMediaLoaded.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/loadWeightMap.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\loadWeightMap.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\loadWeightMap.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/matchDimensions.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\matchDimensions.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\matchDimensions.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/resolveInput.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\resolveInput.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\resolveInput.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/dom/toNetInput.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\toNetInput.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\dom\toNetInput.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/draw/DrawBox.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\DrawBox.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\DrawBox.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/draw/DrawFaceLandmarks.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\DrawFaceLandmarks.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\DrawFaceLandmarks.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/draw/DrawTextField.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\DrawTextField.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\DrawTextField.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/draw/drawContour.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\drawContour.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\drawContour.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/draw/drawDetections.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\drawDetections.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\drawDetections.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/draw/drawFaceExpressions.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\drawFaceExpressions.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\drawFaceExpressions.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/draw/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\draw\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/env/createBrowserEnv.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\createBrowserEnv.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\createBrowserEnv.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/env/createFileSystem.js[39m[22m [1m[32m5:11-24[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'fs' in 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\build\es6\env'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/env/createFileSystem.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\createFileSystem.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\createFileSystem.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/env/createNodejsEnv.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\createNodejsEnv.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\createNodejsEnv.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/env/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/env/isBrowser.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\isBrowser.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\isBrowser.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/env/isNodejs.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\isNodejs.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\env\isNodejs.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/euclideanDistance.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\euclideanDistance.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\euclideanDistance.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceExpressionNet/FaceExpressionNet.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceExpressionNet\FaceExpressionNet.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceExpressionNet\FaceExpressionNet.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceExpressionNet/FaceExpressions.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceExpressionNet\FaceExpressions.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceExpressionNet\FaceExpressions.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceExpressionNet/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceExpressionNet\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceExpressionNet\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceFeatureExtractor/FaceFeatureExtractor.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\FaceFeatureExtractor.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\FaceFeatureExtractor.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceFeatureExtractor/TinyFaceFeatureExtractor.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\TinyFaceFeatureExtractor.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\TinyFaceFeatureExtractor.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceFeatureExtractor/denseBlock.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\denseBlock.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\denseBlock.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceFeatureExtractor/extractParams.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParams.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParams.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceFeatureExtractor/extractParamsFromWeigthMap.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParamsFromWeigthMap.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParamsFromWeigthMap.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceFeatureExtractor/extractParamsFromWeigthMapTiny.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParamsFromWeigthMapTiny.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParamsFromWeigthMapTiny.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceFeatureExtractor/extractParamsTiny.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParamsTiny.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractParamsTiny.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceFeatureExtractor/extractorsFactory.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractorsFactory.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\extractorsFactory.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceFeatureExtractor/loadParamsFactory.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\loadParamsFactory.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceFeatureExtractor\loadParamsFactory.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceLandmarkNet/FaceLandmark68Net.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\FaceLandmark68Net.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\FaceLandmark68Net.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceLandmarkNet/FaceLandmark68NetBase.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\FaceLandmark68NetBase.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\FaceLandmark68NetBase.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceLandmarkNet/FaceLandmark68TinyNet.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\FaceLandmark68TinyNet.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\FaceLandmark68TinyNet.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceLandmarkNet/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceLandmarkNet\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceProcessor/FaceProcessor.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\FaceProcessor.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\FaceProcessor.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceProcessor/extractParams.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\extractParams.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\extractParams.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceProcessor/extractParamsFromWeigthMap.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\extractParamsFromWeigthMap.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\extractParamsFromWeigthMap.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceProcessor/util.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\util.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceProcessor\util.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceRecognitionNet/FaceRecognitionNet.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\FaceRecognitionNet.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\FaceRecognitionNet.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceRecognitionNet/convLayer.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\convLayer.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\convLayer.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceRecognitionNet/extractParams.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\extractParams.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\extractParams.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceRecognitionNet/extractParamsFromWeigthMap.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\extractParamsFromWeigthMap.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\extractParamsFromWeigthMap.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceRecognitionNet/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceRecognitionNet/residualLayer.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\residualLayer.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\residualLayer.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/faceRecognitionNet/scaleLayer.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\scaleLayer.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\faceRecognitionNet\scaleLayer.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/factories/WithAge.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithAge.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithAge.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/factories/WithFaceDescriptor.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceDescriptor.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceDescriptor.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/factories/WithFaceDetection.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceDetection.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceDetection.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/factories/WithFaceExpressions.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceExpressions.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceExpressions.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/factories/WithFaceLandmarks.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceLandmarks.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithFaceLandmarks.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/factories/WithGender.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithGender.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\WithGender.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/factories/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\factories\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/globalApi/ComposableTask.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\ComposableTask.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\ComposableTask.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/globalApi/ComputeFaceDescriptorsTasks.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\ComputeFaceDescriptorsTasks.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\ComputeFaceDescriptorsTasks.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/globalApi/DetectFaceLandmarksTasks.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\DetectFaceLandmarksTasks.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\DetectFaceLandmarksTasks.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/globalApi/DetectFacesTasks.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\DetectFacesTasks.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\DetectFacesTasks.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/globalApi/FaceMatcher.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\FaceMatcher.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\FaceMatcher.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/globalApi/PredictAgeAndGenderTask.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\PredictAgeAndGenderTask.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\PredictAgeAndGenderTask.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/globalApi/PredictFaceExpressionsTask.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\PredictFaceExpressionsTask.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\PredictFaceExpressionsTask.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/globalApi/allFaces.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\allFaces.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\allFaces.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/globalApi/detectFaces.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\detectFaces.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\detectFaces.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/globalApi/extractFacesAndComputeResults.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\extractFacesAndComputeResults.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\extractFacesAndComputeResults.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/globalApi/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/globalApi/nets.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\nets.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\globalApi\nets.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/Mtcnn.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\Mtcnn.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\Mtcnn.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/MtcnnBox.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\MtcnnBox.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\MtcnnBox.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/MtcnnOptions.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\MtcnnOptions.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\MtcnnOptions.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/ONet.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\ONet.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\ONet.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/PNet.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\PNet.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\PNet.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/RNet.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\RNet.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\RNet.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/bgrToRgbTensor.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\bgrToRgbTensor.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\bgrToRgbTensor.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/config.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\config.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\config.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/extractImagePatches.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\extractImagePatches.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\extractImagePatches.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/extractParams.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\extractParams.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\extractParams.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/extractParamsFromWeigthMap.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\extractParamsFromWeigthMap.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\extractParamsFromWeigthMap.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/getSizesForScale.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\getSizesForScale.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\getSizesForScale.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/normalize.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\normalize.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\normalize.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/prelu.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\prelu.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\prelu.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/pyramidDown.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\pyramidDown.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\pyramidDown.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/sharedLayers.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\sharedLayers.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\sharedLayers.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/stage1.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\stage1.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\stage1.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/stage2.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\stage2.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\stage2.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/mtcnn/stage3.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\stage3.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\mtcnn\stage3.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ops/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ops/iou.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\iou.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\iou.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ops/minBbox.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\minBbox.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\minBbox.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ops/nonMaxSuppression.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\nonMaxSuppression.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\nonMaxSuppression.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ops/normalize.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\normalize.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\normalize.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ops/padToSquare.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\padToSquare.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\padToSquare.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ops/shuffleArray.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\shuffleArray.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ops\shuffleArray.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/resizeResults.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\resizeResults.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\resizeResults.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ssdMobilenetv1/SsdMobilenetv1.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\SsdMobilenetv1.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\SsdMobilenetv1.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ssdMobilenetv1/SsdMobilenetv1Options.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\SsdMobilenetv1Options.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\SsdMobilenetv1Options.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ssdMobilenetv1/boxPredictionLayer.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\boxPredictionLayer.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\boxPredictionLayer.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ssdMobilenetv1/extractParams.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\extractParams.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\extractParams.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ssdMobilenetv1/extractParamsFromWeigthMap.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\extractParamsFromWeigthMap.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\extractParamsFromWeigthMap.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ssdMobilenetv1/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ssdMobilenetv1/mobileNetV1.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\mobileNetV1.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\mobileNetV1.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ssdMobilenetv1/nonMaxSuppression.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\nonMaxSuppression.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\nonMaxSuppression.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ssdMobilenetv1/outputLayer.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\outputLayer.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\outputLayer.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ssdMobilenetv1/pointwiseConvLayer.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\pointwiseConvLayer.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\pointwiseConvLayer.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/ssdMobilenetv1/predictionLayer.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\predictionLayer.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\ssdMobilenetv1\predictionLayer.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyFaceDetector/TinyFaceDetector.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\TinyFaceDetector.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\TinyFaceDetector.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyFaceDetector/TinyFaceDetectorOptions.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\TinyFaceDetectorOptions.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\TinyFaceDetectorOptions.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyFaceDetector/const.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\const.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\const.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyFaceDetector/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyFaceDetector\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyYolov2/TinyYolov2.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\TinyYolov2.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\TinyYolov2.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyYolov2/TinyYolov2Base.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\TinyYolov2Base.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\TinyYolov2Base.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyYolov2/TinyYolov2Options.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\TinyYolov2Options.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\TinyYolov2Options.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyYolov2/config.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\config.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\config.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyYolov2/const.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\const.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\const.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyYolov2/convWithBatchNorm.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\convWithBatchNorm.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\convWithBatchNorm.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyYolov2/depthwiseSeparableConv.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\depthwiseSeparableConv.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\depthwiseSeparableConv.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyYolov2/extractParams.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\extractParams.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\extractParams.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyYolov2/extractParamsFromWeigthMap.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\extractParamsFromWeigthMap.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\extractParamsFromWeigthMap.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyYolov2/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/tinyYolov2/leaky.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\leaky.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\tinyYolov2\leaky.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/utils/index.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\utils\index.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\utils\index.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/xception/TinyXception.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\xception\TinyXception.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\xception\TinyXception.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/xception/extractParams.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\xception\extractParams.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\xception\extractParams.ts'[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./node_modules/face-api.js/build/es6/xception/extractParamsFromWeigthMap.js[39m[22m
+[1mModule Warning (from ./node_modules/source-map-loader/dist/cjs.js):
+[1m[31mFailed[39m[22m[1m to parse source map from 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\xception\extractParamsFromWeigthMap.ts' file: [1m[31mError[39m[22m[1m: ENOENT: no such file or directory, open 'C:\Online Exam Proctoring System\frontend\node_modules\face-api.js\src\xception\extractParamsFromWeigthMap.ts'[39m[22m
+
+webpack compiled with [1m[33m175 warnings[39m[22m

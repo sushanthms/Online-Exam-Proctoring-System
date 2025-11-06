@@ -1,0 +1,154 @@
+/* frontend/src/components/ProctoringPanel.css */
+.proctoring-panel {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-top-left-radius: 8px;
+  padding: 1rem;
+  z-index: 1000;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.proctoring-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 0.5rem;
+}
+
+.proctoring-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.proctoring-header h3 span {
+  margin-right: 0.5rem;
+}
+
+.proctoring-toggle {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.proctoring-content {
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.proctoring-status {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+
+.status-icon {
+  margin-right: 0.5rem;
+  font-size: 1rem;
+}
+
+.status-text {
+  flex: 1;
+}
+
+.status-passed {
+  color: #2ecc71;
+}
+
+.status-warning {
+  color: #f39c12;
+}
+
+.status-failed {
+  color: #e74c3c;
+}
+
+.proctoring-logs {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.log-entry {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.log-time {
+  color: #bbb;
+  font-size: 0.7rem;
+  margin-right: 0.5rem;
+}
+
+.log-message {
+  color: #fff;
+}
+
+.log-warning {
+  color: #f39c12;
+}
+
+.log-error {
+  color: #e74c3c;
+}
+
+.log-success {
+  color: #2ecc71;
+}
+
+.proctoring-minimized {
+  width: auto;
+  padding: 0.5rem;
+}
+
+.proctoring-minimized .proctoring-content {
+  display: none;
+}
+
+.camera-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.camera-feed {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.camera-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+}
+
+.camera-status {
+  font-size: 0.8rem;
+  text-align: center;
+  padding: 0.3rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 4px;
+}

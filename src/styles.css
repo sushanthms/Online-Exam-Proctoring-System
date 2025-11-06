@@ -1,0 +1,1009 @@
+/* =================== CSS Variables =================== */
+:root {
+  --primary-color: #1976d2;
+  --primary-dark: #0d47a1;
+  --secondary-color: #764ba2;
+  --success-color: #10b981;
+  --warning-color: #ff9800;
+  --danger-color: #ef4444;
+  --text-dark: #212121;
+  --text-light: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+/* =================== Global Styles =================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-primary, #ffffff);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light theme gradient background */
+body:not(.dark-mode)::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-attachment: fixed;
+  z-index: -1;
+}
+
+/* Animated background particles for light mode */
+body:not(.dark-mode)::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(30, 144, 255, 0.3) 0%, transparent 50%);
+  z-index: -1;
+  animation: backgroundMove 20s ease infinite;
+}
+
+/* Animated background particles for dark mode */
+body.dark-mode::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(30, 30, 60, 0.5) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(60, 20, 90, 0.5) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(20, 40, 80, 0.5) 0%, transparent 50%);
+  z-index: -1;
+  animation: backgroundMove 20s ease infinite;
+}
+
+@keyframes backgroundMove {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+/* =================== LOGIN/REGISTER CONTAINER =================== */
+.container {
+  max-width: 420px;
+  margin: 60px auto;
+  background: rgba(255, 255, 255, 0.98);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 40px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.container:hover {
+  transform: scale(1.02);
+}
+
+/* =================== Headings =================== */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-dark);
+  font-weight: 700;
+}
+
+h2 {
+  text-align: center;
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+/* =================== Form Inputs =================== */
+input, .input-field {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 2px solid #90caf9;
+  font-size: 15px;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  background: white;
+  color: var(--text-dark);
+}
+
+input:focus, .input-field:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(25, 118, 210, 0.4);
+}
+
+/* =================== Buttons =================== */
+button, .btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+button:hover, .btn:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4);
+}
+
+button:disabled {
+  background-color: #b0bec5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =================== Messages =================== */
+p {
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+.error {
+  color: var(--danger-color);
+  font-weight: 600;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.message {
+  text-align: center;
+  margin-top: 10px;
+  color: var(--text-dark);
+}
+
+/* =================== Link Buttons =================== */
+.link-button {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+  font-weight: 600;
+}
+
+.link-button:hover {
+  color: var(--primary-dark);
+}
+
+/* =================== HOME PAGE =================== */
+.home-container {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.home-header {
+  background: rgba(255, 255, 255, 0.98);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.home-header h1 {
+  color: var(--primary-color);
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+.home-header p {
+  color: #424242;
+  margin: 0.5rem 0 0 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.home-header strong {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.logout-btn {
+  background: linear-gradient(135deg, var(--danger-color), #dc2626);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.95rem;
+}
+
+.logout-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.6);
+}
+
+/* =================== SECTIONS =================== */
+.section {
+  background: rgba(255, 255, 255, 0.98);
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  margin-bottom: 2rem;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.section h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 800;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.section h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), #64b5f6);
+  border-radius: 2px;
+}
+
+/* =================== EXAM CARDS =================== */
+.exams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.exam-card {
+  background: white;
+  border: 3px solid #e3f2fd;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.exam-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(25, 118, 210, 0.25);
+  border-color: var(--primary-color);
+}
+
+.exam-card-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.exam-card-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: white;
+  font-weight: 700;
+}
+
+.exam-badge {
+  background: linear-gradient(135deg, var(--success-color), #059669);
+  padding: 0.6rem 1.2rem;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.exam-card-body {
+  padding: 2rem;
+  background: white;
+}
+
+.exam-info {
+  margin-bottom: 1.5rem;
+}
+
+.exam-info p {
+  color: var(--text-dark);
+  font-weight: 600;
+  margin: 1rem 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.exam-info strong {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+/* =================== EXAM INSTRUCTIONS - HIGH VISIBILITY =================== */
+.exam-instructions {
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 3px solid var(--warning-color);
+  border-left: 6px solid #f57c00;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.2);
+}
+
+.exam-instructions p {
+  color: #e65100;
+  margin: 0 0 1rem 0;
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.exam-instructions strong {
+  color: #bf360c;
+  font-weight: 900;
+}
+
+.exam-instructions ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exam-instructions li {
+  color: var(--text-dark);
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+  padding: 0.8rem 0.8rem 0.8rem 2.5rem;
+  position: relative;
+  background: white;
+  border-radius: 8px;
+  border-left: 4px solid var(--warning-color);
+  transition: all 0.3s ease;
+  line-height: 1.6;
+}
+
+.exam-instructions li:hover {
+  background: #fffbf0;
+  transform: translateX(5px);
+  box-shadow: 0 3px 10px rgba(255, 152, 0, 0.2);
+}
+
+.exam-instructions li::before {
+  content: "⚠️";
+  position: absolute;
+  left: 0.6rem;
+  font-size: 1.3rem;
+  top: 0.7rem;
+}
+
+.exam-instructions li strong {
+  color: #d84315;
+  font-weight: 800;
+}
+
+.exam-card-footer {
+  padding: 0 2rem 2rem 2rem;
+  background: white;
+}
+
+.btn-primary {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  border: none;
+  padding: 1.2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-dark), #01579b);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.6);
+}
+
+/* =================== QUICK ACTIONS =================== */
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.action-card {
+  background: white;
+  border: 3px solid #e3f2fd;
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.action-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 20px 60px rgba(25, 118, 210, 0.2);
+  border-color: var(--primary-color);
+}
+
+.action-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.action-card h3 {
+  color: var(--primary-color);
+  margin: 1rem 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.action-card p {
+  color: #424242;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* =================== GUIDELINES =================== */
+.guidelines-box {
+  background: white;
+  border: 3px solid #e3f2fd;
+  padding: 2rem;
+  border-radius: 20px;
+  margin-top: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.guideline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: #f5f5f5;
+  border-radius: 15px;
+  border: 2px solid #e0e0e0;
+  border-left: 5px solid var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+.guideline-item:hover {
+  background: #e3f2fd;
+  transform: translateX(10px);
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.15);
+}
+
+.guideline-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.guideline-item div {
+  color: var(--text-dark);
+  line-height: 1.8;
+  font-weight: 500;
+}
+
+.guideline-item strong {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+}
+
+/* =================== EMPTY STATE =================== */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border: 3px dashed #e0e0e0;
+  border-radius: 20px;
+  margin-top: 2rem;
+}
+
+.empty-state p {
+  color: #424242;
+  font-size: 1.2rem;
+  margin: 1rem 0;
+  font-weight: 600;
+}
+
+/* =================== EXAM PAGE =================== */
+.exam-page {
+  max-width: 1200px;
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.exam-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 1.5rem;
+  border-bottom: 3px solid #e3f2fd;
+}
+
+.exam-header h2 {
+  color: var(--primary-color);
+  font-weight: bold;
+  margin: 0;
+}
+
+.timer {
+  font-size: 1.2rem;
+  color: white;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
+}
+
+.exam-body {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.exam-content {
+  flex: 2;
+  min-width: 300px;
+}
+
+.sidebar {
+  flex: 1;
+  min-width: 300px;
+}
+
+.question {
+  background: white;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 15px;
+  border: 2px solid #e3f2fd;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.question h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.options {
+  margin-top: 1rem;
+}
+
+.option-label {
+  display: block;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--text-dark);
+  background: #f5f5f5;
+  border-radius: 10px;
+  border: 2px solid #e0e0e0;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.option-label:hover {
+  background: #e3f2fd;
+  border-color: var(--primary-color);
+  transform: translateX(5px);
+}
+
+.option-label input {
+  margin-right: 12px;
+  transform: scale(1.3);
+  cursor: pointer;
+}
+
+/* =================== CAMERA SECTION =================== */
+.camera-preview {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  text-align: center;
+  border: 2px solid #e3f2fd;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.camera-preview video {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 12px;
+  border: 3px solid var(--primary-color);
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.2);
+}
+
+.camera-preview p {
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+/* =================== LOADING SPINNER =================== */
+.loading-spinner {
+  border: 4px solid #e0e0e0;
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 2rem auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* =================== NEON BUTTON =================== */
+.neon-btn {
+  padding: 1rem 2.5rem;
+  border: none;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(25, 118, 210, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.neon-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(25, 118, 210, 0.6);
+}
+
+/* =================== MY RESULTS PAGE =================== */
+.glass-container {
+  background: rgba(255, 255, 255, 0.98);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.stat-card {
+  background: white;
+  border: 3px solid #e3f2fd;
+  border-radius: 20px;
+  text-align: center;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.2);
+  border-color: var(--primary-color);
+}
+
+.stat-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.stat-value {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--primary-color);
+  margin: 0.5rem 0;
+}
+
+.stat-label {
+  color: #424242;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.submissions-list {
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.submission-card {
+  background: white;
+  border: 3px solid #e3f2fd;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.submission-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e3f2fd;
+}
+
+.submission-header h3 {
+  color: var(--primary-color);
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.submission-date {
+  color: #757575;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.status-badge {
+  padding: 0.6rem 1.2rem;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: white;
+}
+
+.status-badge.passed {
+  background: linear-gradient(135deg, var(--success-color), #059669);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+
+.status-badge.failed {
+  background: linear-gradient(135deg, var(--danger-color), #dc2626);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
+.submission-body {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.score-circle {
+  width: 180px;
+  height: 180px;
+  position: relative;
+}
+
+.score-circle svg {
+  width: 100%;
+  height: 100%;
+}
+
+.score-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.percentage {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+.score-detail {
+  display: block;
+  font-size: 1rem;
+  color: #757575;
+  margin-top: 0.5rem;
+}
+
+.submission-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: 12px;
+  border: 2px solid #e0e0e0;
+  color: var(--text-dark);
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.detail-item:hover {
+  background: #e3f2fd;
+  border-color: var(--primary-color);
+  transform: translateX(5px);
+}
+
+.detail-icon {
+  font-size: 1.5rem;
+}
+
+.submission-footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e3f2fd;
+}
+
+.view-details-btn {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.view-details-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.6);
+}
+
+/* =================== RESPONSIVE DESIGN =================== */
+@media (max-width: 768px) {
+  .home-container {
+    padding: 1rem;
+  }
+
+  .home-header {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .home-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .section {
+    padding: 1.5rem;
+  }
+
+  .section h2 {
+    font-size: 1.5rem;
+  }
+
+  .exams-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .exam-body {
+    flex-direction: column;
+  }
+
+  .guideline-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .exam-card-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .submission-body {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .submission-details {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .exam-card-header h3 {
+    font-size: 1.2rem;
+  }
+  stat-icon {
+font-size: 3rem;
+}
+.stat-value {
+font-size: 2rem;
+}
+.btn-primary,
+.neon-btn,
+.logout-btn {
+padding: 0.9rem 1.5rem;
+font-size: 0.9rem;
+}
+}
