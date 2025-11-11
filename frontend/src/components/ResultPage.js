@@ -335,7 +335,13 @@ export default function ResultPage({ onLogout, isAdmin = false }) {
                 ? result.correctAnswers[i] 
                 : (q.correctOptionValue || (typeof q.correctOption === "number" ? q.options[q.correctOption] : null));
 
-              const isCorrect = String(userAnswerValue || "").trim() === String(correctValue || "").trim();
+              // Enhanced comparison logic to handle edge cases
+              const normalizeAnswer = (answer) => {
+                if (answer === null || answer === undefined || answer === "") return "";
+                return String(answer).trim().toLowerCase();
+              };
+              
+              const isCorrect = normalizeAnswer(userAnswerValue) === normalizeAnswer(correctValue);
 
               return (
                 <div

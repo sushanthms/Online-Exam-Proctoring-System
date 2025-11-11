@@ -62,35 +62,41 @@ export default function LoginPage({ onLogin }) {
 
   return (
     <div className="login-container">
-      <h2>🎓 Online Exam</h2>
-      <p>Login to continue</p>
-      <form onSubmit={handleLogin}>
-        <input
-          className="login-input"
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          autoComplete="email"
-        />
-        <input
-          className="login-input"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          autoComplete="current-password"
-        />
-        {error && <p className="error-text">{error}</p>}
-        <button className="login-button" type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
-      </form>
-      <p>
-        Don't have an account? <Link to="/register">Register here</Link>
-      </p>
+      <div className="login-box">
+        <div className="login-header">
+          <h2>🎓 Online Exam</h2>
+          <p>Login to continue</p>
+        </div>
+        <form onSubmit={handleLogin}>
+          <input
+            className="login-input"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+          />
+          <input
+            className="login-input"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            autoComplete="current-password"
+          />
+          {error && <div className="login-error">{error}</div>}
+          <button className="login-btn" type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
+        <div className="login-footer">
+          <p>
+            Don't have an account? <Link to="/register" className="login-link">Register here</Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
