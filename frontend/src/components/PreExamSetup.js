@@ -1,4 +1,4 @@
-// frontend/src/components/PreExamSetup.js - FIXED VERSION WITH IMPROVED VERIFICATION
+// frontend/src/components/PreExamSetup.js - IMPROVED WITH DEBUGGING
 import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,6 +14,7 @@ export default function PreExamSetup({ user }) {
 
   const [status, setStatus] = useState("initializing");
   const [message, setMessage] = useState("Initializing system...");
+  const [debugInfo, setDebugInfo] = useState([]); // NEW: Debug information
   const [checks, setChecks] = useState({
     camera: { status: "pending", message: "Checking camera...", icon: "📷" },
     lighting: { status: "pending", message: "Checking lighting...", icon: "💡" },
@@ -31,9 +32,16 @@ export default function PreExamSetup({ user }) {
   const [verificationScore, setVerificationScore] = useState(0);
   const [startButtonEnabled, setStartButtonEnabled] = useState(false);
 
-  // BALANCED THRESHOLD - Ensure proper verification while avoiding false rejections
-  const VERIFICATION_THRESHOLD = 0.6; // Increased from 0.45 for more lenient verification
-  const MIN_ACCEPTABLE_DISTANCE = 0.7; // Warning threshold increased from 0.55
+  const VERIFICATION_THRESHOLD = 0.6;
+  const MIN_ACCEPTABLE_DISTANCE = 0.7;
+
+  // Helper function to add debug logs
+  const addDebugLog = (message, type = "info") => {
+    const timestamp = new Date().toLocaleTimeString();
+    const logEntry = `[${timestamp}] ${message}`;
+    console.log(logEntry);
+    setDebugInfo(prev => [...prev.slice(-20), { message: logEntry, type }]);
+  };
 
   useEffect(() => {
     initializePreExam();
@@ -44,22 +52,22 @@ export default function PreExamSetup({ user }) {
     try {
       setStatus("initializing");
       setMessage("Loading system components...");
+      addDebugLog("🚀 Starting initialization", "info");
 
       // Check if face is registered first
       const faceStatus = await checkFaceRegistrationStatus();
       if (!faceStatus) {
+        addDebugLog("❌ Face not registered", "error");
         setStatus("error");
         setMessage("Face not registered. Please register your face first.");
-        setTimeout(() => {
-          navigate("/face-registration");
-        }, 3000);
+        setTimeout(() => navigate("/face-registration"), 3000);
         return;
       }
 
       // Load exam details
       await fetchExamDetails();
       
-      // Load face-api models
+      // Load face-api models with detailed logging
       await loadModels();
       
       // Load registered face descriptor
@@ -70,8 +78,11 @@ export default function PreExamSetup({ user }) {
       
       // Run all checks
       await runAllChecks();
+      
+      addDebugLog("✅ Initialization complete", "success");
     } catch (error) {
       console.error("Initialization error:", error);
+      addDebugLog(`❌ Initialization failed: ${error.message}`, "error");
       setStatus("error");
       setMessage(error.message || "System initialization failed");
     }
@@ -79,6 +90,7 @@ export default function PreExamSetup({ user }) {
 
   const checkFaceRegistrationStatus = async () => {
     try {
+      addDebugLog("🔍 Checking face registration status", "info");
       const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:4000/api/auth/face-status", {
         headers: { Authorization: `Bearer ${token}` }
@@ -86,17 +98,20 @@ export default function PreExamSetup({ user }) {
 
       if (response.ok) {
         const data = await response.json();
+        addDebugLog(`✅ Face registration status: ${data.isFaceRegistered}`, "success");
         return data.isFaceRegistered;
       }
+      addDebugLog("⚠️ Could not verify face registration", "warning");
       return false;
     } catch (error) {
-      console.error("Error checking face registration:", error);
+      addDebugLog(`❌ Error checking face registration: ${error.message}`, "error");
       return false;
     }
   };
 
   const fetchExamDetails = async () => {
     try {
+      addDebugLog("📋 Fetching exam details", "info");
       const token = localStorage.getItem("token");
       const response = await fetch(
         `http://localhost:4000/api/exam/paper/${examId}`,
@@ -106,10 +121,12 @@ export default function PreExamSetup({ user }) {
       if (response.ok) {
         const data = await response.json();
         setExamDetails(data);
+        addDebugLog(`✅ Exam loaded: ${data.title}`, "success");
       } else {
         throw new Error("Failed to load exam details");
       }
     } catch (error) {
+      addDebugLog(`❌ Failed to fetch exam: ${error.message}`, "error");
       throw new Error("Cannot load exam. Please try again.");
     }
   };
@@ -117,25 +134,49 @@ export default function PreExamSetup({ user }) {
   const loadModels = async () => {
     try {
       updateCheck("camera", "pending", "Loading face detection models...");
-      const MODEL_URL = process.env.PUBLIC_URL + "/models";
+      addDebugLog("🔄 Starting model loading", "info");
       
-      await Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-      ]);
+      const MODEL_URL = process.env.PUBLIC_URL + "/models";
+      addDebugLog(`📁 Model URL: ${MODEL_URL}`, "info");
+      
+      // Test if models directory is accessible
+      try {
+        const testResponse = await fetch(`${MODEL_URL}/tiny_face_detector_model-weights_manifest.json`);
+        if (!testResponse.ok) {
+          throw new Error(`Models not accessible: ${testResponse.status}`);
+        }
+        addDebugLog("✅ Models directory accessible", "success");
+      } catch (err) {
+        addDebugLog(`❌ Cannot access models directory: ${err.message}`, "error");
+        throw new Error("Face detection models not found. Please ensure models are in public/models/ directory.");
+      }
+      
+      addDebugLog("⏳ Loading Tiny Face Detector...", "info");
+      await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+      addDebugLog("✅ Tiny Face Detector loaded", "success");
+      
+      addDebugLog("⏳ Loading Face Landmarks...", "info");
+      await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+      addDebugLog("✅ Face Landmarks loaded", "success");
+      
+      addDebugLog("⏳ Loading Face Recognition...", "info");
+      await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+      addDebugLog("✅ Face Recognition loaded", "success");
       
       setModelsLoaded(true);
-      console.log("✅ Face detection models loaded successfully");
+      addDebugLog("🎉 All models loaded successfully", "success");
     } catch (error) {
       console.error("Model loading error:", error);
-      throw new Error("Failed to load face detection models. Please refresh the page.");
+      addDebugLog(`❌ Model loading failed: ${error.message}`, "error");
+      throw new Error("Failed to load face detection models. Please ensure models are in public/models/ directory and refresh the page.");
     }
   };
 
   const loadRegisteredFace = async () => {
     try {
       updateCheck("faceVerification", "pending", "Loading your registered face data...");
+      addDebugLog("🔍 Loading registered face descriptor", "info");
+      
       const token = localStorage.getItem("token");
       const response = await fetch(
         "http://localhost:4000/api/auth/face-descriptor",
@@ -146,7 +187,7 @@ export default function PreExamSetup({ user }) {
         const data = await response.json();
         if (data.faceDescriptor && Array.isArray(data.faceDescriptor) && data.faceDescriptor.length === 128) {
           setRegisteredDescriptor(new Float32Array(data.faceDescriptor));
-          console.log("✅ Registered face data loaded");
+          addDebugLog("✅ Registered face descriptor loaded", "success");
         } else {
           throw new Error("Invalid face descriptor format");
         }
@@ -154,6 +195,7 @@ export default function PreExamSetup({ user }) {
         throw new Error("Face not registered");
       }
     } catch (error) {
+      addDebugLog(`❌ Failed to load face descriptor: ${error.message}`, "error");
       updateCheck("faceVerification", "failed", "❌ Face not registered. Please register first.");
       throw new Error("Please register your face before taking exams");
     }
@@ -162,6 +204,7 @@ export default function PreExamSetup({ user }) {
   const startCamera = async () => {
     try {
       updateCheck("camera", "pending", "Starting camera...");
+      addDebugLog("📹 Requesting camera access", "info");
       
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { 
@@ -174,19 +217,19 @@ export default function PreExamSetup({ user }) {
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         
-        // Wait for video to be ready
         await new Promise((resolve) => {
           videoRef.current.onloadedmetadata = () => {
             videoRef.current.play();
+            addDebugLog(`✅ Camera started: ${videoRef.current.videoWidth}x${videoRef.current.videoHeight}`, "success");
             resolve();
           };
         });
         
         updateCheck("camera", "passed", "✅ Camera is working properly");
-        console.log("✅ Camera started successfully");
       }
     } catch (error) {
       console.error("Camera error:", error);
+      addDebugLog(`❌ Camera error: ${error.message}`, "error");
       updateCheck("camera", "failed", "❌ Cannot access camera. Please grant permission.");
       throw new Error("Camera access denied. Please enable camera in browser settings.");
     }
@@ -195,7 +238,7 @@ export default function PreExamSetup({ user }) {
   const stopCamera = () => {
     if (videoRef.current && videoRef.current.srcObject) {
       videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-      console.log("🛑 Camera stopped");
+      addDebugLog("🛑 Camera stopped", "info");
     }
   };
 
@@ -209,16 +252,14 @@ export default function PreExamSetup({ user }) {
   const runAllChecks = async () => {
     setStatus("checking");
     setMessage("Running comprehensive pre-exam verification...");
+    addDebugLog("🔍 Starting verification checks", "info");
 
     try {
-      // Wait a moment for camera to stabilize
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // Check lighting
       await checkLighting();
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      // Check face detection and verification (most important)
       const faceCheckPassed = await checkFaceDetectionAndVerification();
       
       if (!faceCheckPassed) {
@@ -229,11 +270,8 @@ export default function PreExamSetup({ user }) {
       }
 
       await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // Check environment
       await checkEnvironment();
       
-      // Final verification
       const allPassed = Object.values(checks).every(
         check => check.status === "passed" || check.status === "warning"
       );
@@ -243,12 +281,15 @@ export default function PreExamSetup({ user }) {
       if (allPassed && faceCheckPassed) {
         setStatus("ready");
         setMessage("✅ All checks passed! Identity verified. You're ready to start the exam.");
+        addDebugLog("✅ All verification checks passed", "success");
       } else {
         setStatus("incomplete");
         setMessage("⚠️ Please resolve all issues before proceeding.");
+        addDebugLog("⚠️ Some checks failed", "warning");
       }
     } catch (error) {
       console.error("Check error:", error);
+      addDebugLog(`❌ Verification error: ${error.message}`, "error");
       setStatus("error");
       setMessage("Error during verification: " + error.message);
     }
@@ -257,19 +298,70 @@ export default function PreExamSetup({ user }) {
   const checkLighting = async () => {
     try {
       updateCheck("lighting", "pending", "Analyzing lighting conditions...");
+      addDebugLog("💡 Checking lighting", "info");
       
       if (!videoRef.current) {
         updateCheck("lighting", "failed", "❌ Video not ready");
+        addDebugLog("❌ Video element missing for lighting check", "error");
         return;
       }
 
-      const canvas = document.createElement("canvas");
-      canvas.width = videoRef.current.videoWidth;
-      canvas.height = videoRef.current.videoHeight;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(videoRef.current, 0, 0);
+      // Ensure video has data and non-zero dimensions
+      if (videoRef.current.readyState < 2) {
+        addDebugLog("⏳ Video not ready for lighting check, retrying shortly", "warning");
+        await new Promise(r => setTimeout(r, 200));
+      }
 
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      let vw = Math.max(1, videoRef.current.videoWidth || 0);
+      let vh = Math.max(1, videoRef.current.videoHeight || 0);
+      
+      // Limit canvas dimensions to prevent getImageData errors
+      const MAX_CANVAS_SIZE = 1024; // Maximum safe size for getImageData
+      if (vw > MAX_CANVAS_SIZE || vh > MAX_CANVAS_SIZE) {
+        const aspectRatio = vw / vh;
+        if (vw > vh) {
+          vw = MAX_CANVAS_SIZE;
+          vh = Math.round(MAX_CANVAS_SIZE / aspectRatio);
+        } else {
+          vh = MAX_CANVAS_SIZE;
+          vw = Math.round(MAX_CANVAS_SIZE * aspectRatio);
+        }
+        addDebugLog(`📐 Resized canvas to ${vw}x${vh} to prevent getImageData errors`, "info");
+      }
+      
+      if (vw === 1 && (videoRef.current.videoWidth || 0) === 0) {
+        addDebugLog("⚠️ Video width is 0; using minimal canvas size to avoid errors", "warning");
+      }
+      if (vh === 1 && (videoRef.current.videoHeight || 0) === 0) {
+        addDebugLog("⚠️ Video height is 0; using minimal canvas size to avoid errors", "warning");
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = vw;
+      canvas.height = vh;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        addDebugLog("❌ Unable to get canvas context for lighting check", "error");
+        updateCheck("lighting", "warning", "⚠️ Unable to analyze lighting");
+        return;
+      }
+      
+      try {
+        ctx.drawImage(videoRef.current, 0, 0, vw, vh);
+      } catch (e) {
+        addDebugLog(`❌ drawImage failed: ${e.message}`, "error");
+        updateCheck("lighting", "warning", "⚠️ Unable to analyze lighting");
+        return;
+      }
+
+      let imageData;
+      try {
+        imageData = ctx.getImageData(0, 0, vw, vh);
+      } catch (e) {
+        addDebugLog(`❌ getImageData failed: ${e.message}`, "error");
+        updateCheck("lighting", "warning", "⚠️ Unable to analyze lighting");
+        return;
+      }
       const data = imageData.data;
       
       let totalBrightness = 0;
@@ -279,16 +371,21 @@ export default function PreExamSetup({ user }) {
       }
       
       const avgBrightness = totalBrightness / (data.length / 4);
+      addDebugLog(`💡 Average brightness: ${Math.round(avgBrightness)}/255`, "info");
       
       if (avgBrightness < 50) {
-        updateCheck("lighting", "warning", "⚠️ Low lighting detected. Please improve lighting for better results.");
+        updateCheck("lighting", "warning", "⚠️ Low lighting detected. Please improve lighting.");
+        addDebugLog("⚠️ Low lighting detected", "warning");
       } else if (avgBrightness > 200) {
         updateCheck("lighting", "warning", "⚠️ Very bright. Consider adjusting lighting.");
+        addDebugLog("⚠️ Too bright", "warning");
       } else {
         updateCheck("lighting", "passed", `✅ Lighting is good (${Math.round(avgBrightness)}/255)`);
+        addDebugLog("✅ Lighting is optimal", "success");
       }
     } catch (error) {
       console.error("Lighting check error:", error);
+      addDebugLog(`❌ Lighting check failed: ${error.message}`, "error");
       updateCheck("lighting", "warning", "⚠️ Unable to check lighting");
     }
   };
@@ -297,14 +394,15 @@ export default function PreExamSetup({ user }) {
     try {
       updateCheck("faceDetection", "pending", "Detecting your face...");
       updateCheck("faceVerification", "pending", "Verifying your identity...");
+      addDebugLog("👤 Starting face detection and verification", "info");
       
       if (!videoRef.current || !modelsLoaded || !registeredDescriptor) {
+        addDebugLog("❌ Prerequisites not met for face verification", "error");
         updateCheck("faceDetection", "failed", "❌ System not ready");
         updateCheck("faceVerification", "failed", "❌ Cannot verify identity");
         return false;
       }
 
-      // Multiple attempts with averaging for better accuracy
       let bestMatch = null;
       let bestDistance = Infinity;
       const attempts = 5;
@@ -320,7 +418,6 @@ export default function PreExamSetup({ user }) {
           .withFaceDescriptor();
 
         if (detection) {
-          // CRITICAL: Compare with registered descriptor
           const distance = faceapi.euclideanDistance(
             registeredDescriptor,
             detection.descriptor
@@ -333,53 +430,42 @@ export default function PreExamSetup({ user }) {
             bestMatch = detection;
           }
 
-          console.log(`🔍 Detection ${i + 1}/${attempts}: Distance = ${distance.toFixed(3)}`);
+          addDebugLog(`🔍 Detection ${i + 1}/${attempts}: Distance = ${distance.toFixed(3)}`, "info");
         }
 
         await new Promise(resolve => setTimeout(resolve, 300));
       }
 
-      // Check if any face was detected
       if (validDetections.length === 0) {
-        updateCheck("faceDetection", "failed", "❌ No face detected. Please position yourself clearly in front of the camera.");
+        addDebugLog("❌ No face detected in any attempt", "error");
+        updateCheck("faceDetection", "failed", "❌ No face detected. Please position yourself in front of camera.");
         updateCheck("faceVerification", "failed", "❌ Cannot verify without face detection.");
         setCurrentFaceMatch(false);
         return false;
       }
 
-      // Face detected successfully
-      updateCheck("faceDetection", "passed", `✅ Face detected successfully (${validDetections.length}/${attempts} captures)`);
+      updateCheck("faceDetection", "passed", `✅ Face detected (${validDetections.length}/${attempts})`);
+      addDebugLog(`✅ Face detected in ${validDetections.length}/${attempts} attempts`, "success");
 
-      // Calculate average distance for more stable verification
       const avgDistance = validDetections.reduce((sum, v) => sum + v.distance, 0) / validDetections.length;
       const similarity = Math.max(0, (1 - avgDistance) * 100);
       
-      console.log(`📊 Verification Stats:
-        - Valid Detections: ${validDetections.length}/${attempts}
-        - Best Distance: ${bestDistance.toFixed(3)}
-        - Average Distance: ${avgDistance.toFixed(3)}
-        - Similarity: ${similarity.toFixed(1)}%
-        - Threshold Distance: ${VERIFICATION_THRESHOLD}
-        - Min Acceptable Distance: ${MIN_ACCEPTABLE_DISTANCE}
-        - Expected User: ${user.name}
-      `);
+      addDebugLog(`📊 Verification: Distance=${avgDistance.toFixed(3)}, Similarity=${similarity.toFixed(1)}%`, "info");
 
-      // Draw best detection on canvas with appropriate color
       if (canvasRef.current && bestMatch) {
         const dims = faceapi.matchDimensions(canvasRef.current, videoRef.current, true);
         const resizedDetection = faceapi.resizeResults(bestMatch, dims);
         const ctx = canvasRef.current.getContext("2d");
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         
-        // Color based on match quality
         if (avgDistance < VERIFICATION_THRESHOLD) {
-          ctx.strokeStyle = "#10b981"; // Green for verified match
+          ctx.strokeStyle = "#10b981";
           ctx.lineWidth = 4;
         } else if (avgDistance < MIN_ACCEPTABLE_DISTANCE) {
-          ctx.strokeStyle = "#f59e0b"; // Orange for marginal match
+          ctx.strokeStyle = "#f59e0b";
           ctx.lineWidth = 3;
         } else {
-          ctx.strokeStyle = "#ef4444"; // Red for failed match
+          ctx.strokeStyle = "#ef4444";
           ctx.lineWidth = 3;
         }
         
@@ -389,117 +475,32 @@ export default function PreExamSetup({ user }) {
 
       setVerificationScore(similarity.toFixed(1));
 
-      // STRICT VERIFICATION: Only pass if distance is within threshold
       if (avgDistance < VERIFICATION_THRESHOLD) {
-        // VERIFIED MATCH - This is the registered user
         setCurrentFaceMatch(true);
-        // Enable the start exam button
         setStartButtonEnabled(true);
-        updateCheck(
-          "faceVerification",
-          "passed",
-          `✅ Identity verified! Match: ${similarity.toFixed(1)}% - Confirmed: ${user.name}`
-        );
-        
-        // Log successful verification
-        try {
-          const token = localStorage.getItem("token");
-          fetch("http://localhost:4000/api/auth/log-verification", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({
-              examId,
-              verificationScore: similarity,
-              status: "success"
-            })
-          });
-        } catch (error) {
-          console.error("Error logging verification:", error);
-        }
-        
+        updateCheck("faceVerification", "passed", `✅ Verified! ${similarity.toFixed(1)}% - ${user.name}`);
+        addDebugLog(`✅ Identity verified: ${user.name} (${similarity.toFixed(1)}%)`, "success");
         verificationAttempts.current = 0;
         return true;
       } else if (avgDistance < MIN_ACCEPTABLE_DISTANCE) {
-        // MARGINAL MATCH - Accept with warning but require additional verification
         setCurrentFaceMatch(true);
-        updateCheck(
-          "faceVerification",
-          "warning",
-          `⚠️ Identity verified with low confidence: ${similarity.toFixed(1)}% - Please improve lighting for ${user.name}`
-        );
+        updateCheck("faceVerification", "warning", `⚠️ Low confidence: ${similarity.toFixed(1)}%`);
+        addDebugLog(`⚠️ Low confidence verification`, "warning");
         verificationAttempts.current = 0;
         return true;
       } else {
-        // FAILED MATCH - This is NOT the registered user
         verificationAttempts.current++;
         setCurrentFaceMatch(false);
-        
-        const remainingAttempts = 3 - verificationAttempts.current;
-        
-        // Log failed verification attempt
-        try {
-          const token = localStorage.getItem("token");
-          fetch("http://localhost:4000/api/auth/log-verification", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({
-              examId,
-              verificationScore: similarity,
-              status: "failed",
-              attemptNumber: verificationAttempts.current,
-              distance: avgDistance
-            })
-          });
-        } catch (error) {
-          console.error("Error logging failed verification:", error);
-        }
-        
-        if (verificationAttempts.current < 3) {
-          updateCheck(
-            "faceVerification",
-            "failed",
-            `❌ Identity verification failed (${similarity.toFixed(1)}%). You don't appear to be ${user.name}. ${remainingAttempts} attempts remaining.`
-          );
-        } else {
-          updateCheck(
-            "faceVerification",
-            "failed",
-            `❌ Maximum attempts reached. Identity does not match ${user.name}. Distance: ${avgDistance.toFixed(3)}`
-          );
-          
-          // After 3 failed attempts, log a security alert
-          try {
-            const token = localStorage.getItem("token");
-            fetch("http://localhost:4000/api/auth/security-alert", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-              },
-              body: JSON.stringify({
-                examId,
-                alertType: "multiple_verification_failures",
-                details: `Multiple failed verification attempts for exam ${examId}. Possible impersonation attempt.`
-              })
-            });
-          } catch (error) {
-            console.error("Error logging security alert:", error);
-          }
-        }
-        
-        console.warn(`⚠️ VERIFICATION FAILED: Distance ${avgDistance.toFixed(3)} exceeds threshold ${VERIFICATION_THRESHOLD}`);
+        const remaining = 3 - verificationAttempts.current;
+        updateCheck("faceVerification", "failed", `❌ Failed (${similarity.toFixed(1)}%). ${remaining} attempts left`);
+        addDebugLog(`❌ Verification failed: Distance ${avgDistance.toFixed(3)} > ${VERIFICATION_THRESHOLD}`, "error");
         return false;
       }
     } catch (error) {
-      console.error("Face detection/verification error:", error);
+      console.error("Face verification error:", error);
+      addDebugLog(`❌ Verification error: ${error.message}`, "error");
       updateCheck("faceDetection", "failed", "❌ Error during face detection");
-      updateCheck("faceVerification", "failed", "❌ Error during identity verification");
+      updateCheck("faceVerification", "failed", "❌ Error during verification");
       setCurrentFaceMatch(false);
       return false;
     }
@@ -508,6 +509,7 @@ export default function PreExamSetup({ user }) {
   const checkEnvironment = async () => {
     try {
       updateCheck("environment", "pending", "Checking for multiple people...");
+      addDebugLog("🌍 Checking environment", "info");
       
       if (!videoRef.current || !modelsLoaded) {
         updateCheck("environment", "warning", "⚠️ Unable to verify environment");
@@ -519,19 +521,20 @@ export default function PreExamSetup({ user }) {
         new faceapi.TinyFaceDetectorOptions({ scoreThreshold: 0.5 })
       );
 
+      addDebugLog(`🌍 Detected ${detections.length} face(s)`, "info");
+
       if (detections.length === 0) {
-        updateCheck("environment", "warning", "⚠️ No face detected in frame.");
+        updateCheck("environment", "warning", "⚠️ No face detected.");
       } else if (detections.length === 1) {
-        updateCheck("environment", "passed", "✅ Single person detected. Environment is clear.");
+        updateCheck("environment", "passed", "✅ Single person detected.");
+        addDebugLog("✅ Environment clear", "success");
       } else {
-        updateCheck(
-          "environment",
-          "warning",
-          `⚠️ Multiple people detected (${detections.length}). Please ensure you're alone.`
-        );
+        updateCheck("environment", "warning", `⚠️ ${detections.length} people detected.`);
+        addDebugLog(`⚠️ Multiple faces detected: ${detections.length}`, "warning");
       }
     } catch (error) {
       console.error("Environment check error:", error);
+      addDebugLog(`❌ Environment check failed: ${error.message}`, "error");
       updateCheck("environment", "warning", "⚠️ Unable to check environment");
     }
   };
@@ -540,92 +543,34 @@ export default function PreExamSetup({ user }) {
     setIsManualCheck(true);
     setStatus("checking");
     setMessage("Running manual verification...");
+    addDebugLog("🔄 Manual re-verification initiated", "info");
     verificationAttempts.current = 0;
     await runAllChecks();
     setIsManualCheck(false);
   };
 
-  // Create a separate function for navigation that doesn't use any hooks
   function navigateToExam(id) {
     window.location.href = `/exam/${id}`;
   }
 
   const handleStartExam = () => {
-    // No need to check conditions again since the button is only enabled when verification passes
-
     if (window.confirm(
       `✅ Identity Verified: ${user.name}\n\n` +
       `Match Score: ${verificationScore}%\n\n` +
-      `⚠️ Important Reminders:\n` +
-      `• Timer will start when you begin the exam\n` +
-      `• Your identity will be verified continuously\n` +
-      `• Keep your face visible at all times\n` +
-      `• Multiple face detection will be logged\n` +
-      `• Tab switching is monitored\n` +
-      `• Exam will auto-submit on violations\n\n` +
-      `Are you ready to start?`
+      `Ready to start?`
     )) {
-      // Disable all hooks by setting a flag
+      addDebugLog("🚀 Starting exam", "success");
       setStatus("navigating");
-      
-      // Log successful pre-exam verification
-      logPreExamVerification();
-      
-      // Log exam start
-      try {
-        const token = localStorage.getItem("token");
-        fetch("http://localhost:4000/api/exam/start", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            examId,
-            startTime: new Date().toISOString()
-          })
-        });
-      } catch (error) {
-        console.error("Error logging exam start:", error);
-      }
-      
-      // Stop camera before navigating
       stopCamera();
       
-      // Store the exam ID in a variable to avoid closure issues
       const targetExamId = examId;
-      
-      // Use direct window.location navigation instead of React Router's navigate
-      // This completely bypasses React's lifecycle and prevents hook errors
-      setTimeout(() => {
-        navigateToExam(targetExamId);
-      }, 1000);
-    }
-  };
-
-  const logPreExamVerification = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      await fetch("http://localhost:4000/api/exam/verify-face", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          examId,
-          verificationStatus: "verified",
-          confidence: verificationScore,
-          details: `Pre-exam verification successful for ${user.name}`
-        })
-      });
-    } catch (error) {
-      console.error("Error logging verification:", error);
+      setTimeout(() => navigateToExam(targetExamId), 1000);
     }
   };
 
   const handleCancel = () => {
-    if (window.confirm("Are you sure you want to cancel? You'll need to restart the verification process.")) {
+    if (window.confirm("Cancel verification?")) {
+      addDebugLog("🚫 Verification cancelled", "info");
       stopCamera();
       navigate("/student/dashboard");
     }
@@ -667,7 +612,7 @@ export default function PreExamSetup({ user }) {
               <p>
                 📝 {examDetails.questions?.length || 0} Questions • 
                 ⏱️ {examDetails.durationMins || 30} Minutes • 
-                👤 Registered Student: <strong>{user.name}</strong>
+                👤 Student: <strong>{user.name}</strong>
               </p>
             </div>
           )}
@@ -684,8 +629,25 @@ export default function PreExamSetup({ user }) {
                 className="camera-video"
                 onLoadedMetadata={() => {
                   if (canvasRef.current && videoRef.current) {
-                    canvasRef.current.width = videoRef.current.videoWidth;
-                    canvasRef.current.height = videoRef.current.videoHeight;
+                    // Limit canvas dimensions to prevent getImageData errors
+                    const MAX_CANVAS_SIZE = 1024;
+                    let width = videoRef.current.videoWidth;
+                    let height = videoRef.current.videoHeight;
+                    
+                    if (width > MAX_CANVAS_SIZE || height > MAX_CANVAS_SIZE) {
+                      const aspectRatio = width / height;
+                      if (width > height) {
+                        width = MAX_CANVAS_SIZE;
+                        height = Math.round(MAX_CANVAS_SIZE / aspectRatio);
+                      } else {
+                        height = MAX_CANVAS_SIZE;
+                        width = Math.round(MAX_CANVAS_SIZE * aspectRatio);
+                      }
+                      addDebugLog(`📐 Resized detection canvas to ${width}x${height} to prevent errors`, "info");
+                    }
+                    
+                    canvasRef.current.width = width;
+                    canvasRef.current.height = height;
                   }
                 }}
               />
@@ -696,13 +658,13 @@ export default function PreExamSetup({ user }) {
                   {currentFaceMatch ? (
                     <div className="match-success">
                       <span className="match-icon">✅</span>
-                      <span className="match-text">Identity Verified</span>
+                      <span className="match-text">Verified</span>
                       <span className="match-score">{verificationScore}%</span>
                     </div>
                   ) : (
                     <div className="match-fail">
                       <span className="match-icon">⚠️</span>
-                      <span className="match-text">Please Retry</span>
+                      <span className="match-text">Retry</span>
                       <span className="match-score">{verificationScore}%</span>
                     </div>
                   )}
@@ -733,19 +695,35 @@ export default function PreExamSetup({ user }) {
                 </div>
               ))}
             </div>
+            
+            {/* DEBUG CONSOLE */}
+            <details className="debug-section" style={{ marginTop: '1rem' }}>
+              <summary style={{ cursor: 'pointer', fontWeight: 'bold', padding: '0.5rem' }}>
+                🐛 Debug Console ({debugInfo.length} logs)
+              </summary>
+              <div style={{ 
+                maxHeight: '200px', 
+                overflow: 'auto', 
+                backgroundColor: '#1a1a1a', 
+                color: '#00ff00',
+                padding: '0.5rem',
+                fontFamily: 'monospace',
+                fontSize: '0.85rem',
+                borderRadius: '4px'
+              }}>
+                {debugInfo.map((log, idx) => (
+                  <div key={idx} style={{ 
+                    padding: '2px 0',
+                    color: log.type === 'error' ? '#ff4444' : 
+                           log.type === 'warning' ? '#ffaa00' : 
+                           log.type === 'success' ? '#00ff00' : '#00ff00'
+                  }}>
+                    {log.message}
+                  </div>
+                ))}
+              </div>
+            </details>
           </div>
-        </div>
-
-        <div className="instructions-box">
-          <h4>💡 Verification Tips</h4>
-          <ul>
-            <li><strong>Good Lighting:</strong> Ensure your face is well-lit and clearly visible</li>
-            <li><strong>Face Position:</strong> Look directly at the camera, keep face centered</li>
-            <li><strong>Remove Obstacles:</strong> Take off glasses, hats, or masks if possible</li>
-            <li><strong>Stable Position:</strong> Keep your head still during verification</li>
-            <li><strong>Camera Quality:</strong> Use a good quality webcam for best results</li>
-            <li><strong>Retry if Needed:</strong> Use the Re-verify button to try again with better conditions</li>
-          </ul>
         </div>
 
         <div className="action-buttons">
@@ -758,23 +736,16 @@ export default function PreExamSetup({ user }) {
             className="btn-test"
             disabled={status === "checking"}
           >
-            {isManualCheck ? "🔄 Verifying..." : "🔄 Re-verify Identity"}
+            {isManualCheck ? "🔄 Verifying..." : "🔄 Re-verify"}
           </button>
           
           <button
             onClick={handleStartExam}
             className="btn-start"
-            disabled={status === "checking" || !startButtonEnabled || checks.faceVerification.status === "failed"}
+            disabled={!startButtonEnabled || status === "checking"}
           >
             ✅ Start Exam
           </button>
-        </div>
-
-        <div className="verification-info">
-          <p className="info-text">
-            🛡️ <strong>Security Notice:</strong> All verification attempts are logged. 
-            If you're having trouble, ensure good lighting and camera position, then use the Re-verify button.
-          </p>
         </div>
       </div>
     </div>

@@ -7,22 +7,54 @@ export default function LoginPage({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setErr("");
+    setError("");
+
+    console.log('🔐 Attempting login for:', email);
+
     try {
-      const res = await authApi.login({ email, password });
+      const res = await authApi.login({ 
+        email: email.trim(), 
+        password 
+      });
+      
+      console.log('✅ Login successful:', res.data);
+      
       const { token, user } = res.data;
+      
+      if (!token || !user) {
+        throw new Error('Invalid response from server');
+      }
+      
       onLogin(token, user);
-      if (user.role === "admin") navigate("/admin/dashboard");
-      else navigate("/student/dashboard");
+      
+      // Navigate based on role
+      if (user.role === "admin") {
+        console.log('👨‍💼 Navigating to admin dashboard');
+        navigate("/admin/dashboard");
+      } else {
+        console.log('👨‍🎓 Navigating to student dashboard');
+        navigate("/student/dashboard");
+      }
     } catch (err) {
-      const message = err.response?.data?.message || "An error occurred";
-      setErr(message);
+      console.error('❌ Login error:', err);
+      
+      let errorMessage = "An error occurred during login";
+      
+      if (err.response) {
+        errorMessage = err.response.data?.message || `Server error: ${err.response.status}`;
+      } else if (err.request) {
+        errorMessage = "Cannot connect to server. Please check if the backend is running.";
+      } else {
+        errorMessage = err.message;
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -30,38 +62,35 @@ export default function LoginPage({ onLogin }) {
 
   return (
     <div className="login-container">
-      <div className="login-box">
-        <div className="login-header">
-          <h2>Online Exam</h2>
-          <p>Login to continue</p>
-        </div>
-        <form className="login-form" onSubmit={handleLogin}>
-          <input
-            className="login-input"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            className="login-input"
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          {err && <div className="login-error">{err}</div>}
-          <button className="login-btn" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
-        <div className="login-footer">
-          <p>
-            Don't have an account? <Link className="login-link" to="/register">Register here</Link>
-          </p>
-        </div>
-      </div>
+      <h2>🎓 Online Exam</h2>
+      <p>Login to continue</p>
+      <form onSubmit={handleLogin}>
+        <input
+          className="login-input"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          autoComplete="email"
+        />
+        <input
+          className="login-input"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          autoComplete="current-password"
+        />
+        {error && <p className="error-text">{error}</p>}
+        <button className="login-button" type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
+      </form>
+      <p>
+        Don't have an account? <Link to="/register">Register here</Link>
+      </p>
     </div>
   );
 }

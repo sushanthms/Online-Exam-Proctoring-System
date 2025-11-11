@@ -166,8 +166,25 @@ export default function FaceRegistration({ user, onComplete }) {
             className="camera-video"
             onLoadedMetadata={() => {
               if (canvasRef.current && videoRef.current) {
-                canvasRef.current.width = videoRef.current.videoWidth;
-                canvasRef.current.height = videoRef.current.videoHeight;
+                // Limit canvas dimensions to prevent getImageData errors
+                const MAX_CANVAS_SIZE = 1024;
+                let width = videoRef.current.videoWidth;
+                let height = videoRef.current.videoHeight;
+                
+                if (width > MAX_CANVAS_SIZE || height > MAX_CANVAS_SIZE) {
+                  const aspectRatio = width / height;
+                  if (width > height) {
+                    width = MAX_CANVAS_SIZE;
+                    height = Math.round(MAX_CANVAS_SIZE / aspectRatio);
+                  } else {
+                    height = MAX_CANVAS_SIZE;
+                    width = Math.round(MAX_CANVAS_SIZE * aspectRatio);
+                  }
+                  console.log(`📐 Resized face registration canvas to ${width}x${height} to prevent errors`);
+                }
+                
+                canvasRef.current.width = width;
+                canvasRef.current.height = height;
               }
             }}
           />
