@@ -1,23 +1,22 @@
-# =====================
-# Node Modules
-# =====================
+# Node modules
 backend/node_modules/
 frontend/node_modules/
-
-# =====================
+node_modules
 # Face-api models
-frontend/public/models/
+# frontend/public/models/
 
 # Logs
 *.log
 
-# OS system files
+# OS files
 .DS_Store
 Thumbs.db
 
 # Environment variables
 .env
+*.txt
 
 # Build / Distribution folders
 dist/
 build/
+.env.production
