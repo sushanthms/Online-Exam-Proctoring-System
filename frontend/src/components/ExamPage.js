@@ -30,6 +30,11 @@ export default function ExamPage({ user, onLogout }) {
   const verificationInterval = useRef(null);
   const examStartTime = useRef(null); // NEW
   const multipleFaceViolationCount = useRef(0); // moved here from inside useEffect
+  const [tabSwitches, setTabSwitches] = useState([]);
+  const [identityVerifications, setIdentityVerifications] = useState([]);
+  const [multipleFaceLogs, setMultipleFaceLogs] = useState([]);
+  const [warnings, setWarnings] = useState([]);
+  const lastMultipleFaceIndexRef = useRef(-1);
 
   const navigate = useNavigate();
 
@@ -215,6 +220,17 @@ export default function ExamPage({ user, onLogout }) {
       if (validDetections.length === 0) {
         setLogs(prev => [...prev, `⚠️ No face detected at ${new Date().toLocaleTimeString()}`]);
         setFaceVerificationStatus("warning");
+        setIdentityVerifications(prev => ([
+          ...prev,
+          {
+            timestamp: new Date().toISOString(),
+            timeInExam: formatTime((paper?.durationMins || 10) * 60 - (timeLeft ?? 0)),
+            status: 'no_face',
+            confidence: 0,
+            matchScore: 0,
+            details: 'No face detected during verification'
+          }
+        ]));
         
         // Log to backend
         await fetch("http://localhost:4000/api/exam/verify-face", {
@@ -257,6 +273,17 @@ export default function ExamPage({ user, onLogout }) {
       if (isMatch) {
         setFaceVerificationStatus("verified");
         setVerificationFailures(0);
+        setIdentityVerifications(prev => ([
+          ...prev,
+          {
+            timestamp: new Date().toISOString(),
+            timeInExam: formatTime((paper?.durationMins || 10) * 60 - (timeLeft ?? 0)),
+            status: 'verified',
+            confidence: Number(similarity.toFixed(1)),
+            matchScore: Number(similarity.toFixed(1)),
+            details: 'Identity verified'
+          }
+        ]));
         
         // Only log successful verifications occasionally to avoid cluttering the log
         if (Math.random() < 0.3) {
@@ -283,6 +310,17 @@ export default function ExamPage({ user, onLogout }) {
         const newCount = verificationFailures + 1;
         setVerificationFailures(newCount);
         setFaceVerificationStatus("failed");
+        setIdentityVerifications(prev => ([
+          ...prev,
+          {
+            timestamp: new Date().toISOString(),
+            timeInExam: formatTime((paper?.durationMins || 10) * 60 - (timeLeft ?? 0)),
+            status: 'failed',
+            confidence: Number(similarity.toFixed(1)),
+            matchScore: Number(similarity.toFixed(1)),
+            details: 'Identity mismatch'
+          }
+        ]));
         
         setLogs(prev => [...prev, `❌ Identity mismatch at ${new Date().toLocaleTimeString()} (${similarity.toFixed(1)}%) - Attempt ${newCount}/3`]);
         
@@ -336,6 +374,14 @@ export default function ExamPage({ user, onLogout }) {
         
         setTabSwitchCount(newCount);
         setLogs(prev => [...prev, `⚠️ Tab switch #${newCount} at ${tabSwitchStartTime ? tabSwitchStartTime.toLocaleTimeString() : new Date().toLocaleTimeString()} (Duration: ${duration}s)`]);
+        setTabSwitches(prev => ([
+          ...prev,
+          {
+            timestamp: endTime.toISOString(),
+            timeInExam: formatTime((paper?.durationMins || 10) * 60 - (timeLeft ?? 0)),
+            warningMessage: `Tab switch #${newCount} (Duration: ${duration}s)`
+          }
+        ]));
         
         // Log to backend
         try {
@@ -395,6 +441,16 @@ export default function ExamPage({ user, onLogout }) {
       } catch (error) {
         console.error("Error logging critical violation:", error);
       }
+      setWarnings(prev => ([
+        ...prev,
+        {
+          timestamp: new Date().toISOString(),
+          timeInExam: formatTime((paper?.durationMins || 10) * 60 - (timeLeft ?? 0)),
+          type: 'critical_tab_switch',
+          severity: 'critical',
+          message: `Critical violation: ${tabSwitchCount} tab switches detected. Auto-submitting exam.`
+        }
+      ]));
       
       handleSubmit();
     }
@@ -432,6 +488,17 @@ export default function ExamPage({ user, onLogout }) {
             
             // Log to UI
             setLogs(prev => [...prev, `👥 VIOLATION: Multiple faces detected (${detections.length} people) at ${startTimeRef.current ? startTimeRef.current.toLocaleTimeString() : new Date().toLocaleTimeString()} - #${multipleFaceViolationCount.current}`]);
+            setMultipleFaceLogs(prev => {
+              const entry = {
+                timestamp: startTimeRef.current.toISOString(),
+                timeInExam: formatTime((paper?.durationMins || 10) * 60 - (timeLeft ?? 0)),
+                facesDetected: detections.length,
+                duration: 0,
+                details: `Multiple faces detected (${detections.length} people)`
+              };
+              lastMultipleFaceIndexRef.current = prev.length;
+              return [...prev, entry];
+            });
             
             // Log to backend
             try {
@@ -469,6 +536,17 @@ export default function ExamPage({ user, onLogout }) {
           const endTime = new Date();
           const duration = Math.round((endTime - startTimeRef.current) / 1000);
           setLogs(prev => [...prev, `✅ Multiple faces cleared at ${endTime.toLocaleTimeString()} (Duration: ${duration}s)`]);
+          setMultipleFaceLogs(prev => {
+            if (lastMultipleFaceIndexRef.current >= 0 && prev[lastMultipleFaceIndexRef.current]) {
+              const updated = [...prev];
+              updated[lastMultipleFaceIndexRef.current] = {
+                ...updated[lastMultipleFaceIndexRef.current],
+                duration
+              };
+              return updated;
+            }
+            return prev;
+          });
           
           // Log resolution to backend
           try {
@@ -519,6 +597,15 @@ export default function ExamPage({ user, onLogout }) {
     if (!paper) return alert("Exam not loaded!");
 
     const isAutoSubmit = tabSwitchCount >= 3 || timeLeft <= 0 || verificationFailures >= 3;
+    const autoSubmitReason = tabSwitchCount >= 3
+      ? 'too_many_tab_switches'
+      : verificationFailures >= 3
+      ? 'too_many_identity_failures'
+      : timeLeft <= 0
+      ? 'time_up'
+      : multipleFaceViolationCount.current >= 3
+      ? 'multiple_faces_threshold'
+      : null;
 
     if (!isAutoSubmit) {
       if (!window.confirm(
@@ -556,13 +643,26 @@ export default function ExamPage({ user, onLogout }) {
           userId: user?._id,
           examId,
           answers,
-          tabSwitches: [{
-            timestamp: new Date().toISOString(),
-            timeInExam: formatTime(paper.durationMins * 60 - timeLeft),
-            warningMessage: `${tabSwitchCount} tab switches detected during exam`
-          }],
-          verificationFailures,
-          timeSpent: examStartTime.current ? Math.floor((Date.now() - examStartTime.current) / 1000) : null
+          tabSwitches,
+          multipleFaceLogs,
+          identityVerifications,
+          warnings,
+          examSession: {
+            startedAt: examStartTime.current ? new Date(examStartTime.current).toISOString() : new Date().toISOString(),
+            submittedAt: new Date().toISOString(),
+            duration: examStartTime.current ? Math.floor((Date.now() - examStartTime.current) / 1000) : 0,
+            autoSubmitted: Boolean(isAutoSubmit),
+            autoSubmitReason
+          },
+          proctoringSummary: {
+            totalTabSwitches: tabSwitches.length,
+            totalIdentityFailures: identityVerifications.filter(iv => iv.status === 'failed').length,
+            totalMultipleFaceEvents: multipleFaceLogs.length,
+            totalWarnings: warnings.length,
+            verificationSuccessRate: identityVerifications.length
+              ? Math.round((identityVerifications.filter(iv => iv.status === 'verified').length / identityVerifications.length) * 100)
+              : 100
+          }
         }),
       });
 
