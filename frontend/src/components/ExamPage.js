@@ -122,7 +122,9 @@ export default function ExamPage({ user, onLogout }) {
           // START TIMER WHEN VIDEO IS READY
           videoRef.current.onloadedmetadata = () => {
             console.log("📹 Camera ready - Starting timer NOW");
-            examStartTime.current = Date.now();
+            if (!examStartTime.current) {
+              examStartTime.current = Date.now();
+            }
             setTimerStarted(true);
           };
         }
@@ -585,6 +587,52 @@ export default function ExamPage({ user, onLogout }) {
     return `${min}:${sec < 10 ? "0" : ""}${sec}`;
   };
 
+  useEffect(() => {
+    if (!paper || !user) return;
+    try {
+      const key = `examSession:${examId}:${user._id}`;
+      const raw = localStorage.getItem(key);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      if (saved.examId !== examId) return;
+      const totalSecs = ((paper?.durationMins) || 10) * 60;
+      examStartTime.current = saved.startedAtMs || Date.now();
+      setTimerStarted(true);
+      const elapsed = Math.floor((Date.now() - examStartTime.current) / 1000);
+      setTimeLeft(Math.max(0, totalSecs - elapsed));
+      setAnswers(Array.isArray(saved.answers) ? saved.answers.slice(0, paper.questions.length) : new Array(paper.questions.length).fill(null));
+      setCurrentQ(Math.min(saved.currentQ || 0, Math.max(0, paper.questions.length - 1)));
+      setTabSwitches(saved.tabSwitches || []);
+      setIdentityVerifications(saved.identityVerifications || []);
+      setMultipleFaceLogs(saved.multipleFaceLogs || []);
+      setWarnings(saved.warnings || []);
+      setTabSwitchCount(saved.tabSwitchCount || (saved.tabSwitches ? saved.tabSwitches.length : 0));
+      setVerificationFailures(saved.verificationFailures || (saved.identityVerifications ? saved.identityVerifications.filter(iv => iv.status === 'failed').length : 0));
+      multipleFaceViolationCount.current = saved.multipleFaceViolationCount || (saved.multipleFaceLogs ? saved.multipleFaceLogs.length : 0);
+    } catch {}
+  }, [paper, user, examId]);
+
+  useEffect(() => {
+    if (!paper || !user) return;
+    try {
+      const key = `examSession:${examId}:${user._id}`;
+      const payload = {
+        examId,
+        startedAtMs: examStartTime.current,
+        answers,
+        currentQ,
+        tabSwitches,
+        identityVerifications,
+        multipleFaceLogs,
+        warnings,
+        tabSwitchCount,
+        verificationFailures,
+        multipleFaceViolationCount: multipleFaceViolationCount.current
+      };
+      localStorage.setItem(key, JSON.stringify(payload));
+    } catch {}
+  }, [answers, currentQ, tabSwitches, identityVerifications, multipleFaceLogs, warnings, tabSwitchCount, verificationFailures, user, paper, examId]);
+
   const handleAnswerChange = (index, value) => {
     const newAnswers = [...answers];
     newAnswers[index] = value;
@@ -682,6 +730,10 @@ export default function ExamPage({ user, onLogout }) {
 
       if (data.submissionId) {
         console.log("Submission successful, ID:", data.submissionId);
+        try {
+          const key = user && user._id ? `examSession:${examId}:${user._id}` : null;
+          if (key) localStorage.removeItem(key);
+        } catch {}
         stopCamera();
         navigate(`/result/${data.submissionId}`);
       } else {
