@@ -93,6 +93,7 @@ export default function ResultPage({ onLogout, isAdmin = false }) {
 
   const percentage = ((result.score / result.totalQuestions) * 100).toFixed(1);
   const isPassed = percentage >= 60;
+  const integrityScore = typeof result.integrityScore === 'number' ? result.integrityScore : 100;
 
   // Extract proctoring data
   const tabSwitches = result.tabSwitches || [];
@@ -224,6 +225,10 @@ export default function ResultPage({ onLogout, isAdmin = false }) {
         <div className={`result-pass-badge ${isPassed ? "passed" : "failed"}`}>
           {isPassed ? "✅ Passed" : "❌ Failed"}
         </div>
+        <div className="integrity-score-row">
+          <span className="integrity-label">Integrity Score</span>
+          <span className={`integrity-value ${integrityScore >= 80 ? 'good' : integrityScore >= 60 ? 'warn' : 'bad'}`}>{integrityScore}/100</span>
+        </div>
         
         {examSession.autoSubmitted && (
           <div className="auto-submit-notice">
@@ -273,6 +278,11 @@ export default function ResultPage({ onLogout, isAdmin = false }) {
       <div className="proctoring-summary-stats">
         <h3>📊 Proctoring Summary</h3>
         <div className="summary-grid">
+          <div className="summary-card">
+            <div className="summary-icon">🛡️</div>
+            <div className="summary-value">{integrityScore}</div>
+            <div className="summary-label">Integrity Score</div>
+          </div>
           <div className="summary-card">
             <div className="summary-icon">🔄</div>
             <div className="summary-value">{tabSwitches.length}</div>

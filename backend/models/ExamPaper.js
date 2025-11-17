@@ -11,7 +11,7 @@ const examPaperSchema = new mongoose.Schema({
   title: String,
   questions: [questionSchema],
   durationMins: { type: Number, default: 30 },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // In MongoDB, every document has a unique _id field
   createdAt: { type: Date, default: Date.now },
   isActive: { type: Boolean, default: true }
 });

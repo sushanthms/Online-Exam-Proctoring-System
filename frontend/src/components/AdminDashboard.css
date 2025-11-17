@@ -167,6 +167,11 @@
   color: #991b1b;
 }
 
+.percentage-badge.warn {
+  background: #ffedd5;
+  color: #92400e;
+}
+
 .violation-badge {
   background: #fee2e2;
   color: #991b1b;

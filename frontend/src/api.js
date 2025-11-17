@@ -53,7 +53,8 @@ export const authApi = {
 export const examApi = {
   getPaper: () => axios.get('/exam/paper').then(r => r.data),
   submit: (payload) => axios.post('/exam/submit', payload).then(r => r.data),
-  sendProctorEvent: (payload) => axios.post('/exam/proctor-event', payload).then(r => r.data)
+  sendProctorEvent: (payload) => axios.post('/exam/proctor-event', payload).then(r => r.data),
+  getLeaderboard: (params) => axios.get('/exam/leaderboard', { params }).then(r => r.data)
 };
 
 export default axios;

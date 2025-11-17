@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import Leaderboard from "./Leaderboard";
 import "./AdminDashboard.css";
 
 export default function AdminDashboard({ user, onLogout }) {
@@ -223,6 +224,7 @@ export default function AdminDashboard({ user, onLogout }) {
                       <th>Student</th>
                       <th>Exam ID</th>
                       <th>Score</th>
+                      <th>Integrity</th>
                       <th>Submitted At</th>
                       <th>Actions</th>
                     </tr>
@@ -235,6 +237,11 @@ export default function AdminDashboard({ user, onLogout }) {
                         <td>
                           <span className="score-badge">
                             {sub.score || 0} / {sub.answers?.length || 0}
+                          </span>
+                        </td>
+                        <td>
+                          <span className={`percentage-badge ${sub.integrityScore >= 80 ? 'pass' : sub.integrityScore >= 60 ? 'warn' : 'fail'}`}>
+                            {typeof sub.integrityScore === 'number' ? `${sub.integrityScore}` : 'N/A'}
                           </span>
                         </td>
                         <td>{new Date(sub.submittedAt).toLocaleString()}</td>
@@ -252,6 +259,9 @@ export default function AdminDashboard({ user, onLogout }) {
                 </table>
               </div>
             )}
+
+            {/* Leaderboard */}
+            <Leaderboard exams={exams} title="🏆 Leaderboard (All/By Exam)" />
 
             <div className="quick-actions">
               <h2>Quick Actions</h2>
@@ -420,6 +430,7 @@ export default function AdminDashboard({ user, onLogout }) {
                       <th>Email</th>
                       <th>Exam ID</th>
                       <th>Score</th>
+                      <th>Integrity</th>
                       <th>Percentage</th>
                       <th>Submitted At</th>
                       <th>Actions</th>
@@ -437,6 +448,11 @@ export default function AdminDashboard({ user, onLogout }) {
                           <td>{sub.examId}</td>
                           <td>
                             {sub.score || 0} / {sub.answers?.length || 0}
+                          </td>
+                          <td>
+                            <span className={`percentage-badge ${sub.integrityScore >= 80 ? 'pass' : sub.integrityScore >= 60 ? 'warn' : 'fail'}`}>
+                              {typeof sub.integrityScore === 'number' ? `${sub.integrityScore}` : 'N/A'}
+                            </span>
                           </td>
                           <td>
                             <span className={`percentage-badge ${percentage >= 60 ? "pass" : "fail"}`}>

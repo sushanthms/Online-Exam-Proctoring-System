@@ -149,7 +149,40 @@
   box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
 }
 
-/* Questions Review Section */
+.integrity-score-row {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.integrity-label {
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.integrity-value {
+  font-weight: 800;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+}
+
+.integrity-value.good {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.integrity-value.warn {
+  background: #ffedd5;
+  color: #92400e;
+}
+
+.integrity-value.bad {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
 .result-section {
   margin-bottom: 2.5rem;
 }

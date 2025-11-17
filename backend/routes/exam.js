@@ -104,6 +104,104 @@ router.get("/available", authenticate, async (req, res) => {
   }
 });
 
+// ========== LEADERBOARD (GLOBAL OR PER EXAM) ==========
+// GET /exam/leaderboard?examId=<optional>&limit=<optional>
+router.get("/leaderboard", authenticate, async (req, res) => {
+  try {
+    const { examId, limit = 10 } = req.query;
+
+    const matchStage = examId ? { $match: { examId: String(examId) } } : { $match: {} };
+
+    const pipeline = [
+      matchStage,
+      // Sort by score (desc), then latest submission
+      { $sort: { score: -1, submittedAt: -1 } },
+      // Group by user to pick their top scoring submission (first after sort)
+      {
+        $group: {
+          _id: "$userId",
+          topSubmission: { $first: "$$ROOT" },
+          bestScore: { $max: "$score" },
+          attempts: { $sum: 1 },
+        },
+      },
+      // Flatten userId and scoring fields for lookup
+      {
+        $project: {
+          userId: "$topSubmission.userId",
+          examId: "$topSubmission.examId",
+          examTitle: "$topSubmission.examTitle",
+          score: "$topSubmission.score",
+          answersCount: { $size: "$topSubmission.answers" },
+          submittedAt: "$topSubmission.submittedAt",
+          bestScore: 1,
+          attempts: 1,
+        },
+      },
+      // Join with users to get name/email
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      { $unwind: { path: "$user", preserveNullAndEmptyArrays: true } },
+      // Compute percentage
+      {
+        $addFields: {
+          percentage: {
+            $cond: [
+              { $gt: ["$answersCount", 0] },
+              {
+                $round: [
+                  {
+                    $multiply: [
+                      { $divide: ["$score", "$answersCount"] },
+                      100,
+                    ],
+                  },
+                  1,
+                ],
+              },
+              0,
+            ],
+          },
+        },
+      },
+      { $sort: { score: -1, percentage: -1, submittedAt: 1 } },
+      { $limit: Number(limit) },
+      {
+        $project: {
+          _id: 0,
+          userId: 1,
+          name: { $ifNull: ["$user.name", "$topSubmission.username"] },
+          email: "$user.email",
+          examId: 1,
+          examTitle: 1,
+          score: 1,
+          totalQuestions: "$answersCount",
+          percentage: 1,
+          attempts: 1,
+          submittedAt: 1,
+        },
+      },
+    ];
+
+    const results = await Submission.aggregate(pipeline);
+
+    res.json({
+      examId: examId || null,
+      count: results.length,
+      leaderboard: results,
+    });
+  } catch (error) {
+    console.error("Error fetching leaderboard:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 // ========== GET SPECIFIC EXAM PAPER BY ID ==========
 router.get("/paper/:examId", authenticate, async (req, res) => {
   try {
@@ -306,7 +404,34 @@ router.post("/submit", authenticate, async (req, res) => {
     const User = require("../models/User");
     const user = await User.findById(req.user.id);
 
-    // Create submission with ALL data
+    
+    const tabSwitchCount = Array.isArray(tabSwitches) ? tabSwitches.length : 0;
+    const identityFailures = Array.isArray(identityVerifications)
+      ? identityVerifications.filter(iv => iv.status === 'failed').length
+      : 0;
+    const noFaceCount = Array.isArray(identityVerifications)
+      ? identityVerifications.filter(iv => iv.status === 'no_face').length
+      : 0;
+    const multipleFaceCount = Array.isArray(multipleFaceLogs) ? multipleFaceLogs.length : 0;
+
+    const WEIGHTS = {
+      tabSwitch: 5,
+      identityFail: 25,
+      noFace: 15,
+      multipleFaces: 20,
+      maxTabPenalty: 40,
+    };
+
+    const tabPenalty = Math.min(tabSwitchCount * WEIGHTS.tabSwitch, WEIGHTS.maxTabPenalty);
+    const integrityPenalty = (
+      tabPenalty +
+      identityFailures * WEIGHTS.identityFail +
+      noFaceCount * WEIGHTS.noFace +
+      multipleFaceCount * WEIGHTS.multipleFaces
+    );
+    const integrityScore = Math.max(0, Math.min(100, 100 - integrityPenalty));
+
+    
     const submission = new Submission({
       userId: req.user.id,
       username: username || (user ? user.name : "Unknown"),
@@ -363,6 +488,7 @@ router.post("/submit", authenticate, async (req, res) => {
         totalWarnings: proctoringSummary.totalWarnings || warnings.length,
         verificationSuccessRate: proctoringSummary.verificationSuccessRate || 100
       },
+      integrityScore,
       
       submittedAt: new Date(),
     });
@@ -486,6 +612,7 @@ router.get("/result/:submissionId", authenticate, async (req, res) => {
       examId: submission.examId,
       examTitle: submission.examTitle,
       score: submission.score,
+      integrityScore: submission.integrityScore,
       totalQuestions: normalizedQuestions.length,
       questions: normalizedQuestions,
       answers: submission.answers,

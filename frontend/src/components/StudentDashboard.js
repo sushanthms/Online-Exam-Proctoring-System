@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import Leaderboard from "./Leaderboard";
 import "./StudentDashboard.css";
 
 export default function StudentDashboard({ user, onLogout }) {
@@ -229,6 +230,10 @@ export default function StudentDashboard({ user, onLogout }) {
       )}
 
       {/* Available Exams */}
+      <div className="leaderboard-section">
+        <Leaderboard exams={exams} title="🏆 Leaderboard (All/By Exam)" />
+      </div>
+
       <div className="exams-section">
         <h2>📝 Available Exams</h2>
 

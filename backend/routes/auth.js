@@ -1,4 +1,3 @@
-// backend/routes/auth.js - UPDATED WITH ADMIN SECRET KEY
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');

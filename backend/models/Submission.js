@@ -159,6 +159,10 @@ const submissionSchema = new mongoose.Schema({
       default: 100
     }
   },
+  integrityScore: {
+    type: Number,
+    default: 100
+  },
   
   submittedAt: { 
     type: Date, 
