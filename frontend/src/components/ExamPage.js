@@ -1,6 +1,8 @@
 // frontend/src/components/ExamPage.js - ENHANCED VERSION WITH TIMER CONTROL
 import React, { useEffect, useState, useRef } from "react";
 import * as faceapi from "face-api.js";
+import * as tf from "@tensorflow/tfjs";
+import "@tensorflow/tfjs-backend-webgl";
 import { useNavigate, useParams } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 import "./ExamPage.css";
@@ -8,6 +10,7 @@ import "./ProctoringPanel.css";
 
 export default function ExamPage({ user, onLogout }) {
   const { examId } = useParams();
+  const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:4000';
   const videoRef = useRef(null);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
   const [warningShown, setWarningShown] = useState(false);
@@ -57,7 +60,7 @@ export default function ExamPage({ user, onLogout }) {
     try {
       console.log("🔄 Loading registered face descriptor...");
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:4000/api/auth/face-descriptor", {
+      const response = await fetch(`${API_BASE}/api/auth/face-descriptor`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -86,6 +89,9 @@ export default function ExamPage({ user, onLogout }) {
   useEffect(() => {
     const loadModelsAndExam = async () => {
       try {
+        await tf.setBackend("webgl");
+        await tf.ready();
+        console.log("🎛️ TFJS backend: webgl ready");
         console.log("🔄 Loading face detection models...");
         const MODEL_URL = process.env.PUBLIC_URL + "/models";
 
@@ -98,7 +104,7 @@ export default function ExamPage({ user, onLogout }) {
         setModelsLoaded(true);
         console.log("✅ Models loaded");
 
-        const res = await fetch(`http://localhost:4000/api/exam/paper/${examId}`, {
+        const res = await fetch(`${API_BASE}/api/exam/paper/${examId}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
 
@@ -149,7 +155,6 @@ export default function ExamPage({ user, onLogout }) {
     if (!timerStarted || timeLeft === null) return;
 
     if (timeLeft <= 0) {
-      alert("⏰ Time's up! Auto-submitting your exam...");
       handleSubmit();
       return;
     }
@@ -235,7 +240,7 @@ export default function ExamPage({ user, onLogout }) {
         ]));
         
         // Log to backend
-        await fetch("http://localhost:4000/api/exam/verify-face", {
+        await fetch(`${API_BASE}/api/exam/verify-face`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -294,7 +299,7 @@ export default function ExamPage({ user, onLogout }) {
         
         // Log to backend (less frequently)
         if (Math.random() < 0.2) {
-          await fetch("http://localhost:4000/api/exam/verify-face", {
+          await fetch(`${API_BASE}/api/exam/verify-face`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -330,7 +335,7 @@ export default function ExamPage({ user, onLogout }) {
         // The failure will be recorded in proctoring logs for admin review
         
         // Log to backend
-        await fetch("http://localhost:4000/api/exam/verify-face", {
+        await fetch(`${API_BASE}/api/exam/verify-face`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -388,7 +393,7 @@ export default function ExamPage({ user, onLogout }) {
         // Log to backend
         try {
           const token = localStorage.getItem("token");
-          fetch("http://localhost:4000/api/exam/log-violation", {
+          fetch(`${API_BASE}/api/exam/log-violation`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -426,7 +431,7 @@ export default function ExamPage({ user, onLogout }) {
       // Log critical violation
       try {
         const token = localStorage.getItem("token");
-        fetch("http://localhost:4000/api/exam/log-violation", {
+        fetch(`${API_BASE}/api/exam/log-violation`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -505,7 +510,7 @@ export default function ExamPage({ user, onLogout }) {
             // Log to backend
             try {
               const token = localStorage.getItem("token");
-              fetch("http://localhost:4000/api/exam/log-violation", {
+              fetch(`${API_BASE}/api/exam/log-violation`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -553,7 +558,7 @@ export default function ExamPage({ user, onLogout }) {
           // Log resolution to backend
           try {
             const token = localStorage.getItem("token");
-            fetch("http://localhost:4000/api/exam/log-violation", {
+            fetch(`${API_BASE}/api/exam/log-violation`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -681,7 +686,7 @@ export default function ExamPage({ user, onLogout }) {
         throw new Error("Authentication token not found");
       }
       
-      const response = await fetch("http://localhost:4000/api/exam/submit", {
+      const response = await fetch(`${API_BASE}/api/exam/submit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

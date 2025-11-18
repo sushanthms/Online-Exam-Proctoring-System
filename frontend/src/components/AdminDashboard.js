@@ -5,6 +5,7 @@ import Leaderboard from "./Leaderboard";
 import "./AdminDashboard.css";
 
 export default function AdminDashboard({ user, onLogout }) {
+  const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:4000';
   const [stats, setStats] = useState(null);
   const [recentSubmissions, setRecentSubmissions] = useState([]);
   const [users, setUsers] = useState([]);
@@ -23,7 +24,7 @@ export default function AdminDashboard({ user, onLogout }) {
       const token = localStorage.getItem("token");
       
       // Fetch stats
-      const statsRes = await fetch("http://localhost:4000/api/admin/stats", {
+      const statsRes = await fetch(`${API_BASE}/api/admin/stats`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -34,7 +35,7 @@ export default function AdminDashboard({ user, onLogout }) {
       }
 
       // Fetch users
-      const usersRes = await fetch("http://localhost:4000/api/admin/users", {
+      const usersRes = await fetch(`${API_BASE}/api/admin/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -44,7 +45,7 @@ export default function AdminDashboard({ user, onLogout }) {
       }
 
       // Fetch exams
-      const examsRes = await fetch("http://localhost:4000/api/admin/exams", {
+      const examsRes = await fetch(`${API_BASE}/api/admin/exams`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -54,7 +55,7 @@ export default function AdminDashboard({ user, onLogout }) {
       }
 
       // Fetch violations
-      const violationsRes = await fetch("http://localhost:4000/api/admin/violations", {
+      const violationsRes = await fetch(`${API_BASE}/api/admin/violations`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -74,7 +75,7 @@ export default function AdminDashboard({ user, onLogout }) {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:4000/api/admin/user/${userId}/toggle-status`,
+        `${API_BASE}/api/admin/user/${userId}/toggle-status`,
         {
           method: "PATCH",
           headers: { Authorization: `Bearer ${token}` },
@@ -96,7 +97,7 @@ export default function AdminDashboard({ user, onLogout }) {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:4000/api/admin/exam/${examId}`,
+        `${API_BASE}/api/admin/exam/${examId}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },

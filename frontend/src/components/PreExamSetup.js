@@ -1,12 +1,15 @@
 // frontend/src/components/PreExamSetup.js - IMPROVED WITH DEBUGGING
 import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
+import * as tf from "@tensorflow/tfjs";
+import "@tensorflow/tfjs-backend-webgl";
 import { useNavigate, useParams } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 import "./PreExamSetup.css";
 
 export default function PreExamSetup({ user }) {
   const { examId } = useParams();
+  const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:4000';
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const navigate = useNavigate();
@@ -54,6 +57,10 @@ export default function PreExamSetup({ user }) {
       setMessage("Loading system components...");
       addDebugLog("🚀 Starting initialization", "info");
 
+      await tf.setBackend("webgl");
+      await tf.ready();
+      addDebugLog("🎛️ TFJS backend: webgl ready", "success");
+
       // Check if face is registered first
       const faceStatus = await checkFaceRegistrationStatus();
       if (!faceStatus) {
@@ -92,7 +99,7 @@ export default function PreExamSetup({ user }) {
     try {
       addDebugLog("🔍 Checking face registration status", "info");
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:4000/api/auth/face-status", {
+      const response = await fetch(`${API_BASE}/api/auth/face-status`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -114,7 +121,7 @@ export default function PreExamSetup({ user }) {
       addDebugLog("📋 Fetching exam details", "info");
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:4000/api/exam/paper/${examId}`,
+        `${API_BASE}/api/exam/paper/${examId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
@@ -179,7 +186,7 @@ export default function PreExamSetup({ user }) {
       
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:4000/api/auth/face-descriptor",
+        `${API_BASE}/api/auth/face-descriptor`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 

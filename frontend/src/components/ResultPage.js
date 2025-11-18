@@ -6,6 +6,7 @@ import "./ResultPage.css";
 
 export default function ResultPage({ onLogout, isAdmin = false }) {
   const { submissionId } = useParams();
+  const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:4000';
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -39,7 +40,7 @@ export default function ResultPage({ onLogout, isAdmin = false }) {
         }
 
         const response = await fetch(
-          `http://localhost:4000/api/exam/result/${submissionId}`,
+          `${API_BASE}/api/exam/result/${submissionId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
