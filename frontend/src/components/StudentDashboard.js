@@ -6,7 +6,6 @@ import Leaderboard from "./Leaderboard";
 import "./StudentDashboard.css";
 
 export default function StudentDashboard({ user, onLogout }) {
-  const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:4000';
   const [exams, setExams] = useState([]);
   const [userStats, setUserStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,7 +22,7 @@ export default function StudentDashboard({ user, onLogout }) {
   const checkFaceRegistration = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_BASE}/api/auth/face-status`, {
+      const response = await fetch("http://localhost:4000/api/auth/face-status", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -43,7 +42,7 @@ export default function StudentDashboard({ user, onLogout }) {
   const fetchAvailableExams = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_BASE}/api/exam/available`, {
+      const response = await fetch("http://localhost:4000/api/exam/available", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -60,7 +59,7 @@ export default function StudentDashboard({ user, onLogout }) {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${API_BASE}/api/exam/my-submissions/${user._id}`,
+        `http://localhost:4000/api/exam/my-submissions/${user._id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

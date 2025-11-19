@@ -5,6 +5,7 @@ const ExamPaper = require('../models/ExamPaper');
 const Submission = require('../models/Submission');
 const User = require('../models/User');
 const MultipleFaceLog = require('../models/MultipleFaceLog');
+const CodingQuestion = require('../models/CodingQuestion');
 
 // Apply authentication and admin check to all routes
 router.use(authenticate);
@@ -210,6 +211,71 @@ router.delete('/exam/:examId', async (req, res) => {
     res.json({ message: 'Exam deleted successfully' });
   } catch (err) {
     console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.post('/coding/create-question', async (req, res) => {
+  try {
+    const { title, description, languagesAllowed, testCases, timeLimit, memoryLimit } = req.body;
+    if (!title || !description || !Array.isArray(testCases) || testCases.length === 0) {
+      return res.status(400).json({ error: 'Invalid payload' });
+    }
+    const q = new CodingQuestion({
+      title,
+      description,
+      languagesAllowed: Array.isArray(languagesAllowed) ? languagesAllowed : ['javascript'],
+      testCases,
+      timeLimit: timeLimit || 2,
+      memoryLimit: memoryLimit || 256,
+    });
+    await q.save();
+    res.json({ message: 'Coding question created', question: q });
+  } catch (e) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.get('/coding/questions', async (req, res) => {
+  try {
+    const list = await CodingQuestion.find().sort({ _id: -1 });
+    res.json({ questions: list });
+  } catch (e) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.get('/coding/questions/:id', async (req, res) => {
+  try {
+    const q = await CodingQuestion.findById(req.params.id);
+    if (!q) return res.status(404).json({ error: 'Not found' });
+    res.json({ question: q });
+  } catch (e) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.put('/coding/questions/:id', async (req, res) => {
+  try {
+    const { title, description, languagesAllowed, testCases, timeLimit, memoryLimit } = req.body;
+    const q = await CodingQuestion.findByIdAndUpdate(
+      req.params.id,
+      { title, description, languagesAllowed, testCases, timeLimit, memoryLimit },
+      { new: true }
+    );
+    if (!q) return res.status(404).json({ error: 'Not found' });
+    res.json({ message: 'Updated', question: q });
+  } catch (e) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.delete('/coding/questions/:id', async (req, res) => {
+  try {
+    const r = await CodingQuestion.findByIdAndDelete(req.params.id);
+    if (!r) return res.status(404).json({ error: 'Not found' });
+    res.json({ message: 'Deleted' });
+  } catch (e) {
     res.status(500).json({ error: 'Server error' });
   }
 });

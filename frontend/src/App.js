@@ -5,6 +5,7 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import StudentDashboard from './components/StudentDashboard';
 import AdminDashboard from './components/AdminDashboard';
+import AdminCodingCreator from './components/AdminCodingCreator';
 import PreExamSetup from './components/PreExamSetup'; // NEW
 import ExamPage from './components/ExamPage';
 import ResultPage from './components/ResultPage';
@@ -227,6 +228,15 @@ function App() {
           element={
             <ProtectedRoute user={user} allowedRoles={['admin']}>
               <ExamCreator user={user} />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/create-coding"
+          element={
+            <ProtectedRoute user={user} allowedRoles={['admin']}>
+              <AdminCodingCreator />
             </ProtectedRoute>
           }
         />

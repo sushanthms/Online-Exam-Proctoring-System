@@ -1,11 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
-import * as tf from "@tensorflow/tfjs";
-import "@tensorflow/tfjs-backend-webgl";
 import "./FaceRegistration.css";
 
 export default function FaceRegistration({ user, onComplete }) {
-  const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:4000';
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [status, setStatus] = useState("initializing");
@@ -24,9 +21,6 @@ export default function FaceRegistration({ user, onComplete }) {
 
   const loadModelsAndStartCamera = async () => {
     try {
-      await tf.setBackend("webgl");
-      await tf.ready();
-      console.log("🎛️ TFJS backend: webgl ready");
       const MODEL_URL = process.env.PUBLIC_URL + "/models";
       await Promise.all([
         faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
@@ -121,7 +115,7 @@ export default function FaceRegistration({ user, onComplete }) {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_BASE}/api/auth/register-face`, {
+      const response = await fetch("http://localhost:4000/api/auth/register-face", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
 const examRoutes = require('./routes/exam');
 const adminRoutes = require('./routes/admin');
+const codingRoutes = require('./routes/coding');
 const faceLogRoutes = require('./routes/faceLog');
 
 const app = express();
@@ -42,6 +43,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/exam', examRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api', faceLogRoutes);
+app.use('/api/coding', codingRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -62,27 +64,11 @@ app.use((err, req, res, next) => {
 });
 
 // Start server only after DB connection
-const DEFAULT_PORT = 4000;
-const PORT = Number(process.env.PORT) || DEFAULT_PORT;
-
-const startServer = (port) => {
-  const server = app.listen(port, () => {
-    console.log(`🚀 Backend server running on port ${port}`);
-    console.log(`📡 API available at http://localhost:${port}/api`);
-  });
-
-  server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-      const nextPort = port + 1;
-      console.error(`⚠️ Port ${port} in use. Retrying on ${nextPort}...`);
-      setTimeout(() => startServer(nextPort), 500);
-    } else {
-      console.error('❌ Server failed to start:', err);
-      process.exit(1);
-    }
-  });
-};
+const PORT = process.env.PORT || 4000;
 
 connectDB().then(() => {
-  startServer(PORT);
+  app.listen(PORT, () => {
+    console.log(`🚀 Backend server running on port ${PORT}`);
+    console.log(`📡 API available at http://localhost:${PORT}/api`);
+  });
 });

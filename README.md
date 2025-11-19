@@ -220,62 +220,88 @@ db.users.insertOne({
 
 ```
 online-exam-proctoring/
-├── backend/
-│   ├── models/
-│   │   ├── User.js                 # User model with roles
-|   |   ├── FaceVerificationLog.js  
-│   │   ├── ExamPaper.js            # Exam model
-│   │   ├── Submission.js           # Submission model
-│   │   └── MultipleFaceLog.js      # Proctoring logs
-│   ├── routes/
-│   │   ├── auth.js                 # Authentication routes
-│   │   ├── exam.js                 # Student exam routes
-│   │   ├── admin.js                # Admin routes
-│   │   └── faceLog.js              # Face detection logs
-│   ├── package.json
-│   |── server.js                   # Express server
-|   └── .env        
+backend
+├── models
+│   ├── ExamPaper.js
+│   ├── FaceVerificationLog.js
+│   ├── MultipleFaceLog.js
+│   ├── ProctorLog.js
+│   ├── Submission.js
+│   └── User.js
+├── routes
+│   ├── admin.js
+│   ├── auth.js
+│   ├── exam.js
+│   └── faceLog.js
+├── .env
+├── package-lock.json
+├── package.json
+└── server.js     
 │
-├── frontend/
-│   ├── public/
-│   │   ├── models/                 # face-api.js models
-│   │   └── index.html
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── StudentDashboard.js      # Student home
-│   │   │   ├── StudentDashboard.css
-│   │   │   ├── AdminDashboard.js        # Admin home
-│   │   │   ├── AdminDashboard.css
-│   │   │   ├── LoginPage.js             # Login page
-│   │   │   ├── LoginPage.css
-│   │   │   ├── RegisterPage.js          # Registration
-│   │   │   ├── RegisterPage.css
-|   |   |   ├── FaceRegistration.js
-|   |   |   ├── FaceRegistration.css
-|   |   |   ├── HomePage.js
-|   |   |   ├── HomePage.css
-|   |   |   ├── Notofication.js
-|   |   |   ├── ProctoringOverlay.js
-│   │   │   ├── ExamPage.js              # Exam interface
-│   │   │   ├── ExamPage.css
-│   │   │   ├── ExamCreator.js           # Create exams
-│   │   │   ├── ExamCreator.css
-│   │   │   ├── ResultPage.js            # View results
-│   │   │   ├── ResultPage.css
-│   │   │   ├── MyResultsPage.js         # Exam history
-|   |   |   ├── SubmissionPage.js        
-│   │   │   └── MyResultsPage.css
-│   │   ├──styles/
-|   |   |   ├──global.css
-|   |   |   └──variables.css
-|   |   ├── App.js                       # Main app with routing
-│   │   ├── api.js                       # API utilities
-│   │   ├── index.js                     # Entry point
-│   │   └── styles.css                   # Global styles
-│   └── package.json
-│
-├── README.md
-└── .gitignore
+frontend/
+│   
+├── public
+│   ├── models
+│   │   ├── face_landmark_68_model-shard1
+│   │   ├── face_landmark_68_model-weights_manifest.json
+│   │   ├── face_recognition_model-shard1
+│   │   ├── face_recognition_model-shard2
+│   │   ├── face_recognition_model-weights_manifest.json
+│   │   ├── ssd_mobilenetv1_model-shard1
+│   │   ├── tiny_face_detector_model-shard1
+│   │   └── tiny_face_detector_model-weights_manifest.json
+│   └── index.html
+├── src
+│   ├── components
+│   │   ├── hooks
+│   │   │   └── useKeyboardShortcuts.js
+│   │   ├── AdminDashboard.css
+│   │   ├── AdminDashboard.js
+│   │   ├── EditExam.css
+│   │   ├── EditExam.js
+│   │   ├── ExamCreator.css
+│   │   ├── ExamCreator.js
+│   │   ├── ExamPage.css
+│   │   ├── ExamPage.js
+│   │   ├── FaceRegistration.css
+│   │   ├── FaceRegistration.js
+│   │   ├── HomePage.css
+│   │   ├── HomePage.js
+│   │   ├── LoginPage.css
+│   │   ├── LoginPage.js
+│   │   ├── MyResultsPage.css
+│   │   ├── MyResultsPage.js
+│   │   ├── Navbar.css
+│   │   ├── Navbar.js
+│   │   ├── Notification.js
+│   │   ├── PreExamSetup.css
+│   │   ├── PreExamSetup.js
+│   │   ├── ProctoringOverlay.js
+│   │   ├── ProctoringPanel.css
+│   │   ├── RegisterPage.css
+│   │   ├── RegisterPage.js
+│   │   ├── ResultPage.css
+│   │   ├── ResultPage.js
+│   │   ├── ResultsPage.css
+│   │   ├── ResultsPage.js
+│   │   ├── StudentDashboard.css
+│   │   ├── StudentDashboard.js
+│   │   ├── SubmissionPage.js
+│   │   └── ThemeToggle.js
+│   ├── contexts
+│   │   ├── BookmarkContext.js
+│   │   └── ThemeContext.js
+│   ├── styles
+│   │   ├── global.css
+│   │   ├── theme.css
+│   │   └── variables.css
+│   ├── api.js
+│   ├── App.js
+│   ├── index.js
+│   └── styles.css
+├── package-lock.json
+├── package.json
+└── start.log
 ```
 
 ## Security Features

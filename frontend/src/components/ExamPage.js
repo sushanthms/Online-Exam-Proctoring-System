@@ -1,18 +1,19 @@
 // frontend/src/components/ExamPage.js - ENHANCED VERSION WITH TIMER CONTROL
 import React, { useEffect, useState, useRef } from "react";
 import * as faceapi from "face-api.js";
-import * as tf from "@tensorflow/tfjs";
-import "@tensorflow/tfjs-backend-webgl";
 import { useNavigate, useParams } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 import "./ExamPage.css";
 import "./ProctoringPanel.css";
+import CodeMirror from "@uiw/react-codemirror";
+import { javascript } from "@codemirror/lang-javascript";
 
 export default function ExamPage({ user, onLogout }) {
   const { examId } = useParams();
-  const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:4000';
   const videoRef = useRef(null);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
+  const [codeAnswers, setCodeAnswers] = useState({});
+  const [codeOutput, setCodeOutput] = useState("");
   const [warningShown, setWarningShown] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null); // Start as null
   const [timerStarted, setTimerStarted] = useState(false); // NEW
@@ -20,7 +21,7 @@ export default function ExamPage({ user, onLogout }) {
   const [paper, setPaper] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [currentQ, setCurrentQ] = useState(0);
-
+  const [codingResult, setCodingResult] = useState(null);
   const [registeredDescriptor, setRegisteredDescriptor] = useState(null);
   const [faceVerificationStatus, setFaceVerificationStatus] = useState("loading");
   const [verificationFailures, setVerificationFailures] = useState(0);
@@ -29,7 +30,7 @@ export default function ExamPage({ user, onLogout }) {
 
   const multipleFaceActive = useRef(false);
   const startTimeRef = useRef(null);
-  const isSubmitting = useRef(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const verificationInterval = useRef(null);
   const examStartTime = useRef(null); // NEW
   const multipleFaceViolationCount = useRef(0); // moved here from inside useEffect
@@ -60,7 +61,7 @@ export default function ExamPage({ user, onLogout }) {
     try {
       console.log("🔄 Loading registered face descriptor...");
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_BASE}/api/auth/face-descriptor`, {
+      const response = await fetch("http://localhost:4000/api/auth/face-descriptor", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -84,16 +85,12 @@ export default function ExamPage({ user, onLogout }) {
       alert("Failed to load face verification. Please try again.");
     }
   };
-
   // Load exam paper & models
   useEffect(() => {
     const loadModelsAndExam = async () => {
       try {
-        await tf.setBackend("webgl");
-        await tf.ready();
-        console.log("🎛️ TFJS backend: webgl ready");
         console.log("🔄 Loading face detection models...");
-        const MODEL_URL = process.env.PUBLIC_URL + "/models";
+        const MODEL_URL = "/models";
 
         await Promise.all([
           faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
@@ -104,7 +101,7 @@ export default function ExamPage({ user, onLogout }) {
         setModelsLoaded(true);
         console.log("✅ Models loaded");
 
-        const res = await fetch(`${API_BASE}/api/exam/paper/${examId}`, {
+        const res = await fetch(`http://localhost:4000/api/exam/paper/${examId}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
 
@@ -153,16 +150,13 @@ export default function ExamPage({ user, onLogout }) {
   // TIMER COUNTDOWN - Only runs when timerStarted is true
   useEffect(() => {
     if (!timerStarted || timeLeft === null) return;
-
     if (timeLeft <= 0) {
       handleSubmit();
       return;
     }
-
     const timer = setTimeout(() => {
       setTimeLeft(prev => prev - 1);
     }, 1000);
-
     return () => clearTimeout(timer);
   }, [timeLeft, timerStarted]);
 
@@ -240,7 +234,7 @@ export default function ExamPage({ user, onLogout }) {
         ]));
         
         // Log to backend
-        await fetch(`${API_BASE}/api/exam/verify-face`, {
+        await fetch("http://localhost:4000/api/exam/verify-face", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -299,7 +293,7 @@ export default function ExamPage({ user, onLogout }) {
         
         // Log to backend (less frequently)
         if (Math.random() < 0.2) {
-          await fetch(`${API_BASE}/api/exam/verify-face`, {
+          await fetch("http://localhost:4000/api/exam/verify-face", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -335,7 +329,7 @@ export default function ExamPage({ user, onLogout }) {
         // The failure will be recorded in proctoring logs for admin review
         
         // Log to backend
-        await fetch(`${API_BASE}/api/exam/verify-face`, {
+        await fetch("http://localhost:4000/api/exam/verify-face", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -393,7 +387,7 @@ export default function ExamPage({ user, onLogout }) {
         // Log to backend
         try {
           const token = localStorage.getItem("token");
-          fetch(`${API_BASE}/api/exam/log-violation`, {
+          fetch("http://localhost:4000/api/exam/log-violation", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -431,7 +425,7 @@ export default function ExamPage({ user, onLogout }) {
       // Log critical violation
       try {
         const token = localStorage.getItem("token");
-        fetch(`${API_BASE}/api/exam/log-violation`, {
+        fetch("http://localhost:4000/api/exam/log-violation", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -510,7 +504,7 @@ export default function ExamPage({ user, onLogout }) {
             // Log to backend
             try {
               const token = localStorage.getItem("token");
-              fetch(`${API_BASE}/api/exam/log-violation`, {
+              fetch("http://localhost:4000/api/exam/log-violation", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -558,7 +552,7 @@ export default function ExamPage({ user, onLogout }) {
           // Log resolution to backend
           try {
             const token = localStorage.getItem("token");
-            fetch(`${API_BASE}/api/exam/log-violation`, {
+            fetch("http://localhost:4000/api/exam/log-violation", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -601,19 +595,23 @@ export default function ExamPage({ user, onLogout }) {
       const saved = JSON.parse(raw);
       if (saved.examId !== examId) return;
       const totalSecs = ((paper?.durationMins) || 10) * 60;
-      examStartTime.current = saved.startedAtMs || Date.now();
-      setTimerStarted(true);
-      const elapsed = Math.floor((Date.now() - examStartTime.current) / 1000);
-      setTimeLeft(Math.max(0, totalSecs - elapsed));
-      setAnswers(Array.isArray(saved.answers) ? saved.answers.slice(0, paper.questions.length) : new Array(paper.questions.length).fill(null));
-      setCurrentQ(Math.min(saved.currentQ || 0, Math.max(0, paper.questions.length - 1)));
-      setTabSwitches(saved.tabSwitches || []);
-      setIdentityVerifications(saved.identityVerifications || []);
-      setMultipleFaceLogs(saved.multipleFaceLogs || []);
-      setWarnings(saved.warnings || []);
-      setTabSwitchCount(saved.tabSwitchCount || (saved.tabSwitches ? saved.tabSwitches.length : 0));
-      setVerificationFailures(saved.verificationFailures || (saved.identityVerifications ? saved.identityVerifications.filter(iv => iv.status === 'failed').length : 0));
-      multipleFaceViolationCount.current = saved.multipleFaceViolationCount || (saved.multipleFaceLogs ? saved.multipleFaceLogs.length : 0);
+      const startedAtMs = saved.startedAtMs;
+      if (typeof startedAtMs === 'number' && (Date.now() - startedAtMs) < totalSecs * 1000) {
+        examStartTime.current = startedAtMs;
+        const elapsed = Math.floor((Date.now() - examStartTime.current) / 1000);
+        setTimeLeft(Math.max(1, totalSecs - elapsed));
+        setAnswers(Array.isArray(saved.answers) ? saved.answers.slice(0, paper.questions.length) : new Array(paper.questions.length).fill(null));
+        setCurrentQ(Math.min(saved.currentQ || 0, Math.max(0, paper.questions.length - 1)));
+        setTabSwitches(saved.tabSwitches || []);
+        setIdentityVerifications(saved.identityVerifications || []);
+        setMultipleFaceLogs(saved.multipleFaceLogs || []);
+        setWarnings(saved.warnings || []);
+        setTabSwitchCount(saved.tabSwitchCount || (saved.tabSwitches ? saved.tabSwitches.length : 0));
+        setVerificationFailures(saved.verificationFailures || (saved.identityVerifications ? saved.identityVerifications.filter(iv => iv.status === 'failed').length : 0));
+        multipleFaceViolationCount.current = saved.multipleFaceViolationCount || (saved.multipleFaceLogs ? saved.multipleFaceLogs.length : 0);
+      } else {
+        try { localStorage.removeItem(key); } catch {}
+      }
     } catch {}
   }, [paper, user, examId]);
 
@@ -643,13 +641,43 @@ export default function ExamPage({ user, onLogout }) {
     newAnswers[index] = value;
     setAnswers(newAnswers);
   };
+ const runVisibleTestCase = async (question, code) => {
+  setCodingResult({ status: "Running...", output: "" });
+
+  try {
+    const res = await fetch("http://localhost:4000/api/exam/run-code", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        examId,
+        questionIndex: currentQ,
+        code
+      }),
+    });
+
+    const data = await res.json();
+
+    setCodingResult({
+      status: `${data.passCount}/${data.total} passed`,
+      output: JSON.stringify(data.results),
+    });
+  } catch (err) {
+    setCodingResult({
+      status: "Error running code",
+      output: err.message,
+    });
+  }
+};
 
   // Submit handler
     const handleSubmit = async () => {
-    if (isSubmitting.current) return;
+    if (isSubmitting) return;
     if (!paper) return alert("Exam not loaded!");
 
-    const isAutoSubmit = tabSwitchCount >= 3 || timeLeft <= 0 || verificationFailures >= 3;
+    const isAutoSubmit = tabSwitchCount >= 3 || timeLeft <= 0 || verificationFailures >= 3 || multipleFaceViolationCount.current >= 3;
     const autoSubmitReason = tabSwitchCount >= 3
       ? 'too_many_tab_switches'
       : verificationFailures >= 3
@@ -671,7 +699,7 @@ export default function ExamPage({ user, onLogout }) {
       }
     }
 
-    isSubmitting.current = true;
+    setIsSubmitting(true);
 
     try {
       console.log("Submitting exam answers:", {
@@ -686,7 +714,7 @@ export default function ExamPage({ user, onLogout }) {
         throw new Error("Authentication token not found");
       }
       
-      const response = await fetch(`${API_BASE}/api/exam/submit`, {
+      const response = await fetch("http://localhost:4000/api/exam/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -700,6 +728,7 @@ export default function ExamPage({ user, onLogout }) {
           multipleFaceLogs,
           identityVerifications,
           warnings,
+          codeAnswers,
           examSession: {
             startedAt: examStartTime.current ? new Date(examStartTime.current).toISOString() : new Date().toISOString(),
             submittedAt: new Date().toISOString(),
@@ -747,7 +776,7 @@ export default function ExamPage({ user, onLogout }) {
     } catch (err) {
       console.error("Submit error:", err);
       alert(`❌ Failed to submit exam: ${err.message}. Please try again.`);
-      isSubmitting.current = false;
+      setIsSubmitting(false);
     }
   };
 
@@ -885,39 +914,84 @@ export default function ExamPage({ user, onLogout }) {
             Question {currentQ + 1} of {paper.questions.length}
           </div>
 
-          <div className="exam-question">
-            <h3>Q{currentQ + 1}: {question.text}</h3>
-            {question.imageUrl && (
-              <div className="exam-question-image">
-                <img 
-                  src={question.imageUrl} 
-                  alt="Question" 
-                  onError={(e) => {
-                    console.log("Image failed to load:", question.imageUrl);
-                    e.target.onerror = null;
-                    e.target.src = "https://via.placeholder.com/400x200?text=Image+Not+Available";
-                  }}
+
+  {/* If CODING QUESTION */}
+  {(question.questionType || question.type) === "coding" && (
+    <div className="coding-editor-container">
+      <h4>🧑‍💻 Coding Challenge</h4>
+      <p>Implement `solution(input)` and return the expected output.</p>
+
+      {Array.isArray(question.visibleTestCases) && question.visibleTestCases.length > 0 && (
+        <>
+          <p><strong>Visible Test Case:</strong></p>
+          <pre className="code-block">
+            Input: {JSON.stringify(question.visibleTestCases[0].input)}  
+            Expected Output: {JSON.stringify(question.visibleTestCases[0].expectedOutput)}
+          </pre>
+        </>
+      )}
+
+      <CodeMirror
+        value={answers[currentQ] || question.codeTemplate || ""}
+        height="250px"
+        theme="dark"
+        extensions={[javascript()]}
+        onChange={(value) => handleAnswerChange(currentQ, value)}
+      />
+
+      <button
+        className="run-code-btn"
+        onClick={() => runVisibleTestCase(question, answers[currentQ] || question.codeTemplate || "")}
+      >
+        ▶ Run Code
+      </button>
+
+      {/* Show result */}
+      {codingResult && (
+        <div className="coding-output">
+          <h4>Output:</h4>
+          <pre className="code-block">{codingResult.output}</pre>
+
+          <h4>Status:</h4>
+          <pre className="code-block">{codingResult.status}</pre>
+        </div>
+      )}
+    </div>
+  )}
+
+  {((question.questionType || question.type) !== "coding") && (
+    <div className="question-container">
+      <h4>{question.text || question.question || question.prompt || `Question ${currentQ + 1}`}</h4>
+      {Array.isArray(question.options) && question.options.length > 0 ? (
+        <div className="options-list">
+          {question.options.map((opt, idx) => {
+            const optValue = typeof opt === 'string' ? opt : (opt.value || opt.text || String(opt));
+            const optLabel = typeof opt === 'string' ? opt : (opt.text || opt.label || opt.value || String(opt));
+            return (
+              <label key={idx} className={`answer-option ${answers[currentQ] === optValue ? 'selected' : ''}`}>
+                <input
+                  type="radio"
+                  name={`q-${currentQ}`}
+                  value={optValue}
+                  checked={answers[currentQ] === optValue}
+                  onChange={(e) => handleAnswerChange(currentQ, e.target.value)}
                 />
-              </div>
-            )}
-            {console.log("Question data:", question)}
-            <div className="exam-options">
-              {question.options.map((opt, idx) => (
-                <label
-                  key={idx}
-                  className={`exam-option-label ${answers[currentQ] === opt ? "selected" : ""}`}
-                >
-                  <input
-                    type="radio"
-                    name={`q${currentQ}`}
-                    checked={answers[currentQ] === opt}
-                    onChange={() => handleAnswerChange(currentQ, opt)}
-                  />
-                  {opt}
-                </label>
-              ))}
-            </div>
-          </div>
+                <span>{optLabel}</span>
+              </label>
+            );
+          })}
+        </div>
+      ) : (
+        <textarea
+          className="answer-textarea"
+          rows={6}
+          placeholder="Type your answer here..."
+          value={answers[currentQ] || ""}
+          onChange={(e) => handleAnswerChange(currentQ, e.target.value)}
+        />
+      )}
+    </div>
+  )}
 
           <div className="exam-nav-buttons">
             {currentQ > 0 && (
@@ -930,8 +1004,8 @@ export default function ExamPage({ user, onLogout }) {
                 Next ➡️
               </button>
             ) : (
-              <button onClick={handleSubmit} className="exam-submit-btn" disabled={isSubmitting.current}>
-                {isSubmitting.current ? "⏳ Submitting..." : "🚀 Submit Exam"}
+              <button onClick={handleSubmit} className="exam-submit-btn" disabled={isSubmitting}>
+                {isSubmitting ? "⏳ Submitting..." : "🚀 Submit Exam"}
               </button>
             )}
           </div>
