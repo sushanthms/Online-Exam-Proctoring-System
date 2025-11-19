@@ -7,6 +7,7 @@ import "./StudentDashboard.css";
 
 export default function StudentDashboard({ user, onLogout }) {
   const [exams, setExams] = useState([]);
+  const [coding, setCoding] = useState([]);
   const [userStats, setUserStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [faceRegistered, setFaceRegistered] = useState(false);
@@ -16,6 +17,7 @@ export default function StudentDashboard({ user, onLogout }) {
   useEffect(() => {
     checkFaceRegistration();
     fetchAvailableExams();
+    fetchCodingQuestions();
     fetchUserStats();
   }, []);
 
@@ -52,6 +54,21 @@ export default function StudentDashboard({ user, onLogout }) {
       }
     } catch (error) {
       console.error("Error fetching exams:", error);
+    }
+  };
+
+  const fetchCodingQuestions = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:4000/api/coding/available", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setCoding(data.questions || []);
+      }
+    } catch (error) {
+      console.error("Error fetching coding questions:", error);
     }
   };
 
@@ -273,6 +290,44 @@ export default function StudentDashboard({ user, onLogout }) {
                   className="btn-start-exam"
                 >
                   Start Exam →
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Coding Questions */}
+      <div className="exams-section">
+        <h2>💻 Available Coding Exams</h2>
+        {coding.length === 0 ? (
+          <div className="empty-state">
+            <div className="empty-icon">📭</div>
+            <p>No coding exams available at the moment</p>
+          </div>
+        ) : (
+          <div className="exams-grid">
+            {coding.map((q) => (
+              <div key={q._id} className="exam-card">
+                <div className="exam-card-header">
+                  <h3>{q.title}</h3>
+                  <span className="exam-badge">Coding</span>
+                </div>
+                <div className="exam-details">
+                  <div className="exam-detail-item">
+                    <span className="detail-icon">🧪</span>
+                    <span>{q.testCaseCount} Test Cases</span>
+                  </div>
+                  <div className="exam-detail-item">
+                    <span className="detail-icon">💻</span>
+                    <span>{(q.languagesAllowed || []).join(', ')}</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => navigate(`/coding-exam/${q._id}`)}
+                  className="btn-start-exam"
+                >
+                  Start Coding Exam →
                 </button>
               </div>
             ))}

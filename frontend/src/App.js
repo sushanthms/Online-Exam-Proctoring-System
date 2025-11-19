@@ -8,6 +8,7 @@ import AdminDashboard from './components/AdminDashboard';
 import AdminCodingCreator from './components/AdminCodingCreator';
 import PreExamSetup from './components/PreExamSetup'; // NEW
 import ExamPage from './components/ExamPage';
+import CodingExamPage from './components/CodingExamPage';
 import ResultPage from './components/ResultPage';
 import ResultsPage from './components/ResultsPage'; // NEW - Enhanced results with proctoring violations
 import MyResultsPage from './components/MyResultsPage';
@@ -182,6 +183,15 @@ function App() {
           element={
             <ProtectedRoute user={user} allowedRoles={['student']}>
               <ExamPage user={user} onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/coding-exam/:questionId"
+          element={
+            <ProtectedRoute user={user} allowedRoles={['student']}>
+              <CodingExamPage />
             </ProtectedRoute>
           }
         />

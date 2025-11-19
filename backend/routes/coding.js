@@ -9,7 +9,32 @@ router.get('/questions/:id', authenticate, async (req, res) => {
   try {
     const q = await CodingQuestion.findById(req.params.id);
     if (!q) return res.status(404).json({ error: 'Not found' });
-    res.json(q);
+    if (req.user && req.user.role === 'admin') {
+      return res.json(q);
+    }
+    const sanitized = q.toObject();
+    sanitized.testCases = (sanitized.testCases || []).map(tc => ({
+      input: tc.isHidden ? undefined : tc.input,
+      expectedOutput: tc.isHidden ? undefined : tc.expectedOutput,
+      isHidden: !!tc.isHidden
+    }));
+    res.json(sanitized);
+  } catch (e) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.get('/available', authenticate, async (req, res) => {
+  try {
+    const list = await CodingQuestion.find().sort({ _id: -1 });
+    const sanitized = list.map(q => ({
+      _id: q._id,
+      title: q.title,
+      description: q.description,
+      languagesAllowed: q.languagesAllowed,
+      testCaseCount: Array.isArray(q.testCases) ? q.testCases.length : 0
+    }));
+    res.json({ questions: sanitized });
   } catch (e) {
     res.status(500).json({ error: 'Server error' });
   }
@@ -17,16 +42,25 @@ router.get('/questions/:id', authenticate, async (req, res) => {
 
 router.post('/run', authenticate, async (req, res) => {
   try {
-    const { language, code, testCases } = req.body;
-    if (!language || !code || !Array.isArray(testCases)) {
+    const { language, code, questionId } = req.body;
+    if (!language || !code || !questionId) {
       return res.status(400).json({ error: 'Invalid payload' });
     }
+    const q = await CodingQuestion.findById(questionId);
+    if (!q) return res.status(404).json({ error: 'Question not found' });
     const results = [];
-    for (const t of testCases) {
+    for (const t of q.testCases) {
       const r = await runner.runCode(language, code, t.input || '');
       const out = (r.stdout || '').trim();
       const exp = (t.expectedOutput || '').trim();
-      results.push({ input: t.input || '', output: out, passed: out === exp });
+      const passed = out === exp;
+      results.push({
+        hidden: !!t.isHidden,
+        inputShown: t.isHidden ? 'hidden' : (t.input || ''),
+        expectedShown: t.isHidden ? 'hidden' : (t.expectedOutput || ''),
+        output: out,
+        passed
+      });
     }
     res.json({ output: results });
   } catch (e) {

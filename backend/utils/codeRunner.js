@@ -13,7 +13,7 @@ exports.runCode = async (language, code, input) => {
   if (language === "python") {
     file = `${folder}/solution.py`;
     fs.writeFileSync(file, code);
-    cmd = `python3 ${file}`;
+    cmd = `python ${file}`;
   }
 
   if (language === "cpp") {
@@ -26,6 +26,18 @@ exports.runCode = async (language, code, input) => {
     file = `${folder}/solution.js`;
     fs.writeFileSync(file, code);
     cmd = `node ${file}`;
+  }
+
+  if (language === "c") {
+    file = `${folder}/solution.c`;
+    fs.writeFileSync(file, code);
+    cmd = `gcc ${file} -o ${folder}/a.out && ${folder}/a.out`;
+  }
+
+  if (language === "java") {
+    file = `${folder}/Main.java`;
+    fs.writeFileSync(file, code);
+    cmd = `javac ${file} && java -cp ${folder} Main`;
   }
 
   return new Promise((resolve) => {

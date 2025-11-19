@@ -10,6 +10,7 @@ export default function AdminDashboard({ user, onLogout }) {
   const [users, setUsers] = useState([]);
   const [exams, setExams] = useState([]);
   const [violations, setViolations] = useState([]);
+  const [codingQuestions, setCodingQuestions] = useState([]);
   const [activeTab, setActiveTab] = useState("overview");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -61,6 +62,15 @@ export default function AdminDashboard({ user, onLogout }) {
       if (violationsRes.ok) {
         const data = await violationsRes.json();
         setViolations(data.violations || []);
+      }
+
+      // Fetch coding questions (sanitized list)
+      const codingRes = await fetch("http://localhost:4000/api/coding/available", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (codingRes.ok) {
+        const data = await codingRes.json();
+        setCodingQuestions(data.questions || []);
       }
 
       setLoading(false);
@@ -364,6 +374,13 @@ export default function AdminDashboard({ user, onLogout }) {
               >
                 ➕ Create New Exam
               </button>
+              <button
+                onClick={() => navigate("/admin/create-coding")}
+                className="btn-secondary"
+                style={{ marginLeft: 10 }}
+              >
+                💻 Create Coding Question
+              </button>
             </div>
 
             {exams.length === 0 ? (
@@ -403,6 +420,44 @@ export default function AdminDashboard({ user, onLogout }) {
                         className="btn-delete"
                       >
                         🗑️ Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Coding Questions Tab Content (rendered inside Exams for simplicity) */}
+        {activeTab === "exams" && (
+          <div className="exams-section" style={{ marginTop: '1.5rem' }}>
+            <div className="section-header">
+              <h2>Coding Questions</h2>
+            </div>
+            {codingQuestions.length === 0 ? (
+              <div className="empty-state">
+                <p>No coding questions yet</p>
+              </div>
+            ) : (
+              <div className="exams-grid">
+                {codingQuestions.map((q) => (
+                  <div key={q._id} className="exam-card">
+                    <div className="exam-card-header">
+                      <h3>{q.title}</h3>
+                      <span className="exam-badge">Coding</span>
+                    </div>
+                    <div className="exam-details">
+                      <p>{q.description}</p>
+                      <p>🧪 {q.testCaseCount ?? 0} Test Cases</p>
+                      <p>💻 Languages: {(q.languagesAllowed || []).join(', ')}</p>
+                    </div>
+                    <div className="exam-actions">
+                      <button
+                        onClick={() => navigate(`/coding-exam/${q._id}`)}
+                        className="btn-edit"
+                      >
+                        ▶️ Preview
                       </button>
                     </div>
                   </div>
