@@ -7,7 +7,7 @@ import "./StudentDashboard.css";
 
 export default function StudentDashboard({ user, onLogout }) {
   const [exams, setExams] = useState([]);
-  const [coding, setCoding] = useState([]);
+  const [codingQuestions, setCodingQuestions] = useState([]);
   const [userStats, setUserStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [faceRegistered, setFaceRegistered] = useState(false);
@@ -17,8 +17,8 @@ export default function StudentDashboard({ user, onLogout }) {
   useEffect(() => {
     checkFaceRegistration();
     fetchAvailableExams();
-    fetchCodingQuestions();
     fetchUserStats();
+    fetchCodingQuestions();
   }, []);
 
   const checkFaceRegistration = async () => {
@@ -60,15 +60,15 @@ export default function StudentDashboard({ user, onLogout }) {
   const fetchCodingQuestions = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:4000/api/coding/available", {
+      const res = await fetch("http://localhost:4000/api/coding/questions", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (response.ok) {
-        const data = await response.json();
-        setCoding(data.questions || []);
+      if (res.ok) {
+        const data = await res.json();
+        setCodingQuestions(data.questions || []);
       }
-    } catch (error) {
-      console.error("Error fetching coding questions:", error);
+    } catch (err) {
+      console.error("Error fetching coding questions:", err);
     }
   };
 
@@ -297,17 +297,17 @@ export default function StudentDashboard({ user, onLogout }) {
         )}
       </div>
 
-      {/* Coding Questions */}
       <div className="exams-section">
-        <h2>💻 Available Coding Exams</h2>
-        {coding.length === 0 ? (
+        <h2>💻 Coding Questions</h2>
+
+        {codingQuestions.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">📭</div>
-            <p>No coding exams available at the moment</p>
+            <p>No coding questions available</p>
           </div>
         ) : (
           <div className="exams-grid">
-            {coding.map((q) => (
+            {codingQuestions.map((q) => (
               <div key={q._id} className="exam-card">
                 <div className="exam-card-header">
                   <h3>{q.title}</h3>
@@ -316,18 +316,18 @@ export default function StudentDashboard({ user, onLogout }) {
                 <div className="exam-details">
                   <div className="exam-detail-item">
                     <span className="detail-icon">🧪</span>
-                    <span>{q.testCaseCount} Test Cases</span>
+                    <span>{q.testCases?.length || 0} Tests</span>
                   </div>
                   <div className="exam-detail-item">
-                    <span className="detail-icon">💻</span>
+                    <span className="detail-icon">🔤</span>
                     <span>{(q.languagesAllowed || []).join(', ')}</span>
                   </div>
                 </div>
                 <button
-                  onClick={() => navigate(`/coding-exam/${q._id}`)}
+                  onClick={() => navigate(`/coding/${q._id}`)}
                   className="btn-start-exam"
                 >
-                  Start Coding Exam →
+                  Solve →
                 </button>
               </div>
             ))}

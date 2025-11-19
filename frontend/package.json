@@ -4,9 +4,10 @@
   "private": true,
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.4",
+    "@tensorflow/tfjs": "^3.11.0",
     "@uiw/react-codemirror": "^4.25.3",
     "axios": "^1.6.8",
-    "face-api.js": "^0.20.0",
+    "face-api.js": "^0.22.2",
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

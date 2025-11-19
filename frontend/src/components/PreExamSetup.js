@@ -132,45 +132,29 @@ export default function PreExamSetup({ user }) {
   };
 
   const loadModels = async () => {
-    try {
-      updateCheck("camera", "pending", "Loading face detection models...");
-      addDebugLog("🔄 Starting model loading", "info");
-      
-      const MODEL_URL = process.env.PUBLIC_URL + "/models";
-      addDebugLog(`📁 Model URL: ${MODEL_URL}`, "info");
-      
-      // Test if models directory is accessible
-      try {
-        const testResponse = await fetch(`${MODEL_URL}/tiny_face_detector_model-weights_manifest.json`);
-        if (!testResponse.ok) {
-          throw new Error(`Models not accessible: ${testResponse.status}`);
-        }
-        addDebugLog("✅ Models directory accessible", "success");
-      } catch (err) {
-        addDebugLog(`❌ Cannot access models directory: ${err.message}`, "error");
-        throw new Error("Face detection models not found. Please ensure models are in public/models/ directory.");
-      }
-      
-      addDebugLog("⏳ Loading Tiny Face Detector...", "info");
-      await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-      addDebugLog("✅ Tiny Face Detector loaded", "success");
-      
-      addDebugLog("⏳ Loading Face Landmarks...", "info");
-      await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-      addDebugLog("✅ Face Landmarks loaded", "success");
-      
-      addDebugLog("⏳ Loading Face Recognition...", "info");
-      await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
-      addDebugLog("✅ Face Recognition loaded", "success");
-      
-      setModelsLoaded(true);
-      addDebugLog("🎉 All models loaded successfully", "success");
-    } catch (error) {
-      console.error("Model loading error:", error);
-      addDebugLog(`❌ Model loading failed: ${error.message}`, "error");
-      throw new Error("Failed to load face detection models. Please ensure models are in public/models/ directory and refresh the page.");
-    }
-  };
+  try {
+    updateCheck("camera", "pending", "Loading face detection models...");
+    addDebugLog("🔄 Starting model loading", "info");
+    
+    const MODEL_URL = '/models';
+    
+    await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+    addDebugLog("✅ Tiny face detector loaded", "success");
+    
+    await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+    addDebugLog("✅ Face landmarks loaded", "success");
+    
+    await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+    addDebugLog("✅ Face recognition loaded", "success");
+    
+    addDebugLog(`✅ All models loaded from: ${MODEL_URL}`, "success");
+    setModelsLoaded(true);
+  } catch (error) {
+    console.error("Model loading error:", error);
+    addDebugLog(`❌ Model loading failed: ${error.message}`, "error");
+    throw new Error("Failed to load face detection models.");
+  }
+};
 
   const loadRegisteredFace = async () => {
     try {

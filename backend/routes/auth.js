@@ -37,9 +37,8 @@ function adminOnly(req, res, next) {
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password, role, adminSecretKey } = req.body;
-    const normalizedEmail = (email || '').trim().toLowerCase();
     
-    if (!normalizedEmail || !password) {
+    if (!email || !password) {
       return res.status(400).json({ message: 'Email and password required' });
     }
 
@@ -58,15 +57,8 @@ router.post('/register', async (req, res) => {
       }
     }
 
-    const existing = await User.findOne({ email: normalizedEmail });
+    const existing = await User.findOne({ email });
     if (existing) {
-      if (role === 'admin') {
-        const passwordHash = await bcrypt.hash(password, 10);
-        existing.role = 'admin';
-        existing.passwordHash = passwordHash;
-        await existing.save();
-        return res.json({ message: 'Registration successful as admin', role: 'admin' });
-      }
       return res.status(400).json({ message: 'User already exists' });
     }
 
@@ -76,7 +68,7 @@ router.post('/register', async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 10);
     const user = new User({ 
       name, 
-      email: normalizedEmail, 
+      email, 
       passwordHash,
       role: userRole 
     });
@@ -97,9 +89,8 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const normalizedEmail = (email || '').trim().toLowerCase();
     
-    const user = await User.findOne({ email: normalizedEmail });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }

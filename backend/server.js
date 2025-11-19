@@ -6,8 +6,8 @@ const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
 const examRoutes = require('./routes/exam');
 const adminRoutes = require('./routes/admin');
-const codingRoutes = require('./routes/coding');
 const faceLogRoutes = require('./routes/faceLog');
+const codeRoutes = require('./routes/code');
 
 const app = express();
 
@@ -43,7 +43,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/exam', examRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api', faceLogRoutes);
-app.use('/api/coding', codingRoutes);
+app.use('/api/coding', codeRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

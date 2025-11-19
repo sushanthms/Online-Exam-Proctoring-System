@@ -5,10 +5,8 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import StudentDashboard from './components/StudentDashboard';
 import AdminDashboard from './components/AdminDashboard';
-import AdminCodingCreator from './components/AdminCodingCreator';
 import PreExamSetup from './components/PreExamSetup'; // NEW
 import ExamPage from './components/ExamPage';
-import CodingExamPage from './components/CodingExamPage';
 import ResultPage from './components/ResultPage';
 import ResultsPage from './components/ResultsPage'; // NEW - Enhanced results with proctoring violations
 import MyResultsPage from './components/MyResultsPage';
@@ -18,6 +16,8 @@ import FaceRegistration from './components/FaceRegistration';
 import Navbar from './components/Navbar';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { BookmarkProvider } from './contexts/BookmarkContext';
+import CodingExamPage from './components/CodingExamPage';
+import CodingResultPage from './components/CodingResultPage';
 import { setAuthToken } from './api';
 import './styles.css';
 import './styles/theme.css';
@@ -188,7 +188,7 @@ function App() {
         />
 
         <Route
-          path="/coding-exam/:questionId"
+          path="/coding/:questionId"
           element={
             <ProtectedRoute user={user} allowedRoles={['student']}>
               <CodingExamPage />
@@ -238,15 +238,6 @@ function App() {
           element={
             <ProtectedRoute user={user} allowedRoles={['admin']}>
               <ExamCreator user={user} />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/admin/create-coding"
-          element={
-            <ProtectedRoute user={user} allowedRoles={['admin']}>
-              <AdminCodingCreator />
             </ProtectedRoute>
           }
         />

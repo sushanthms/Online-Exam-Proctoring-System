@@ -88,18 +88,17 @@ export default function ExamPage({ user, onLogout }) {
   // Load exam paper & models
   useEffect(() => {
     const loadModelsAndExam = async () => {
-      try {
-        console.log("🔄 Loading face detection models...");
-        const MODEL_URL = "/models";
-
-        await Promise.all([
-          faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-          faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-          faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-        ]);
-
-        setModelsLoaded(true);
-        console.log("✅ Models loaded");
+  try {
+    console.log("🔄 Loading face detection models...");
+    
+    const MODEL_URL = '/models';
+    
+    await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+    await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+    await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+    
+    setModelsLoaded(true);
+    console.log("✅ Models loaded from", MODEL_URL);
 
         const res = await fetch(`http://localhost:4000/api/exam/paper/${examId}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

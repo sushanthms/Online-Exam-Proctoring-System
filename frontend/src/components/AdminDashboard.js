@@ -11,6 +11,12 @@ export default function AdminDashboard({ user, onLogout }) {
   const [exams, setExams] = useState([]);
   const [violations, setViolations] = useState([]);
   const [codingQuestions, setCodingQuestions] = useState([]);
+  const [newQuestion, setNewQuestion] = useState({
+    title: "",
+    description: "",
+    languagesAllowed: "javascript,python,cpp",
+    testCases: [{ input: "", expectedOutput: "" }]
+  });
   const [activeTab, setActiveTab] = useState("overview");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -64,19 +70,76 @@ export default function AdminDashboard({ user, onLogout }) {
         setViolations(data.violations || []);
       }
 
-      // Fetch coding questions (sanitized list)
-      const codingRes = await fetch("http://localhost:4000/api/coding/available", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (codingRes.ok) {
-        const data = await codingRes.json();
-        setCodingQuestions(data.questions || []);
-      }
-
       setLoading(false);
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
       setLoading(false);
+    }
+  };
+
+  const fetchCodingQuestions = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:4000/api/coding/questions", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setCodingQuestions(data.questions || []);
+      }
+    } catch (err) {
+      console.error("Error loading coding questions:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === "coding") {
+      fetchCodingQuestions();
+    }
+  }, [activeTab]);
+
+  const addTestCaseRow = () => {
+    setNewQuestion(prev => ({
+      ...prev,
+      testCases: [...prev.testCases, { input: "", expectedOutput: "" }]
+    }));
+  };
+
+  const updateTestCase = (index, field, value) => {
+    setNewQuestion(prev => ({
+      ...prev,
+      testCases: prev.testCases.map((tc, i) => i === index ? { ...tc, [field]: value } : tc)
+    }));
+  };
+
+  const handleCreateCodingQuestion = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const payload = {
+        title: newQuestion.title,
+        description: newQuestion.description,
+        languagesAllowed: newQuestion.languagesAllowed.split(',').map(s => s.trim()).filter(Boolean),
+        testCases: newQuestion.testCases.map(tc => ({ input: tc.input, expectedOutput: tc.expectedOutput, isHidden: false }))
+      };
+      const res = await fetch("http://localhost:4000/api/coding/create", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        alert("Coding question created successfully");
+        setNewQuestion({ title: "", description: "", languagesAllowed: "javascript,python,cpp", testCases: [{ input: "", expectedOutput: "" }] });
+        fetchCodingQuestions();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        alert(data.error || "Failed to create coding question");
+      }
+    } catch (err) {
+      console.error("Create coding question error:", err);
+      alert("Server error while creating coding question");
     }
   };
 
@@ -207,6 +270,12 @@ export default function AdminDashboard({ user, onLogout }) {
         >
           ⚠️ Violations
         </button>
+        <button
+          className={activeTab === "coding" ? "tab-active" : "tab"}
+          onClick={() => setActiveTab("coding")}
+        >
+          💻 Coding
+        </button>
       </div>
 
       {/* Tab Content */}
@@ -273,35 +342,29 @@ export default function AdminDashboard({ user, onLogout }) {
             {/* Leaderboard */}
             <Leaderboard exams={exams} title="🏆 Leaderboard (All/By Exam)" />
 
-        <div className="quick-actions">
-          <h2>Quick Actions</h2>
-          <div className="action-buttons">
-            <button
-              onClick={() => navigate("/admin/create-exam")}
-              className="btn-action"
-            >
-              ➕ Create New Exam
-            </button>
-            <button
-              onClick={() => navigate("/admin/create-coding")}
-              className="btn-action"
-            >
-              💻 Create Coding Question
-            </button>
-            <button
-              onClick={() => setActiveTab("users")}
-              className="btn-action"
-            >
-              👥 Manage Users
-            </button>
-            <button
-              onClick={() => setActiveTab("violations")}
-              className="btn-action"
-            >
-              ⚠️ View Violations
-            </button>
-          </div>
-        </div>
+            <div className="quick-actions">
+              <h2>Quick Actions</h2>
+              <div className="action-buttons">
+                <button
+                  onClick={() => navigate("/admin/create-exam")}
+                  className="btn-action"
+                >
+                  ➕ Create New Exam
+                </button>
+                <button
+                  onClick={() => setActiveTab("users")}
+                  className="btn-action"
+                >
+                  👥 Manage Users
+                </button>
+                <button
+                  onClick={() => setActiveTab("violations")}
+                  className="btn-action"
+                >
+                  ⚠️ View Violations
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
@@ -374,13 +437,6 @@ export default function AdminDashboard({ user, onLogout }) {
               >
                 ➕ Create New Exam
               </button>
-              <button
-                onClick={() => navigate("/admin/create-coding")}
-                className="btn-secondary"
-                style={{ marginLeft: 10 }}
-              >
-                💻 Create Coding Question
-              </button>
             </div>
 
             {exams.length === 0 ? (
@@ -420,44 +476,6 @@ export default function AdminDashboard({ user, onLogout }) {
                         className="btn-delete"
                       >
                         🗑️ Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Coding Questions Tab Content (rendered inside Exams for simplicity) */}
-        {activeTab === "exams" && (
-          <div className="exams-section" style={{ marginTop: '1.5rem' }}>
-            <div className="section-header">
-              <h2>Coding Questions</h2>
-            </div>
-            {codingQuestions.length === 0 ? (
-              <div className="empty-state">
-                <p>No coding questions yet</p>
-              </div>
-            ) : (
-              <div className="exams-grid">
-                {codingQuestions.map((q) => (
-                  <div key={q._id} className="exam-card">
-                    <div className="exam-card-header">
-                      <h3>{q.title}</h3>
-                      <span className="exam-badge">Coding</span>
-                    </div>
-                    <div className="exam-details">
-                      <p>{q.description}</p>
-                      <p>🧪 {q.testCaseCount ?? 0} Test Cases</p>
-                      <p>💻 Languages: {(q.languagesAllowed || []).join(', ')}</p>
-                    </div>
-                    <div className="exam-actions">
-                      <button
-                        onClick={() => navigate(`/coding-exam/${q._id}`)}
-                        className="btn-edit"
-                      >
-                        ▶️ Preview
                       </button>
                     </div>
                   </div>
@@ -581,6 +599,67 @@ export default function AdminDashboard({ user, onLogout }) {
                 </table>
               </div>
             )}
+          </div>
+        )}
+
+        {activeTab === "coding" && (
+          <div className="coding-section">
+            <div className="section-header">
+              <h2>Coding Questions</h2>
+              <span className="count-badge">{codingQuestions.length} total</span>
+            </div>
+
+            <div className="create-coding-form">
+              <h3>Create New Coding Question</h3>
+              <div className="form-row">
+                <label>Title</label>
+                <input value={newQuestion.title} onChange={e => setNewQuestion({ ...newQuestion, title: e.target.value })} />
+              </div>
+              <div className="form-row">
+                <label>Description</label>
+                <textarea value={newQuestion.description} onChange={e => setNewQuestion({ ...newQuestion, description: e.target.value })} />
+              </div>
+              <div className="form-row">
+                <label>Languages (comma separated)</label>
+                <input value={newQuestion.languagesAllowed} onChange={e => setNewQuestion({ ...newQuestion, languagesAllowed: e.target.value })} />
+              </div>
+              <div className="form-row">
+                <label>Test Cases</label>
+                {newQuestion.testCases.map((tc, i) => (
+                  <div key={i} className="testcase-row">
+                    <input placeholder="Input" value={tc.input} onChange={e => updateTestCase(i, 'input', e.target.value)} />
+                    <input placeholder="Expected Output" value={tc.expectedOutput} onChange={e => updateTestCase(i, 'expectedOutput', e.target.value)} />
+                  </div>
+                ))}
+                <button className="btn-secondary" onClick={addTestCaseRow}>+ Add Test Case</button>
+              </div>
+              <button className="btn-primary" onClick={handleCreateCodingQuestion}>Create Coding Question</button>
+            </div>
+
+            <div className="table-container" style={{ marginTop: '20px' }}>
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Languages</th>
+                    <th>Tests</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {codingQuestions.map(q => (
+                    <tr key={q._id}>
+                      <td>{q.title}</td>
+                      <td>{(q.languagesAllowed || []).join(', ')}</td>
+                      <td>{(q.testCases || []).length}</td>
+                      <td>
+                        <button className="btn-view" onClick={() => navigate(`/coding/${q._id}`)}>Open</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>
